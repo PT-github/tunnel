@@ -1,0 +1,14 @@
+component: website
+name: smart-tunnel
+
+# http://smart-tunnel-1256104560.cos-website.ap-guangzhou.myqcloud.com/
+
+inputs:
+  src:
+    src: ./dist
+#    hook: npm run generate
+    index: 200.html
+    error: 200.html
+  region: ap-guangzhou
+  bucketName: smart-tunnel
+  protocol: http

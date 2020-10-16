@@ -1,0 +1,158 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 28.12.2019 13:39:20
+
+newmtl Badging_Chrome
+	Ns 50.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.3330 0.3330 0.3330
+	Ke 0.0000 0.0000 0.0000
+	map_Ka models/suidao/3d66Model-636233-files-5.jpg
+	map_Kd models/suidao/3d66Model-636233-files-5.jpg
+	map_d models/suidao/3d66Model-636233-files-3.jpg
+	map_bump models/suidao/Map__139_Normal_Bump.jpg
+	map_refl models/suidao/Map__10_Mask.jpg
+
+newmtl Misc
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka models/suidao/3d66Model-636233-files-9.jpg
+	map_Kd models/suidao/3d66Model-636233-files-9.jpg
+
+newmtl Misc_Chrome
+	Ns 50.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.3330 0.3330 0.3330
+	Ke 0.0000 0.0000 0.0000
+	map_Ka models/suidao/3d66Model-636233-files-9.jpg
+	map_Kd models/suidao/3d66Model-636233-files-9.jpg
+	map_refl models/suidao/Map__10_Falloff.jpg
+
+newmtl DoorLine
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka models/suidao/3d66Model-636233-files-17.jpg
+	map_Kd models/suidao/3d66Model-636233-files-17.jpg
+	map_d models/suidao/3d66Model-636233-files-16.jpg
+
+newmtl Black
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl wire_000000000
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.3500 0.3500 0.3500
+
+newmtl Tire_Tread
+	Ns 15.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.1922 0.1922 0.1922
+	Kd 0.1922 0.1922 0.1922
+	Ks 0.2000 0.2000 0.2000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka models/suidao/3d66Model-636233-files-29.jpg
+	map_Kd models/suidao/3d66Model-636233-files-29.jpg
+
+newmtl Tire_Sidewall
+	Ns 15.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.1922 0.1922 0.1922
+	Kd 0.1922 0.1922 0.1922
+	Ks 0.2000 0.2000 0.2000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka models/suidao/3d66Model-636233-files-20.jpg
+	map_Kd models/suidao/3d66Model-636233-files-20.jpg
+	map_bump models/suidao/Map__1_Normal_Bump.jpg
+
+newmtl Mat
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.5000 0.5000 0.5000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka models/suidao/3d66Model-636233-files-20.jpg
+	map_Kd models/suidao/3d66Model-636233-files-20.jpg
+
+newmtl Mat3d66_636233_34_547
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5880 0.5880 0.5880
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka models/suidao/3d66Model-636233-files-18.jpg
+	map_Kd models/suidao/3d66Model-636233-files-18.jpg
+
+newmtl License
+	Ns 50.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0000 0.0000 0.0000
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.3330 0.3330 0.3330
+	Ke 0.0000 0.0000 0.0000
+	map_Ka models/suidao/3d66Model-636233-files-22.jpg
+	map_Kd models/suidao/3d66Model-636233-files-22.jpg
+	map_d models/suidao/3d66Model-636233-files-21.jpg
+	map_refl models/suidao/Map__10_Mask.jpg
