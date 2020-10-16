@@ -53,11 +53,11 @@
             <div class="direction right">
                 <img class="img" src="../../assets/images/tunnel/tunnel-direction-right.png">
 <!--                <div class="text">{{this.tunnelInfo.rightHoleDirection}}</div>-->
-                <div class="text">{{this.tunnelInfo.leftHoleDirection}}</div>
+                <div class="text">{{this.tunnelInfo.rightHoleDirection}}</div>
             </div>
              <div class="direction left">
                 <img class="img" src="../../assets/images/tunnel/tunnel-direction.png">
-                <div class="text">{{this.tunnelInfo.rightHoleDirection}}</div>
+                <div class="text">{{this.tunnelInfo.leftHoleDirection}}</div>
 <!--                <div class="text">{{this.tunnelInfo.leftHoleDirection}}</div>-->
             </div>
         </div>
