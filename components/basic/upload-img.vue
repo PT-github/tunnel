@@ -11,7 +11,7 @@
         :on-success="handleSuccess"
         :on-preview="handlePictureCardPreview"
         :on-remove="handleRemove"
-        :before-upload="handlebeforeUpload">
+        :before-upload="handleBeforeUpload">
       <i class="el-icon-plus"></i>
     </el-upload>
     <el-dialog :visible.sync="dialogVisible">
@@ -71,26 +71,30 @@ export default {
       if (!img.includes('http') && img) {
         img = Context.$config.baseImgUrl + img
       }
-      // this.dialogImageUrl = img;
-      this.dialogImageUrl = '/upload/Tunnel/20201013/a4ad9cf2-53a9-4617-9e3b-2b3f5b479042.jpg';
+
+      this.dialogImageUrl = img;
 
       this.fileList = img ? [{url: img}] : [];
 
-      console.log(this.fileList)
+      // console.log(this.fileList)
     },
+
     handleUploadExceed() {
       this.$ctx.toastError(`最多上传${this.limit}张图片`)
     },
+
     handleRemove(file, fileList) {
       this.dialogImageUrl = "";
       this.fileList = fileList;
       this.$emit('input', '')
     },
+
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
     },
-    handlebeforeUpload(file) {
+
+    handleBeforeUpload(file) {
       const isImg = ['image/jpeg', 'image/jpg', 'image/png', 'image/bmp'].includes(file.type);
       const isLt10M = file.size / 1024 / 1024 < 10;
       if (!isImg) {
@@ -101,6 +105,7 @@ export default {
       }
       return isImg && isLt10M;
     },
+
     handleSuccess(res, file) {
       this.dialogImageUrl = file.url;
 
@@ -118,6 +123,7 @@ export default {
   overflow: hidden;
   width: 120px;
   height: 120px;
+  line-height: 120px;
   background-color: rgba(22, 28, 70, .8);
 }
 

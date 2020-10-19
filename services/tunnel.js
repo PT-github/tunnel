@@ -1,14 +1,14 @@
 export default class TunnelService extends Service {
 
     // 根据ID用户查询活跃度
-    getSystemOrganization () {
+    getSystemOrganization() {
         return this.get({
             url: '/tunnel/rest/SystemOrganization/pageAll'
         });
     }
 
     // 获取所有隧道
-    getListAll () {
+    getListAll() {
         return this.get({
             url: '/tunnel/rest/TunnelInfo/listAll'
         }).then(res => {
@@ -22,7 +22,7 @@ export default class TunnelService extends Service {
     }
 
     // 根据ID查询隧道信息
-    getById (id) {
+    getById(id) {
         return this.get({
             url: '/tunnel/rest/TunnelInfo/get',
             data: {id}
@@ -30,15 +30,15 @@ export default class TunnelService extends Service {
     }
 
     // 获取隧道列表
-    getTunnelList (p) {
+    getTunnelList(p) {
         return this.get({
             url: '/tunnel/rest/TunnelInfo/pageAll',
             data: p
         });
     }
-    
+
     // 获取我的隧道列表
-    getMyTunnelList (p) {
+    getMyTunnelList(p) {
         return this.get({
             url: '/tunnel/rest/TunnelInfo/pageMyAll',
             data: p
@@ -46,7 +46,7 @@ export default class TunnelService extends Service {
     }
 
     // 删除隧道
-    deleteTunnels (ids) {
+    deleteTunnels(ids) {
         return this.get({
             url: '/tunnel/rest/TunnelInfo/delete',
             data: {
@@ -56,7 +56,7 @@ export default class TunnelService extends Service {
     }
 
     // 隧道启用停用
-    updateTunnelStatus (id, enableStatus) {
+    updateTunnelStatus(id, enableStatus) {
         return this.post({
             url: '/tunnel/rest/TunnelInfo/updateStatus',
             contentType: 'form',
@@ -67,7 +67,7 @@ export default class TunnelService extends Service {
     }
 
     // 新增隧道信息
-    addTunnelInfo (params) {
+    addTunnelInfo(params) {
         return this.post({
             url: '/tunnel/rest/TunnelInfo/insert',
             data: params
@@ -75,20 +75,18 @@ export default class TunnelService extends Service {
     }
 
     // 更新隧道信息
-    upDateTunnelInfo (params) {
+    upDateTunnelInfo(params) {
         return this.post({
             url: '/tunnel/rest/TunnelInfo/update',
             data: params
         });
     }
+
     // 隧道类型分类统计汇总,包括隧道类型分别多少个
-    getTunnelCate (params) {
+    getTunnelCate(params) {
         return this.get({
             url: '/tunnel/rest/TunnelInfo/getTunnelCensusByOrgId',
             data: params
         });
     }
-
-    
-
 }

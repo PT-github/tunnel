@@ -3,7 +3,7 @@
 <!--    <button style="position: absolute;    top: 50px;-->
 <!--    padding: 10px;-->
 <!--    font-size: 20px;-->
-<!--    left: 472px;z-index: 9999" @click="hideLeft">-->
+<!--    left: 472px;z-index: 9999" @click="sideStatus">-->
 <!--      测试收起/展开-->
 <!--      {{isResize}}-->
 <!--    </button>-->
@@ -55,10 +55,10 @@ export default {
       currentProvince: '',
       code: '',
       drawer: true,
-      isHideLeft: false,
-      isHideRight: false,
-
-      isResize: false
+      isHideLeft: true,
+      isHideRight: true,
+      // homeSideStatus: '0',
+      isResize: true
     };
   },
   components: {
@@ -69,13 +69,18 @@ export default {
     TunnelEvenInfo
   },
   async mounted() {
+    this.getHomeShowSide()
     await this.queryAllRoadData();
     this.code = this.$store.state && this.$store.state.myUserInfo && this.$store.state.myUserInfo.cityCode || '';
   },
-  created() {
-  },
+
   methods: {
-    hideLeft() {
+    sideStatus() {
+      this.leftStatus()
+      this.rightStatus()
+    },
+
+    leftStatus() {
       const left = this.$el.querySelector('.left-content')
 
       this.isHideLeft = !this.isHideLeft
@@ -91,7 +96,9 @@ export default {
 
       }
 
+    },
 
+    rightStatus() {
       const right = this.$el.querySelector('.right-content')
 
       this.isHideRight = !this.isHideRight
@@ -120,7 +127,34 @@ export default {
       this.TunnelList = await this.$service.home.getListAll({
         page: 1, pageSize: 100
       });
+    },
+
+    // 获取左右侧边栏默认显示状态
+    getHomeShowSide() {
+      this.$service.home.getTunnelShowSide().then(res => {
+        const homeSideInfo = res.find(item => item.name === 'ShowFirstPageLR')
+        // value === '1' 显示左右侧边栏
+        if (homeSideInfo) {
+
+          if (homeSideInfo.value === '0') {
+            const right = this.$el.querySelector('.right-content')
+            right.style.display = 'none'
+
+            const left = this.$el.querySelector('.left-content')
+            left.style.display = 'none'
+            this.isHideLeft = true
+            this.isHideRight = true
+            this.isResize = true
+          }
+
+          if (homeSideInfo.value === '1') {
+            this.sideStatus()
+          }
+
+        }
+      })
     }
+
   }
 };
 </script>
@@ -184,16 +218,17 @@ export default {
     width: 442px;
     height: 100%;
     margin-left: 20px;
+    display: none;
 
+    &.show {
+      animation: showLeft .7s ease-in-out;
+      display: block;
+    }
 
-    //&.show {
-    //  animation: showLeft .7s ease-in-out;
-    //  display: block;
-    //}
-
-    //&.hide {
-    //  animation: hideLeft 0.7s ease-in-out;
-    //}
+    &.hide {
+      animation: hideLeft .7s ease-in-out;
+      //display: none;
+    }
   }
 
   .mapsr {
@@ -207,6 +242,7 @@ export default {
     width: 442px;
     height: 100%;
     margin-right: 20px;
+    display: none;
 
     &-event-info {
       padding: 20px;
@@ -214,12 +250,13 @@ export default {
 
 
     &.show {
-      //animation: showRight .7s ease-in-out;
-      //display: block;
+      animation: showRight .7s ease-in-out;
+      display: block;
     }
 
     &.hide {
-      //animation: hideRight 0.7s ease-in-out;
+      animation: hideRight .7s ease-in-out;
+      //display: none;
     }
   }
 

@@ -7,10 +7,10 @@ Vue.use(uploader);
 export default ({store}) => {
     Vue.use(framework, {
         config: {
-            baseUrl: '/api',
+            // baseUrl: '/api',
             // baseUrl: 'http://w8.qcxt.com:65036',
-            // baseUrl: 'http://cxgs.tunnel.qcxt.com:65036',
-            // baseUrl: 'http://w7.qcxt.com:8060',
+            // baseUrl: 'http://cxgs.tunnel.qcxt.com:65036/api',
+            baseUrl: 'http://w7.qcxt.com:8060',
             baseImgUrl: '/upload'
         },
         resolveHttpSuccess: (res, options) => {

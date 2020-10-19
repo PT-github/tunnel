@@ -30,7 +30,7 @@
         },
         mounted () {
             setTimeout(() => {
-                console.log('播放视频', this.deviceConfig);
+                // console.log('播放视频', this.deviceConfig);
                 qcxt.video.show('#player' + this.random, this.width, this.height, this.deviceConfig);
             }, this.delay);   // 加个延迟，防止页面进来的时候先把ui线程卡死
         }

@@ -28,7 +28,7 @@
         <tipsTitle :title="tunnelName"></tipsTitle>
         <div class="modal-poup-content">
           <div class="modal-poup-content-item">
-            <div class="modal-poup-content-item-title">温度</div>
+            <div class="modal-poup-content-item-title">温度(°)</div>
             <template v-if="countData.singleDoubleType===3">
               <div class="modal-poup-content-item-row">
                 <span class="modal-flag">左</span>
@@ -55,7 +55,7 @@
             </template>
           </div>
           <div class="modal-poup-content-item">
-            <div class="modal-poup-content-item-title">湿度</div>
+            <div class="modal-poup-content-item-title">湿度(%)</div>
             <template v-if="countData.singleDoubleType===3">
               <div class="modal-poup-content-item-row">
                 <span class="modal-flag">左</span>
@@ -76,7 +76,7 @@
             </template>
           </div>
           <div class="modal-poup-content-item">
-            <div class="modal-poup-content-item-title">照明</div>
+            <div class="modal-poup-content-item-title">照明(cd/m2)</div>
             <template v-if="countData.singleDoubleType===3">
               <div class="modal-poup-content-item-row">
                 <span class="modal-flag">左</span>
@@ -101,7 +101,7 @@
             </template>
           </div>
           <div class="modal-poup-content-item">
-            <div class="modal-poup-content-item-title">CO/VI</div>
+            <div class="modal-poup-content-item-title">CO/VI(ppm/m)</div>
             <template v-if="countData.singleDoubleType===3">
               <div class="modal-poup-content-item-row">
                 <span class="modal-flag">左</span>
@@ -121,7 +121,7 @@
             </template>
           </div>
           <div class="modal-poup-content-item">
-            <div class="modal-poup-content-item-title">能耗</div>
+            <div class="modal-poup-content-item-title">能耗(kw)</div>
             <template v-if="countData.singleDoubleType===3">
               <div class="modal-poup-content-item-row">
                 <span class="modal-flag">左</span>
@@ -599,7 +599,7 @@ export default {
 
   .maps-select {
     position: absolute;
-    left: 0px;
+    left: 20px;
     top: 0px;
     z-index: 10;
     color: #2C73E5;
@@ -613,7 +613,7 @@ export default {
   }
 
   /deep/ .ivu-select-arrow {
-    color: 1893 FE !important;
+    color: #1893FE !important;
   }
 
   /deep/ .ivu-select-dropdown {

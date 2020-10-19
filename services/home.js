@@ -1,7 +1,7 @@
 export default class HomeService extends Service {
 
     // 获取所有隧道
-    getListAll (data) { 
+    getListAll (data) {
         return this.get({
             url: '/tunnel/rest/home/pageAll',
             data
@@ -68,5 +68,17 @@ export default class HomeService extends Service {
             }
         });
     }
-    
+
+    // 隧道字典
+    // Show3D 显示隧道3d
+    // ShowFirstPageLR 首页左右侧边栏显示
+    getTunnelShowSide(params) {
+        return this.get({
+            url: '/tunnel/rest/SystemDictionary/listChildrenByParentValue',
+            data: {
+                value: 'OneValueDictionary'
+            }
+        })
+    }
+
 }

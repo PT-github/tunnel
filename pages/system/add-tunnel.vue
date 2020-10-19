@@ -85,7 +85,7 @@
                 <div class="upload-image">
                   <uploadImg busType="Tunnel" v-model="tunnelForm.tunnelPicture"></uploadImg>
                 </div>
-                <span class="sd" style="margin-left: 20px">建议分辩率：180*360 {{ tunnelForm.tunnelPicture }}</span>
+                <span class="sd" style="margin-left: 20px">建议分辩率：180*360</span>
               </div>
             </el-form-item>
 

@@ -49,11 +49,12 @@ export default {
         proxy: true
     },
     // proxy: {
-    //     '/api': {
-    //         target: 'http://w8.qcxt.com:65036:65036',
-    //         pathRewrite: {
-    //             '^/api/': '/api'
-    //         }
-    //     }
+        // '/api': {
+        //     target: 'http://w7.qcxt.com:8060',
+        //     // target: 'http://w8.qcxt.com:65036:65036',
+        //     pathRewrite: {
+        //         '^/api/': '/api'
+        //     }
+        // }
     // }
 };

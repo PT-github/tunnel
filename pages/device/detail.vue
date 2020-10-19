@@ -40,11 +40,14 @@
                             <div class="s-l">
                                 设备操作
                             </div>
-                            <div class="s-r">
-                                <img v-if="deviceDetail&&deviceDetail.classifyNumber && deviceDetail.classifyNumber!=='controller'" class="s1"
-                                     :src="`/static/image/tunnel/${deviceDetail.classifyNumber}_${deviceDetail.deviceCommunicationsState}.png`">
-                                <span v-else></span>
-                                <div class="device-done flex-c" @click="showModal = true">设备操作</div>
+                            <div class="s-r device-operation">
+                                <img v-if="deviceDetail&&deviceDetail.classifyNumber && deviceDetail.classifyNumber!=='controller'"
+                                     class="s1"
+                                     :src="`/static/image/tunnel/${deviceDetail.classifyNumber}_${deviceDetail.deviceCommunicationsState}${(deviceDetail.workMode ? '_' + deviceDetail.workMode : '')}.png`">
+                                <span class="device-name">{{deviceDetail.workModeName}}</span>
+                                <div class="device-done flex-c" @click="showModal = true">
+                                  设备操作
+                                </div>
                             </div>
                         </div>
 
@@ -185,8 +188,10 @@
 
         <!--弹窗-->
         <modal-control :classify-number="deviceDetail.classifyNumber"
-                       v-model="showModal" :device-obj="deviceDetail"
-                       @update="init" :tunnel-id="deviceDetail.tunnelId"></modal-control>
+                       v-model="showModal"
+                       :device-obj="deviceDetail"
+                       @update="init"
+                       :tunnel-id="deviceDetail.tunnelId"/>
     </form-page>
 </template>
 
@@ -665,5 +670,19 @@
         /deep/ .el-table__row > td {
             border: none
         }
+    }
+
+    .device-operation {
+      justify-content: normal;
+      .device-name {
+        flex: 1;
+        color: #fff;
+      }
+
+      .s1 {
+        margin-right: 10px;
+        height: 100%;
+      }
+
     }
 </style>
