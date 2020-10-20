@@ -51,7 +51,7 @@
       <TipsTitle title="隧道关键参数" style="margin-top: 30px;"></TipsTitle>
       <div class="stats">
         <div class="stat-wrap">
-          <div class="label">亮度</div>
+          <div class="label">亮度(cd/m2)</div>
           <div class="stat brightness">
             <template v-if="tunnelData.singleDoubleType===3">
               <div class="num">左洞：{{ tunnelData.brightNessLeft || 0 }}</div>
@@ -61,7 +61,7 @@
           </div>
         </div>
         <div class="stat-wrap">
-          <div class="label">CO/VI</div>
+          <div class="label">CO/VI(ppm/m)</div>
           <div class="stat co">
             <template v-if="tunnelData.singleDoubleType===3">
               <div class="num">左洞：{{ tunnelData.viLeft || 0 }}</div>
@@ -71,13 +71,24 @@
           </div>
         </div>
         <div class="stat-wrap">
-          <div class="label">风速</div>
+          <div class="label">风速(m/s)</div>
           <div class="stat vi">
             <template v-if="tunnelData.singleDoubleType===3">
               <div class="num">左洞：{{ tunnelData.windSpeedLeft || 0 }}</div>
               <div class="num">右洞：{{ tunnelData.windSpeedRight || 0 }}</div>
             </template>
             <div class="num" v-else>{{ tunnelData.windSpeedLeft || tunnelData.windSpeedRight || 0 }}</div>
+          </div>
+        </div>
+
+        <div class="stat-wrap">
+          <div class="label">风向</div>
+          <div class="stat brightness direction">
+            <template v-if="tunnelData.singleDoubleType===3">
+              <div class="num">左洞：{{ tunnelData.windDirectionLeft || 0 }}</div>
+              <div class="num">右洞：{{ tunnelData.windDirectionRight || 0 }}</div>
+            </template>
+            <div class="num" v-else>{{ tunnelData.windDirectionLeft || tunnelData.windDirectionRight || 0 }}</div>
           </div>
         </div>
       </div>
@@ -186,6 +197,8 @@ export default {
     },
     onLoadTunnelData(e) {
       this.tunnelData = e;
+
+      console.log(e)
     },
     doShowModalDevice(device) {
       this.doShowModal(device.classifyNumber, device.deviceName);
@@ -315,8 +328,8 @@ export default {
     }
 
     .stat {
-      width: 124px;
-      height: 124px;
+      width: 93px;
+      height: 93px;
       display: flex;
       align-items: center;
       justify-content: center;
