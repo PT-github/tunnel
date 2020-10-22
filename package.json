@@ -17,7 +17,7 @@
     "element-ui": "2.13.2",
     "jquery": "^3.5.1",
     "less-loader": "6.1.1",
-    "nuxt": "2.12.2",
+    "nuxt": "^2.14.7",
     "postcss-loader": "3.0.0",
     "postcss-px2rem": "0.3.0",
     "sass": "^1.26.10",
