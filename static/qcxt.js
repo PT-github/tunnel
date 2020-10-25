@@ -21,6 +21,24 @@ var qcxt = {
                         }
                     }
                 }
+            }else  if (type == "hk") {
+                //大华摄像头
+                if (window.ActiveXObject || "ActiveXObject" in window) {
+                    try {
+                        new ActiveXObject("WebActiveEXE.Plugin.1");
+                        e = true;
+                    }
+                    catch (n) {
+                        e = false;
+                    }
+                }
+                else {
+                    for (var r = 0, s = navigator.mimeTypes.length; s > r; r++) {
+                        if (navigator.mimeTypes[r].type.toLowerCase() == "application/media-plugin-version-3.1.0.2") {
+                            e = true;
+                        }
+                    }
+                }
             }
             return e;
         },
@@ -68,6 +86,21 @@ var qcxt = {
                         $(elementId).html('<div class="nop"  style="background-color: #000;position:relative;text-align:color: #FFF;min-height: 50px;center;width:' + width + 'px;height:' + height + 'px;line-height:' + height + 'px;" id="' + pluginVideoId + '"><a type="application/octet-stream" style="color:#FFF;position:absolute;" href="/webplugin.exe">请安装控件包</a></div>');
                     }
                     break;
+                    case "rtsp":
+                        var e=false;
+                        for (var r = 0, s = navigator.mimeTypes.length; s > r; r++) {
+                            if (navigator.mimeTypes[r].type.toLowerCase() == "application/x-vlc-plugin") {
+                                e = true;
+                            }
+                        }
+                        if(!e){
+                            $(elementId).html('<div class="nop"  style="background-color: #000;position:relative;text-align:color: #FFF;min-height: 50px;center;width:' + width + 'px;height:' + height + 'px;line-height:' + height + 'px;" id="' + pluginVideoId + '"><a type="application/octet-stream" style="color:#FFF;position:absolute;" href="/vlc-3.0.11-win32.exe">请安装控件包</a></div>');
+                            return;
+                        }
+                        var rtsp=data.rtsp||"rtsp://"+data.username+":"+data.password+"@"+data.recordIP+":"+(data.iRtspPort||554)+"/ch1/main/av_stream";
+                        //rtsp://admin:abcd1234@10.99.250.151:554/h264/ch1/main/av_stream
+                        $(elementId).html('<object type="application/x-vlc-plugin" id="vlc" events="True" width="'+width+'" height="'+height+'" pluginspage="http://www.videolan.org" codebase="npapi-vlc-2.0.6.tar.xz"><param name="mrl" value="'+rtsp+'" /><param name="autoplay" value="true" /><param name="ShowDisplay" value="false" /><param name="fullscreen" value="true" /> </object>');
+                        break;
                 case "hk"://海康
                        var iRet = WebVideoCtrl.I_CheckPluginInstall();
                        if(iRet==-1){
