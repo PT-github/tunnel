@@ -64,12 +64,24 @@
           <div class="label">CO/VI(ppm/m)</div>
           <div class="stat co">
             <template v-if="tunnelData.singleDoubleType===3">
-              <div class="num">左洞：{{ tunnelData.viLeft || 0 }}</div>
-              <div class="num">右洞：{{ tunnelData.viRight || 0 }}</div>
+              <div class="num">左洞：{{ tunnelData.viLeft ||0 }}</div>
+              <div class="num">右洞：{{ tunnelData.viRight ||  0 }}</div>
             </template>
             <div class="num" v-else>{{ tunnelData.viLeft || tunnelData.viRight || 0 }}</div>
           </div>
         </div>
+         <div class="stat-wrap"><!--狮子笼专用-->
+          <div class="label">风速(m/s)</div>
+          <div class="stat vi">
+            <template v-if="tunnelData.singleDoubleType===3">
+              <div class="num">左洞：{{ tunnelData.windSpeedLeft ||tunnelData.windDirectionLeft ||  0 }}</div>
+              <div class="num">右洞：{{ tunnelData.windSpeedRight ||tunnelData.windDirectionRight ||  0 }}</div>
+            </template>
+            <div class="num" v-else>{{ tunnelData.windSpeedLeft || tunnelData.windSpeedRight || 0 }}</div>
+          </div>
+        </div>
+
+        <!--
         <div class="stat-wrap">
           <div class="label">风速(m/s)</div>
           <div class="stat vi">
@@ -91,6 +103,7 @@
             <div class="num" v-else>{{ tunnelData.windDirectionLeft || tunnelData.windDirectionRight || 0 }}</div>
           </div>
         </div>
+        !-->
       </div>
     </div>
 

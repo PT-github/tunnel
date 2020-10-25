@@ -34,8 +34,8 @@
                 this.$service.alarm.voiceAlarmTrigger(eventContent);
             },
             connect () {
-                // let ws = new WebSocket(`ws://${top.window.location.host}/api/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
-                let ws = new WebSocket(`ws://w8.qcxt.com:65036/api/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
+                 let ws = new WebSocket(`ws://${top.window.location.host}/api/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
+                //let ws = new WebSocket(`ws://w8.qcxt.com:65036/api/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
                 ws.onopen = e => {
                     console.log('---------ws已连接---------', e);
                 };
