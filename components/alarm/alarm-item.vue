@@ -86,6 +86,9 @@
         },
         methods: {
             clickBtn (type) {
+              console.log(type)
+              // return
+
                 if (type == 0) {
                     this.$service.alarm.queryAlarmDetail(this.data.id).then(res => {
                         this.$emit('openDetail', res);

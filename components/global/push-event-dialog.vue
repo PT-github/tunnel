@@ -1,7 +1,7 @@
 <!-- 事件推送对话框 -->
 <template>
     <popup :width="$getPx(1272)" title="事件处理" :show-popup="!!event" @handleClose="event=null">
-        <event-alarm v-if="event" :detail="event" @cannelPopup="event = null"></event-alarm>
+        <event-alarm v-if="event" :detail="event" @cancelPopup="event = null"></event-alarm>
     </popup>
 </template>
 
