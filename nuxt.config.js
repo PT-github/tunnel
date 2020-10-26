@@ -10,7 +10,7 @@ export default {
         link: [
             {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
         ],
-        script: [ {src: '/qcxt.js'} ]
+        script: [{src: '/jquery-1.7.1.min.js'}, {src: '/codebase/webVideoCtrl.js'},{src: '/qcxt.js'} ]
     },
     router: {
         middleware: [ 'auth' ]
