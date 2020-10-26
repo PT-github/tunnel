@@ -1,7 +1,7 @@
 <template>
     <div class="page">
         <img src="../assets/images/login-bg.png" class="bg">
-        <img src="../assets/images/top-nav/logo.png" class="title">
+        <img src="../assets/images/top-nav/logo-2.png" class="title">
         <el-form ref="loginForm" :model="form" class="login-form" @submit.native.prevent>
             <el-form-item prop="account" :rules="[{ required: true, message: '请输入用户名', trigger: 'blur' }]">
                 <el-input v-model="form.account" placeholder="请输入用户名" autofocus>

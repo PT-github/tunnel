@@ -1,7 +1,7 @@
 <template>
     <div class="top-nav">
         <div class="left">
-            <img src="../../assets/images/top-nav/logo.png" class="logo">
+            <img src="../../assets/images/top-nav/logo-2.png" class="logo">
             <div class="weather">{{nowTime}}{{weather}}</div>
         </div>
         <div class="center">
