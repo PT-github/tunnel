@@ -99,6 +99,7 @@
             <el-radio :label="1">正向通行</el-radio>
             <el-radio :label="2">反向通行</el-radio>
             <el-radio :label="0">道路封闭</el-radio>
+            <el-radio :label="3">左转通行</el-radio>
           </el-radio-group>
         </template>
 
