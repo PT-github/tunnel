@@ -27,9 +27,12 @@
     .tips {
         display: flex;
         align-items: center;
+        height: 30px;
+
 
         .title {
-            padding: 0 9px;
+            //padding: 0 9px;
+          //height: 20px;
             font-size: 16px;
             font-weight: bold;
             color: #5391F3;
