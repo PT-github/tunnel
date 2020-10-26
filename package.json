@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "nuxt -o",
-    "generate": "nuxt generate",
+    "build": "nuxt generate",
     "deploy": "serverless deploy",
     "ci": "node ./ci.js"
   },

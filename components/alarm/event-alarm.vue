@@ -37,18 +37,31 @@
         <HTab :tab="tab"
               @clickBar="clickBar"
               tabName="name">
-          <div class="img-video-ctn" v-if="state==0">
+          <!-- 图片 -->
+          <div class="img-video-ctn" v-if="state == 0">
             <img v-if="detail.eventPicture"
                  :src="detail.eventPicture.includes('http')?detail.eventPicture:$ctx.$config.baseImgUrl+detail.eventPicture"
                  alt="">
           </div>
-          <div class="img-video-ctn" v-if="state==1">
+
+          <!-- 视频 -->
+          <div class="img-video-ctn" v-if="state == 1">
             <h-video width="100%"
                      v-if="detail.eventVideo"
                      :videoSrc="detail.eventVideo"
                      :videoImg="detail.eventPicture?detail.eventPicture:''"
                      height="300"></h-video>
           </div>
+
+          <!-- 处置说明 -->
+          <div class="img-video-ctn" v-if="state == 2">
+<!--            <el-carousel style="height: 100%">-->
+<!--              <el-carousel-item v-for="item in flowImgList" :key="item">-->
+                <el-image style="height: 100%" :src="flowImgList[0]"  fit="contain" :preview-src-list="flowImgList"/>
+<!--              </el-carousel-item>-->
+<!--            </el-carousel>-->
+          </div>
+
         </HTab>
       </div>
       <div class="video-ctn-r">
@@ -159,7 +172,8 @@ export default {
     return {
       tab: [
         {name: '图片'},
-        {name: '视频'}
+        {name: '视频'},
+        {name: '处置流程'},
       ],
       state: 0,
       value: '',
@@ -169,6 +183,16 @@ export default {
       alarmText: '',   //事件说明
       doneListParm: []
     };
+  },
+  computed: {
+    flowImgList() {
+      return [
+          require('@/assets/images/flow/flow-1.png'),
+          require('@/assets/images/flow/flow-2.png'),
+          require('@/assets/images/flow/flow-3.png'),
+          require('@/assets/images/flow/flow-4.png'),
+      ]
+    }
   },
   methods: {
     init() {
@@ -204,6 +228,7 @@ export default {
     },
 
     clickBar(e) {
+      console.log(e)
       this.state = e;
     },
 
@@ -293,6 +318,13 @@ export default {
 </script>
 
 <style scoped lang="less">
+::v-deep .el-image-viewer__btn .el-icon-circle-close {
+  color:#fff;
+  &:before {
+    font-size: 36px;
+  }
+}
+
 .margin {
   margin-top: 18px;
 }

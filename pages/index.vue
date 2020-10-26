@@ -127,12 +127,9 @@
 
 <script>
 import TipsTitle from '@/components/index/tips-title';
-// import tunnelDetailChart from '@/components/tunnel/tunnel-detail-chart';
 import tunnelDetailCate from '@/components/tunnel/tunnel-detail-cate';
 import TunnelEventInfo from '@/components/home/tunnel-event-info';
 import container from '@/components/analysis/char-container';
-// import PreChart from '@/components/charts/pie-charts';
-// import pieChartNew from '@/components/home/pie-chart-new';
 import echarts from "echarts";
 import LaoShanPieChart from "@/components/laoshan/PieChart";
 import LaoShanTunnelDetailChart from "@/components/laoshan/TunnelDetailChart";
