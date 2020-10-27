@@ -12,7 +12,11 @@
             <el-radio-button label="3d" v-if="threeDStatus === '1'">3d</el-radio-button>
           </el-radio-group>
         </div>
-        <tunnel-component @detail="doShowModalDevice" ref="tunnel" :showActiveType="showActiveType">
+
+        <!-- 隧道信息 -->
+        <tunnel-component @detail="doShowModalDevice"
+                          ref="tunnel"
+                          :showActiveType="showActiveType">
           <div slot="controls" class="buttons">
             <div class="button-item" v-for="(item, index) in deviceTypes" :key="index"
                  @click="doShowModal(item.classifyNumber)">
@@ -24,25 +28,35 @@
             </div>
           </div>
         </tunnel-component>
+
       </div>
+
+      <!-- 隧道左右洞视频 -->
       <div class="videos">
-        <div class=" video">
-          <VideoRtsp click-to-play :can-play="!showModal" v-if="videoList.length"
+        <div class="video">
+          <VideoRtsp click-to-play
+                     :can-play="!showModal"
+                     v-if="videoList.length"
                      :title="videoList[0].firstVedioName"
                      :bg-height="400"
                      :width="500"
-                     :deviceConfig="videoList[0].deviceConfig"></VideoRtsp>
+                     :deviceConfig="videoList[0].deviceConfig"/>
         </div>
+
         <div class="spacer"></div>
-        <div class=" video">
-          <VideoRtsp click-to-play :can-play="!showModal" v-if="videoList.length>1"
+
+        <div class="video">
+          <VideoRtsp click-to-play
+                     :can-play="!showModal"
+                     v-if="videoList.length>1"
                      :title="videoList[1].firstVedioName"
                      :bg-height="400"
                      :width="500"
-                     :deviceConfig="videoList[1].deviceConfig"></VideoRtsp>
+                     :deviceConfig="videoList[1].deviceConfig"/>
         </div>
       </div>
     </div>
+
     <!--右边-->
     <div class="block right">
       <!-- 隧道事件信息 -->
@@ -64,18 +78,18 @@
           <div class="label">CO/VI(ppm/m)</div>
           <div class="stat co">
             <template v-if="tunnelData.singleDoubleType===3">
-              <div class="num">左洞：{{ tunnelData.viLeft ||0 }}</div>
-              <div class="num">右洞：{{ tunnelData.viRight ||  0 }}</div>
+              <div class="num">左洞：{{ tunnelData.viLeft || 0 }}</div>
+              <div class="num">右洞：{{ tunnelData.viRight || 0 }}</div>
             </template>
             <div class="num" v-else>{{ tunnelData.viLeft || tunnelData.viRight || 0 }}</div>
           </div>
         </div>
-         <div class="stat-wrap"><!--狮子笼专用-->
+        <div class="stat-wrap"><!--狮子笼专用-->
           <div class="label">风速(m/s)</div>
           <div class="stat vi">
             <template v-if="tunnelData.singleDoubleType===3">
-              <div class="num">左洞：{{ tunnelData.windSpeedLeft ||tunnelData.windDirectionLeft ||  0 }}</div>
-              <div class="num">右洞：{{ tunnelData.windSpeedRight ||tunnelData.windDirectionRight ||  0 }}</div>
+              <div class="num">左洞：{{ tunnelData.windSpeedLeft || tunnelData.windDirectionLeft || 0 }}</div>
+              <div class="num">右洞：{{ tunnelData.windSpeedRight || tunnelData.windDirectionRight || 0 }}</div>
             </template>
             <div class="num" v-else>{{ tunnelData.windSpeedLeft || tunnelData.windSpeedRight || 0 }}</div>
           </div>
@@ -208,14 +222,16 @@ export default {
 
       })
     },
+
     onLoadTunnelData(e) {
       this.tunnelData = e;
-
-      console.log(e)
+      // console.log(e)
     },
+
     doShowModalDevice(device) {
       this.doShowModal(device.classifyNumber, device.deviceName);
     },
+
     doShowModal(classifyNumber, deviceName) {
       this.showActiveType = classifyNumber;
       if (classifyNumber === 'all') return;

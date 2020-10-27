@@ -27,7 +27,7 @@
                             <div class="tunnel-channel-item-right-name">左洞</div>
                             <div class="tunnel-channel-item-right-num">{{countData.unblockedIndexLeft || 0}}</div>
                         </div>
-                        <div class="tunnel-row-item">
+                        <div class="tunnel-row-item" style="margin-left: 15px">
                             <div class="tunnel-channel-item-right-name">右洞</div>
                             <div class="tunnel-channel-item-right-num">{{countData.unblockedIndexRight || 0}}</div>
                         </div>
@@ -44,7 +44,7 @@
                             <div class="tunnel-channel-item-right-name">左洞</div>
                             <div class="tunnel-channel-item-right-num">{{countData.trafficVolumeLeft || 0}}</div>
                         </div>
-                        <div class="tunnel-row-item">
+                        <div class="tunnel-row-item" style="margin-left: 15px">
                             <div class="tunnel-channel-item-right-name">右洞</div>
                             <div class="tunnel-channel-item-right-num">{{countData.trafficVolumeRight || 0}}</div>
                         </div>
@@ -167,7 +167,7 @@
             margin: 20px 0;
 
             &-item + &-item {
-                margin-left: 15px;
+                //margin-left: 15px;
             }
 
             &-item {
@@ -177,7 +177,7 @@
                 border-radius: 4px;
                 display: flex;
                 align-items: center;
-                padding-left: 17px;
+                padding-left: 15px;
 
                 img {
                     width: 33px;
@@ -185,7 +185,7 @@
                 }
 
                 &-right {
-                    padding-left: 20px;
+                    padding-left: 15px;
                     flex: 1;
 
                     .tunnel-row {
