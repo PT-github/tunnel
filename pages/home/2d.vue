@@ -64,18 +64,18 @@
           <div class="label">CO/VI(ppm/m)</div>
           <div class="stat co">
             <template v-if="tunnelData.singleDoubleType===3">
-              <div class="num">左洞：{{ tunnelData.viLeft ||0 }}</div>
-              <div class="num">右洞：{{ tunnelData.viRight ||  0 }}</div>
+              <div class="num">左洞：{{ tunnelData.viLeft || 0 }}</div>
+              <div class="num">右洞：{{ tunnelData.viRight || 0 }}</div>
             </template>
             <div class="num" v-else>{{ tunnelData.viLeft || tunnelData.viRight || 0 }}</div>
           </div>
         </div>
-         <div class="stat-wrap"><!--狮子笼专用-->
+        <div class="stat-wrap"><!--狮子笼专用-->
           <div class="label">风速(m/s)</div>
           <div class="stat vi">
             <template v-if="tunnelData.singleDoubleType===3">
-              <div class="num">左洞：{{ tunnelData.windSpeedLeft ||tunnelData.windDirectionLeft ||  0 }}</div>
-              <div class="num">右洞：{{ tunnelData.windSpeedRight ||tunnelData.windDirectionRight ||  0 }}</div>
+              <div class="num">左洞：{{ tunnelData.windSpeedLeft || tunnelData.windDirectionLeft || 0 }}</div>
+              <div class="num">右洞：{{ tunnelData.windSpeedRight || tunnelData.windDirectionRight || 0 }}</div>
             </template>
             <div class="num" v-else>{{ tunnelData.windSpeedLeft || tunnelData.windSpeedRight || 0 }}</div>
           </div>
@@ -197,7 +197,10 @@ export default {
         this.videoList = res;
       });
       this.$service._2d.getTunnelDeviceTypes(this.tunnelId).then(res => {  // 获取隧道设备类型
-        this.deviceTypes = [{classifyName: '全部', classifyNumber: 'all'}].concat(res);
+        const deviceTypeis = res.filter(item => item.classifyName !== '控制器' && item.classifyName !== '诱导灯' && item.classifyName !== '电子围栏')
+        // console.log(res, 'device types')
+        // console.log(deviceTypeis, 'device types filter')
+        this.deviceTypes = [{classifyName: '全部', classifyNumber: 'all'}].concat(deviceTypeis);
       });
 
       // 获取是否显示3D

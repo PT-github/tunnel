@@ -69,7 +69,7 @@
       <div class="tunnel-info block" style="padding: 20px;">
         <div class="tunnel-row">
           <div class="tunnel-info-item">
-            <img class="tunnel-info-item-img" :src="tunnelDetail.tunnelPictureUrl" alt="">
+            <img class="tunnel-info-item-img" :src="tunnelDetail.tunnelPictureUrl" alt="" @click="goTunnel2dDetail">
           </div>
           <div class="tunnel-info-item">
             <div class="tunnel-row tunnel-border">
@@ -176,6 +176,15 @@ export default {
     // this.drawMaps(this.tunnelDetail.provinceId)
   },
   methods: {
+    goTunnel2dDetail() {
+      this.$router.push({
+        path: '/home/2d',
+        query: {
+          tunnelId: this.tunnelId
+        }
+      })
+    },
+
     //设备类型图形
     // searchData4(param) {
     //   let {LeftRightFlag, tunnelId} = param;
@@ -476,6 +485,7 @@ export default {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      cursor: pointer;
     }
 
     .tunnel-border {

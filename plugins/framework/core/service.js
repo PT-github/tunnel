@@ -41,7 +41,7 @@ export default class Service {
         let o = {
             url: options.url,
             method: options.method,
-            timeout: options.timeout || 5000,
+            timeout: options.timeout || 30 * 1000,
             headers: {
                 ...options.headers || {},
                 'content-type': CONTENT_TYPE_MAP[ options.contentType || 'json'.toLowerCase() ]

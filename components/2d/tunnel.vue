@@ -222,7 +222,7 @@
                     }
                 }
                 return {
-                    transform: `translate(-50%, -50%) scale(${2 / laneNums}) ${device.classifyNumber === 'laneIndicator' && device.leftRightFlag === 2 ? 'rotateY(180deg)' : ''}`,
+                    transform: `translate(-50%, -50%) scale(${2 / laneNums}) ${device.classifyNumber === 'laneIndicator' && device.leftRightFlag === 2 ? 'rotate(180deg)' : ''}`,
                     top: device.orientationLocation === 11 ? '50%' : (top + 'px'),
                     left: ( device.pileNumber-leftStakeMark) / maxLength * 100 + '%',
                     zIndex: device.sortInt || 1
