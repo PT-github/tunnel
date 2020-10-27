@@ -161,15 +161,27 @@ export default {
       //设备类型
       sblxCharts: [],
       option4: [{type: 'tunnel'}, {type: 'LeftRightFlag'}],
+      indexTimer: null
     };
+  },
+
+  beforeDestroy() {
+    clearInterval(this.indexTimer)
+    this.indexTimer = null
   },
 
   created() {
     this.getTunnelList()
+
+  
   },
 
 
   async mounted() {
+    this.indexTimer = setInterval(() => {
+      this.getTunnelList()
+    }, 30 *1000)
+    
     // this.tunnelId = this.$route.query.tunnelId
     // this.tunnelDetail = await this.$service.tunnel.getById(this.tunnelId) || {}
     // // this.getList()
@@ -204,7 +216,7 @@ export default {
     },
 
     getTunnelList() {
-      console.log('获取隧道列表')
+      // console.log('获取隧道列表')
       this.$service.tunnel.getListAll().then(async res => {
         console.log(res)
         if (res.length > 0) {
