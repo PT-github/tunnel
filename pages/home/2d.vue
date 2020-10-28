@@ -21,8 +21,7 @@
             <div class="button-item" v-for="(item, index) in deviceTypes" :key="index"
                  @click="doShowModal(item.classifyNumber)">
               <div class="img-wrap">
-                <img class="img"
-                     :src="require('../../assets/images/warning/icons/'+item.classifyNumber+'.png')">
+                <img class="img" :src="require('../../assets/images/warning/icons/'+item.classifyNumber+'.png')">
               </div>
               <p>{{ item.classifyName }}</p>
             </div>
@@ -211,7 +210,7 @@ export default {
         this.videoList = res;
       });
       this.$service._2d.getTunnelDeviceTypes(this.tunnelId).then(res => {  // 获取隧道设备类型
-        const deviceTypeis = res.filter(item => item.classifyName !== '控制器' && item.classifyName !== '诱导灯' && item.classifyName !== '电子围栏')
+        const deviceTypeis = res.filter(item => item.classifyName !== '控制器' && item.classifyName !== '诱导灯' && item.classifyName !== '电子围栏' && item.classifyNumber !== 'other' )
         // console.log(res, 'device types')
         // console.log(deviceTypeis, 'device types filter')
         this.deviceTypes = [{classifyName: '全部', classifyNumber: 'all'}].concat(deviceTypeis);
