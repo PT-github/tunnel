@@ -211,7 +211,10 @@ export default {
         this.videoList = res;
       });
       this.$service._2d.getTunnelDeviceTypes(this.tunnelId).then(res => {  // 获取隧道设备类型
-        this.deviceTypes = [{classifyName: '全部', classifyNumber: 'all'}].concat(res);
+        const deviceTypeis = res.filter(item => item.classifyName !== '控制器' && item.classifyName !== '诱导灯' && item.classifyName !== '电子围栏')
+        // console.log(res, 'device types')
+        // console.log(deviceTypeis, 'device types filter')
+        this.deviceTypes = [{classifyName: '全部', classifyNumber: 'all'}].concat(deviceTypeis);
       });
 
       // 获取是否显示3D
