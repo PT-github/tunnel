@@ -48,11 +48,11 @@
                  :style="getDeviceStyle(item)"
                  @click.stop="showDetail(item)"
                  v-show="(!wait || waitShowList[item.id]) && (showActiveType==='all' || item.classifyNumber === showActiveType)"
-                 :src="`/static/image/tunnel/${(item.classifyNumber=='environment'?item.deviceTypeCode:item.classifyNumber)}_${item.deviceCommunicationsState}${(item.workMode!=null?'_'+item.workMode:'')}.png`">
+                 :src="`/static/image/tunnel/${item.deviceTypeCode}_${item.deviceCommunicationsState}${(item.workMode!=null?'_'+item.workMode:'')}.png`">
           </el-popover>
         </template>
 
-        <!--空洞-->
+        <!-- 隧道空洞、人行横洞、车辆横洞、配电房、水泵房 -->
         <template v-if="tunnelInfo.emptyrecordList" v-for="empty in tunnelInfo.emptyrecordList">
           <div :style="getEmptyStyle(empty)"></div>
         </template>
@@ -93,7 +93,8 @@ export default {
     };
   },
   computed: {
-    tunnelStyle() {    // 隧道2d背景图的样式
+    // 隧道2d背景图的样式
+    tunnelStyle() {
       // 如果不是双洞类型，就不用比较距离和长短
       let {leftHoleLength, rightHoleLength, endStakeMark, endStakeMarkRight, laneNums, startStakeMark, startStakeMarkRight} = this.tunnelInfo;
       let config = {
@@ -177,67 +178,184 @@ export default {
       }
     }
   },
+
   watch: {
     async $route() {
       await this.findTunnelBaseInfo();
       this.listDeviceBaseOfTunnelPage();
     }
   },
+
   async mounted() {
     await this.findTunnelBaseInfo();
     this.listDeviceBaseOfTunnelPage();
   },
+
   methods: {
     showWait(id) {
       this.waitShowList = {...this.waitShowList, [id]: true};
     },
+
     clearWait() {
       this.waitShowList = {};
     },
 
     // 计算空洞位置
     getEmptyStyle(item) {
-      let {length, pileNumber, leftRightFlag} = item, {singleDoubleType} = this.tunnelInfo;
-      let {leftStakeMark, maxLength, tunnelLine, center} = this.tunnelStyle;
-      // console.log(tunnelLine, pileNumber, leftStakeMark, maxLength, leftRightFlag);
+      const {length, pileNumber, leftRightFlag} = item, {singleDoubleType} = this.tunnelInfo;
+      const {leftStakeMark, maxLength, tunnelLine, center} = this.tunnelStyle;
+      const defaultLeft = (pileNumber - leftStakeMark) / maxLength * 100
 
-      // emptyType  空洞类型（0空洞、1人行横洞、2车行横洞）
-      // console.log(item.emptyType);
+      // emptyType  空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
       // rotateDegree  旋转度数
-      // console.log(item.rotateDegree);
+      // leftRightFlag 1 右洞 2 左洞 3 中间
 
-      return {
-        position: 'absolute',
-        top: singleDoubleType === 3 && leftRightFlag === 2 ? tunnelLine + center + 30 + 'px' : '0',
-        height: tunnelLine + 30 + 'px',
-        width: length / maxLength * 100 + '%',
-        left: (pileNumber - leftStakeMark) / maxLength * 100 + '%',
-        background: '#11226D'
-      };
+      switch (item.emptyType) {
+          // 0 空洞
+        case 0:
+          // console.log(singleDoubleType)
+          // console.log(leftRightFlag)
+          // console.log( singleDoubleType === 3 && leftRightFlag == 2)
+          return {
+            position: 'absolute',
+            top: singleDoubleType === 3 && leftRightFlag === '2' ? tunnelLine + center + 30 + 'px' : '0',
+            height: tunnelLine + 30 + 'px',
+            width: length / maxLength * 100 + '%',
+            left: `${defaultLeft}%`,
+            background: '#142470',
+            zIndex: 9
+          };
+
+        case 1:
+          // 1 人行横洞
+          return {
+            position: 'absolute',
+            top: 'calc(50% - 35px)',
+            height: '70px',
+            width: '20px',
+            left: `${defaultLeft}%`,
+            background: '#3a5a8b',
+            transform: `rotate(${item.rotateDegree}deg)`
+          }
+
+        case 2:
+          // 2 车行横洞
+          return {
+            position: 'absolute',
+            top: 'calc(50% - 35px)',
+            height: '70px',
+            width: '50px',
+            left: item.rotateDegree >= 30 ? `calc(${defaultLeft}% - 25px)` : `${defaultLeft}%`,
+            background: '#3a5a8b',
+            transform: `rotate( ${item.rotateDegree}deg)`
+          }
+        case 3:
+          // 水泵房
+          return {
+            position: 'absolute',
+            top: singleDoubleType === 3 && leftRightFlag === '2' ? tunnelLine + center + 30 + 'px' : '0',
+            height: tunnelLine + 30 + 'px',
+            width: length / maxLength * 100 + '%',
+            left: `${defaultLeft}%`,
+            background: 'orange',
+            zIndex: 9
+          };
+
+        case 4:
+          // 配电房
+          // let top = 0
+          // if (leftRightFlag === '1') top = `calc(50% - ${length / maxLength * 100}px)`
+          // if (leftRightFlag === '2') top = '0px'
+          // if (leftRightFlag === '3') top = `calc(50% - 3)`
+          //
+          // console.log(singleDoubleType === 3 && leftRightFlag === '2')
+          return {
+            position: 'absolute',
+            top: `calc(50% - 35px)`,
+            // top: singleDoubleType === 3 && leftRightFlag === '2' ? tunnelLine + center + 30 + 'px' : '0',
+            height: 60 + 'px',
+            // width: length / maxLength * 100 + '%',
+            width: '80px',
+            left: `${defaultLeft}%`,
+            background: '#fff',
+            zIndex: 9
+          };
+        case 5:
+          // 洞外配电房
+          // if (singleDoubleType === 3 && leftRightFlag === '2') {
+          //
+          // }
+
+          // let top2 = 0
+          // if (leftRightFlag === '1') top2 = `calc(50% - ${length / maxLength * 100}px)`
+          // // if (leftRightFlag === '2') top = '0px'
+          // if (leftRightFlag === '3') top2 = `calc(50% - 35px)`
+          //
+          // console.log(top2)
+          // //
+          // // console.log(singleDoubleType === 3 && leftRightFlag === '2')
+          // return {
+          //   position: 'absolute',
+          //   // top: top2,
+          //   bottom: '-30px',
+          //   // top: singleDoubleType === 3 && leftRightFlag === '2' ? tunnelLine + center + 30 + 'px' : '0',
+          //   height: 30 + 'px',
+          //   // width: length / maxLength * 100 + '%',
+          //   width: '80px',
+          //   left: `${defaultLeft}%`,
+          //   background: '#fff',
+          //   zIndex: 9
+          // };
+      }
+
     },
-    getDeviceStyle(device) {   // 计算设备位置
-      // 0 左  10 右  1 车道1  2 车道2  3 车道3  4 车道4 ~~~~
+
+
+    // 计算设备位置
+    getDeviceStyle(device) {
+      // 0 左  10 右  1 车道1  2 车道2  3 车道3  4 车道4 ~~~ 9 车道
       // -1 左外面  11 横洞  12 右外面  13 右外面1  14 右外面2  15右外面3
+      // 16 横洞左  17 横洞中  18 横洞右
       const {orientationLocation} = device
       const {laneNums, singleDoubleType} = this.tunnelInfo;
       const {leftStakeMark, maxLength, sideHeight, padding, lineHeight, contentHeight, center, tunnelLine} = this.tunnelStyle;
+
+      const defaultTop = padding + sideHeight + contentHeight / laneNums / 2 + (device.orientationLocation - 1) * (contentHeight / laneNums + 2);
+
       // padding + 固定高度 + 线条数量*2 + height6/2
       const rightDistance = padding + sideHeight + contentHeight + (laneNums - 1) * lineHeight + sideHeight / 2;
+
       let top = 0
 
-      if (orientationLocation === 0) {
-        // 左边
-        // padding + height6/2
-        top = padding + sideHeight / 2;
-      } else if (orientationLocation === 10) {
-        // 右边
-        top = rightDistance
-      } else if (orientationLocation === 13 || orientationLocation === 14 || orientationLocation === 15) {
-        // 右外面1 右外面2 15右外面3
-        top = rightDistance + 27;
-      } else {
-        top = padding + sideHeight + contentHeight / laneNums / 2 + (device.orientationLocation - 1) * (contentHeight / laneNums + 2);
+      const defaultTransform = `translate(-50%, -50%) scale(${2 / laneNums}) ${device.classifyNumber === 'laneIndicator' && device.leftRightFlag === 2 ? 'rotate(180deg)' : ''}`
+      const defaultLeft = (device.pileNumber - leftStakeMark) / maxLength * 100
+
+      switch (orientationLocation) {
+        case 0:
+          // 左边
+          // padding + height6/2
+          top = padding + sideHeight / 2;
+          break;
+        case 10:
+          // 右边
+          top = rightDistance
+          break
+        case  13:
+          // 右外面1
+          top = rightDistance + 27;
+          break
+        case  14:
+          // 右外面2
+          top = rightDistance + 27;
+          break
+        case  15:
+          // 15右外面3
+          top = rightDistance + 27;
+          break
+        default:
+          top = defaultTop
       }
+
 
       // 如果是双洞的话，设备位置还得根据左右洞位置调整
       if (singleDoubleType === 3) {
@@ -249,23 +367,52 @@ export default {
         if (device.leftRightFlag === 2) {
           // 右洞的话设备位置从上到下应该是10~0，所以这里从上到下计算的高度要用整个洞的高度减掉，就可以调转过来了
           top = tunnelLine - top;
-
         }
       }
 
-      return {
-        transform: `translate(-50%, -50%) scale(${2 / laneNums}) ${device.classifyNumber === 'laneIndicator' && device.leftRightFlag === 2 ? 'rotateY(180deg)' : ''}`,
-        top: device.orientationLocation === 11 ? '50%' : (top + 30 + 'px'),
-        left: (device.pileNumber - leftStakeMark) / maxLength * 100 + '%',
-        zIndex: device.sortInt || 1
-      };
+      const defaultStyle = {
+        transform: defaultTransform,
+        top: `${top + 30}px`,
+        left: `${defaultLeft}%`,
+        zIndex: device.sortInt || 10
+      }
+
+      // 横洞左
+      if (device.orientationLocation === 16) {
+        return {
+          ...defaultStyle,
+          top: 'calc(50% - 8px)',
+          left: `calc(${defaultLeft}% + 15px)`,
+        }
+      }
+
+      // 横洞中
+      if (device.orientationLocation === 17) {
+        return {
+          ...defaultStyle,
+          top: '50%',
+        }
+      }
+
+      // 横洞右
+      if (device.orientationLocation === 18) {
+        return {
+          ...defaultStyle,
+          top: 'calc(50% + 8px)',
+          left: `calc(${defaultLeft}% - 15px)`,
+        }
+      }
+
+      return defaultStyle
     },
-    //隧道基本信息
+
+    // 隧道基本信息
     findTunnelBaseInfo() {
       return this.$service.tunnel.getById(this.tunnelId).then(res => {
         this.tunnelInfo = res;
       });
     },
+
     // 隧道的设备列表
     listDeviceBaseOfTunnelPage() {
       this.$service._2d.getTunnelDevices(this.tunnelId).then(res => {
@@ -328,6 +475,7 @@ export default {
       background: #3a5a8b;
       padding: 10px 6px; /*no*/
       position: relative;
+      z-index: 1;
     }
 
     .line-side { // 道路两边的线
