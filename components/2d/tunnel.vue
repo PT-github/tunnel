@@ -54,7 +54,10 @@
 
         <!-- 隧道空洞、人行横洞、车辆横洞、配电房、水泵房 -->
         <template v-if="tunnelInfo.emptyrecordList" v-for="empty in tunnelInfo.emptyrecordList">
-          <div :style="getEmptyStyle(empty)"></div>
+          <div :style="getEmptyStyle(empty)">
+            <span v-if="empty.emptyType === 3" style="font-size: 14px">水泵房</span>
+            <span v-if="empty.emptyType === 4 || empty.emptyType === 5" style="font-size: 14px">配电房</span>
+          </div>
         </template>
       </div>
 
@@ -206,6 +209,7 @@ export default {
       const {leftStakeMark, maxLength, tunnelLine, center} = this.tunnelStyle;
       const defaultLeft = (pileNumber - leftStakeMark) / maxLength * 100
 
+      // console.log(defaultLeft)
       // emptyType  空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
       // rotateDegree  旋转度数
       // leftRightFlag 1 右洞 2 左洞 3 中间
@@ -254,58 +258,44 @@ export default {
           return {
             position: 'absolute',
             top: singleDoubleType === 3 && leftRightFlag === '2' ? tunnelLine + center + 30 + 'px' : '0',
-            height: tunnelLine + 30 + 'px',
-            width: length / maxLength * 100 + '%',
+            width: '50px',
+            height: '50px',
             left: `${defaultLeft}%`,
-            background: 'orange',
-            zIndex: 9
+            background: '#3a5a8b',
+            zIndex: 9,
+            color: '#ccc',
+            lineHeight: '50px',
+            textAlign: 'center'
           };
 
         case 4:
-          // 配电房
-          // let top = 0
-          // if (leftRightFlag === '1') top = `calc(50% - ${length / maxLength * 100}px)`
-          // if (leftRightFlag === '2') top = '0px'
-          // if (leftRightFlag === '3') top = `calc(50% - 3)`
-          //
-          // console.log(singleDoubleType === 3 && leftRightFlag === '2')
+          // 洞外配电房
           return {
             position: 'absolute',
-            top: `calc(50% - 35px)`,
-            // top: singleDoubleType === 3 && leftRightFlag === '2' ? tunnelLine + center + 30 + 'px' : '0',
-            height: 60 + 'px',
-            // width: length / maxLength * 100 + '%',
+            top: `calc(50% - 30px)`,
+            height: '60px',
             width: '80px',
             left: `${defaultLeft}%`,
-            background: '#fff',
-            zIndex: 9
+            background: '#3a5a8b',
+            zIndex: 9,
+            color: '#ccc',
+            lineHeight: '60px',
+            textAlign: 'center'
           };
         case 5:
-          // 洞外配电房
-          // if (singleDoubleType === 3 && leftRightFlag === '2') {
-          //
-          // }
-
-          // let top2 = 0
-          // if (leftRightFlag === '1') top2 = `calc(50% - ${length / maxLength * 100}px)`
-          // // if (leftRightFlag === '2') top = '0px'
-          // if (leftRightFlag === '3') top2 = `calc(50% - 35px)`
-          //
-          // console.log(top2)
-          // //
-          // // console.log(singleDoubleType === 3 && leftRightFlag === '2')
-          // return {
-          //   position: 'absolute',
-          //   // top: top2,
-          //   bottom: '-30px',
-          //   // top: singleDoubleType === 3 && leftRightFlag === '2' ? tunnelLine + center + 30 + 'px' : '0',
-          //   height: 30 + 'px',
-          //   // width: length / maxLength * 100 + '%',
-          //   width: '80px',
-          //   left: `${defaultLeft}%`,
-          //   background: '#fff',
-          //   zIndex: 9
-          // };
+          // 洞内配电房
+          return {
+            position: 'absolute',
+            top: `calc(50% - 15px)`,
+            height: '30px',
+            width: '80px',
+            left: `${defaultLeft}%`,
+            background: '#3a5a8b',
+            zIndex: 9,
+            color: '#ccc',
+            lineHeight: '30px',
+            textAlign: 'center'
+          };
       }
 
     },
@@ -327,7 +317,10 @@ export default {
 
       let top = 0
 
-      const defaultTransform = `translate(-50%, -50%) scale(${2 / laneNums}) ${device.classifyNumber === 'laneIndicator' && device.leftRightFlag === 2 ? 'rotate(180deg)' : ''}`
+      const signallampScale = device.classifyNumber === 'signallamp' ? '1' : 2 / laneNums
+
+      // const defaultTransform = `translate(-50%, -50%) scale(${2 / laneNums}) ${device.classifyNumber === 'laneIndicator' && device.leftRightFlag === 2 ? 'rotate(180deg)' : ''}`
+      const defaultTransform = `translate(-50%, -50%) scale(${signallampScale}) ${device.classifyNumber === 'laneIndicator' && device.leftRightFlag === 2 ? 'rotate(180deg)' : ''}`
       const defaultLeft = (device.pileNumber - leftStakeMark) / maxLength * 100
 
       switch (orientationLocation) {

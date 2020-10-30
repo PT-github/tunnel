@@ -184,6 +184,7 @@ export default {
       location.reload();
     }
   },
+
   data() {
     return {
       displayMode: '2d',
@@ -197,11 +198,22 @@ export default {
       iframeUrl: `/home/3d?tunnelId=${this.$route.query.tunnelId}`,
       tunnelId: '',
       tunnelData: {},
-      threeDStatus: '0'
+      threeDStatus: '0',
+      homeTimer: null
     };
   },
+
+  beforeDestroy() {
+    clearInterval(this.homeTimer)
+    this.homeTimer = null
+  },
+
   mounted() {
     this.init();
+
+    this.homeTimer = setInterval(() => {
+      this.init()
+    }, 10 * 1000)
   },
   methods: {
     init() {
