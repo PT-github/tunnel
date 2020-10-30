@@ -3,10 +3,11 @@
         <img src="../assets/images/login-bg.png" class="bg">
 
 
-        <h3 class="title">
-<!--          <img src="../assets/images/top-nav/logo-2.png" class="title">-->
-          湖南高速隧道智能管控平台
-        </h3>
+
+        <section class="title">
+          <img :src="loginImg" alt="">
+          <h3 class="">{{loginTitle}}</h3>
+        </section>
         <el-form ref="loginForm" :model="form" class="login-form" @submit.native.prevent>
             <el-form-item prop="account" :rules="[{ required: true, message: '请输入用户名', trigger: 'blur' }]">
                 <el-input v-model="form.account" placeholder="请输入用户名" autofocus>
@@ -30,10 +31,12 @@
 <script>
     const CACHE_DATA = 'suidao';
     export default {
-        services: [ 'user' ],
+        services: [ 'user','index' ],
         data () {
             return {
-                form: {}
+                form: {},
+              loginTitle: '',
+              loginImg: ''
             };
         },
         mounted () {
@@ -45,6 +48,21 @@
                 password: userInfo.p,
                 save: true
             };
+
+
+            this.$service.index.getLoginLogoInfo({
+              value: 'OneValueDictionary'
+            }).then(res => {
+              const loginTitle = res.find(item => item.name === 'PlatTitle')
+
+              const loginImg = res.find(item => item.name === 'LogoImg')
+
+              if (loginTitle) this.loginTitle = loginTitle.value
+
+              if (loginImg) this.loginImg = loginImg.value
+
+
+            })
         },
         methods: {
             Login () {
@@ -119,12 +137,22 @@
     }
 
     .title {
+      position: relative;
+      text-align: center;
+
+      img {
+        height: 60px;
+      }
+
+      h3 {
+        margin-top: 10px;
         font-weight: bold;
         font-size: 24px;
         color: rgba(193, 217, 255, 1);
-        margin-bottom: 70px;
+        margin-bottom: 40px;
         line-height: 24px;
-        text-shadow: 0 10px 20px rgba(3, 15, 31, 0.15);
+        text-align: center;
+      }
     }
 
     .login-form {

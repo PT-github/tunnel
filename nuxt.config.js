@@ -1,7 +1,7 @@
 export default {
     mode: 'spa',
     head: {
-        title: '智慧隧道监测与运营服务平台',
+        title: '湖南高速隧道智能管控平台',
         meta: [
             {charset: 'utf-8'},
             {name: 'viewport', content: 'width=device-width, initial-scale=1'},

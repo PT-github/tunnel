@@ -24,4 +24,11 @@ export default class IndexService extends Service {
             data:{id}
         });
     }
+
+    getLoginLogoInfo (data) {
+        return this.get({
+            url: '/tunnel/listChildrenByParentValue',
+            data
+        })
+    }
 }
