@@ -35,18 +35,29 @@
               <div class="content">
                 <p class="name" @click="showdetail(item)"><span class="label">设备名称</span>{{ item.name }}
                 </p>
-                <p class="name second" v-if="item.secondLabel"><span
-                    class="label">{{ item.secondLabel }}</span>{{ item.secondVal }}</p>
+                <p class="name second" v-if="item.secondLabel">
+                  <span
+                    class="label">{{ item.secondLabel }}</span>
+                    <el-progress v-if="item.isProcess"
+                                 style="width: 120px;display: inline-block"
+                                 :percentage="item.waterProcess"
+                                 status="success"/>
+                  {{ item.secondVal }}
+                </p>
               </div>
+
               <div class="icon-wrap">
                 <img class="icon" v-if="item.statusIcon" :src="item.statusIcon">
                 <div v-if="item.statusStr">{{ item.statusStr }}</div>
               </div>
+
               <div v-if="item.operaBtn" class="view-btn" @click="onOperaBtnClick(item)">
                 {{ item.operaBtn }}
               </div>
-              <el-checkbox v-if="item.checkbox" :value="checkList[idx]" class="checkbox"
-                           @change="onCheck(item,idx)"></el-checkbox>
+              <el-checkbox v-if="item.checkbox"
+                           :value="checkList[idx]"
+                           class="checkbox"
+                           @change="onCheck(item,idx)"/>
             </li>
           </template>
         </ul>
@@ -440,6 +451,8 @@ export default {
 
             // 水位
           case 'waterlevel':
+            const otherDes = parseFloat(v.otherDes ? v.otherDes : '0')
+            const process = Number((otherDes / 500 * 100).toFixed(0))
             return {
               origin: v,
               name: v.deviceName,
@@ -448,7 +461,9 @@ export default {
               statusStr: stateName,
               statusIcon: `/static/image/tunnel/${v.classifyNumber}_${v.deviceCommunicationsState}.png`,
               checkbox: v.deviceTypeCode === 'waterpump',
-              operaBtn: '查看'
+              // operaBtn: '查看',
+              isProcess: true,
+              waterProcess: process
             };
 
             // 电子围栏

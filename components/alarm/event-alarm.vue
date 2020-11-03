@@ -54,13 +54,13 @@
           </div>
 
           <!-- 处置说明 -->
-          <div class="img-video-ctn" v-if="state == 2">
+<!--          <div class="img-video-ctn" v-if="state == 2">-->
 <!--            <el-carousel style="height: 100%">-->
 <!--              <el-carousel-item v-for="item in flowImgList" :key="item">-->
-                <el-image style="height: 100%" :src="flowImgList[0]"  fit="contain" :preview-src-list="flowImgList"/>
+<!--                <el-image style="height: 100%" :src="flowImgList[0]"  fit="contain" :preview-src-list="flowImgList"/>-->
 <!--              </el-carousel-item>-->
 <!--            </el-carousel>-->
-          </div>
+<!--          </div>-->
 
         </HTab>
       </div>
@@ -173,7 +173,7 @@ export default {
       tab: [
         {name: '图片'},
         {name: '视频'},
-        {name: '处置流程'},
+        // {name: '处置流程'},
       ],
       state: 0,
       value: '',
