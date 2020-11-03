@@ -213,7 +213,7 @@ export default {
 
     this.homeTimer = setInterval(() => {
       this.init()
-    }, 10 * 1000)
+    }, 5 * 1000)
   },
   methods: {
     init() {

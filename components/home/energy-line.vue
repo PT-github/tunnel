@@ -248,8 +248,8 @@
         width: 442px;
 
         #lineInfo {
-            height: 100%;
-            width: 100%;
+            height: 322px;
+            width: 422px;
         }
     }
 </style>

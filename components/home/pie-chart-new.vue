@@ -80,7 +80,7 @@ export default {
         legend: {
           x: 'right',
           // top: '76%',
-          bottom: 0,
+          bottom: -50,
           textStyle: {
             color: '#92CCFA', // 图例文字颜色
             fontSize: 12

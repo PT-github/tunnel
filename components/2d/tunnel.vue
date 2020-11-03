@@ -92,7 +92,9 @@ export default {
       deviceList: [],
       modal: false,
       //隧道基本信息
-      tunnelInfo: {}
+      tunnelInfo: {},
+
+      tunnelToDTimer: null
     };
   },
   computed: {
@@ -189,9 +191,20 @@ export default {
     }
   },
 
+  beforeDestroy() {
+    clearInterval(this.tunnelToDTimer)
+    this.tunnelToDTimer = null
+  },
+
   async mounted() {
     await this.findTunnelBaseInfo();
     this.listDeviceBaseOfTunnelPage();
+
+
+    this.tunnelToDTimer = setInterval(async () => {
+      await this.findTunnelBaseInfo();
+      this.listDeviceBaseOfTunnelPage();
+    }, 5 * 1000)
   },
 
   methods: {

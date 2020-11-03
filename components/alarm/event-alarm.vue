@@ -36,7 +36,9 @@
       <div class="video-ctn-l">
         <HTab :tab="tab"
               @clickBar="clickBar"
-              tabName="name">
+              tabName="name"
+              class="video-ctn_tab"
+        >
           <!-- 图片 -->
           <div class="img-video-ctn" v-if="state == 0">
             <img v-if="detail.eventPicture"
@@ -52,25 +54,14 @@
                      :videoImg="detail.eventPicture?detail.eventPicture:''"
                      height="300"></h-video>
           </div>
-
-          <!-- 处置说明 -->
-<!--          <div class="img-video-ctn" v-if="state == 2">-->
-<!--            <el-carousel style="height: 100%">-->
-<!--              <el-carousel-item v-for="item in flowImgList" :key="item">-->
-<!--                <el-image style="height: 100%" :src="flowImgList[0]"  fit="contain" :preview-src-list="flowImgList"/>-->
-<!--              </el-carousel-item>-->
-<!--            </el-carousel>-->
-<!--          </div>-->
-
         </HTab>
       </div>
       <div class="video-ctn-r">
         <el-table
             ref="multipleTable"
+            class="multiple-table"
             :data="doneList"
-            :height="(360*$px2rem)+'px'"
             tooltip-effect="dark"
-            style="width: 100% !important;"
             @selection-change="handleSelectionChange">
           <el-table-column
               type="selection"
@@ -187,10 +178,10 @@ export default {
   computed: {
     flowImgList() {
       return [
-          require('@/assets/images/flow/flow-1.png'),
-          require('@/assets/images/flow/flow-2.png'),
-          require('@/assets/images/flow/flow-3.png'),
-          require('@/assets/images/flow/flow-4.png'),
+        require('@/assets/images/flow/flow-1.png'),
+        require('@/assets/images/flow/flow-2.png'),
+        require('@/assets/images/flow/flow-3.png'),
+        require('@/assets/images/flow/flow-4.png'),
       ]
     }
   },
@@ -213,9 +204,10 @@ export default {
         }
       });
     },
+
     cancel() {
-      this.initParam();
       this.$emit('cancelPopup');
+      this.initParam();
     },
 
     initParam() {
@@ -228,7 +220,7 @@ export default {
     },
 
     clickBar(e) {
-      console.log(e)
+      // console.log(e)
       this.state = e;
     },
 
@@ -319,7 +311,8 @@ export default {
 
 <style scoped lang="less">
 ::v-deep .el-image-viewer__btn .el-icon-circle-close {
-  color:#fff;
+  color: #fff;
+
   &:before {
     font-size: 36px;
   }
@@ -331,7 +324,8 @@ export default {
 
 .event-detail-ctn {
   .pop-text {
-    margin-top: 30px;
+    margin-top: 10px;
+
     display: flex;
     align-items: center;
     font-size: 16px;
@@ -402,15 +396,16 @@ export default {
     justify-content: space-between;
 
     .video-ctn-l {
+      //height: 300px;
       width: 600px;
 
       /deep/ .el-tabs--border-card > .el-tabs__content {
         padding: 0px;
-        min-height: 300px;
+        //min-height: 300px;
       }
 
       .img-video-ctn {
-        height: 300px;
+        height: 200px;
         width: 100%;
 
         img {
@@ -422,7 +417,7 @@ export default {
 
     .video-ctn-r {
       overflow-y: scroll;
-      max-height: 365px;
+      //height: 300px;
       width: 600px;
 
       .items {
@@ -502,5 +497,14 @@ export default {
   }
 
 
+}
+
+//.video-ctn_tab {
+//  height: 60px;
+//}
+
+.multiple-table {
+  height: 255px;
+  width: 100% !important;
 }
 </style>
