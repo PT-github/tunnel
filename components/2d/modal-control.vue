@@ -23,6 +23,14 @@
       <div class="modal-content" v-else>
         <div class="head">
           <el-input v-model="keyword" class="search" placeholder="请输入搜索的设备名"></el-input>
+          <!--<div class="head-right" v-if="hasOperation && classifyNumber!=='environment'&&keyword.length==0">
+            <span>行车道</span>
+            <el-checkbox :value="isCheckAll1" class="checkbox" @change="changeChe1"></el-checkbox>
+            <span>中间车道</span>
+            <el-checkbox :value="isCheckAll2" class="checkbox" @change="changeChe2"></el-checkbox>
+             <span>快车道</span>
+            <el-checkbox :value="isCheckAll3" class="checkbox" @change="changeChe3"></el-checkbox>
+          </div>-->
           <div class="head-right" v-if="hasOperation && classifyNumber!=='environment'">
             <span>全选</span>
             <el-checkbox :value="isCheckAll" class="checkbox" @change="changeCheckAll"></el-checkbox>
@@ -178,7 +186,12 @@ export default {
       return ['controller', 'lighting', 'draughtfan', 'signallamp', 'laneIndicator', 'tunneldoor', 'conflagration', 'environment', 'waterlevel'].includes(this.classifyNumber);
     },
     showingList() {
-      return this.listData ? this.listData.filter(v => v.name.indexOf(this.keyword) !== -1) : [];
+      var list= this.listData ? this.listData.filter(v => v.name.indexOf(this.keyword) !== -1) : [];
+      if(list.length==1&&list[0].checkbox){
+        console.log(list)
+        this.onCheck(list[0],0);
+      }
+      return list;
     },
     checkDevices() {
       return Object.keys(this.checkList).filter(v => !!this.checkList[v]).map(v => this.showingList[v].origin);
@@ -306,7 +319,6 @@ export default {
         this.checkList = res;
       }
     },
-
     // 获取设备列表
     getDevices() {
       if (this.classifyNumber !== 'intelligenceboard' && this.classifyNumber !== 'broadcast') {

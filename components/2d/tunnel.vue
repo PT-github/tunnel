@@ -188,10 +188,19 @@ export default {
       this.listDeviceBaseOfTunnelPage();
     }
   },
-
+beforeDestroy() {
+    clearInterval(this.tunnelTimer)
+    this.tunnelTimer = null
+  },
   async mounted() {
     await this.findTunnelBaseInfo();
     this.listDeviceBaseOfTunnelPage();
+    // 定时刷新获取隧道信息
+   
+    this.tunnelTimer = setInterval(async () => {
+      await this.findTunnelBaseInfo();
+      this.listDeviceBaseOfTunnelPage();
+    }, 5 * 1000)
   },
 
   methods: {
