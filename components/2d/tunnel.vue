@@ -213,6 +213,7 @@ export default {
       modal: false,
       //隧道基本信息
       outerWidth: 0,
+      outerWidthout:0,
       buttonClass: 0,
       gapX: 0,
       tunnelBunntntt: [],
@@ -268,11 +269,7 @@ export default {
         config.padding * 2 +
         config.sideHeight * 2 +
         (laneNums - 1) * config.lineHeight; // 一个洞的高度
-                //startStakeMark 左洞开始
-        //endStakeMark   左洞结束
-        // startStakeMarkRight 右开
-        //endStakeMarkRight 右结
-        var beginMark = Math.min(startStakeMark, startStakeMarkRight); //获取最小桩号
+          var beginMark = Math.min(startStakeMark, startStakeMarkRight); //获取最小桩号
         var endMark = Math.max(endStakeMark, endStakeMarkRight); //获取最大桩号
 
         let maxHoleLength = endMark - beginMark; //最大长度 Math.max(leftHoleLength, rightHoleLength);
@@ -282,8 +279,8 @@ export default {
         //console.log(leftHoleLength);
         //console.log(rightHoleLength);
         let maxEndStakeMark = Math.max(endStakeMark, endStakeMarkRight);
-        let minstartStakeMark = Math.min(startStakeMark, startStakeMarkRight);
-
+        let minstartStakeMark = Math.max(startStakeMark, startStakeMarkRight);
+        let minEndStakeMark = Math.min(endStakeMark, endStakeMarkRight); 
         let stakeDistance = Math.abs(endStakeMark - endStakeMarkRight);
         //let stakeLeftDistance = Math.abs(endStakeMark - endStakeMarkRight);
 
@@ -299,33 +296,36 @@ export default {
             4、左洞画布距离左侧长度：(最大桩号-左洞结束桩号)*%1所表示的桩号长度
         */
         let outerWidth = document.getElementById("map").offsetWidth;
+
+        
+        let leftMar =Math.round(minstartStakeMark /1000)-Math.round(beginMark /1000);
+        let rightMar = Math.round(maxEndStakeMark /1000)-Math.round(minEndStakeMark /1000);
+      console.log(leftHoleLength,rightHoleLength)
       if (this.tunnelInfo.singleDoubleType !== 3) {
         return {
-          // ...config,
-          // leftWidth: "100%",
-          // leftMargin: 0,
-          // rightWidth: "100%",
-          // rightMargin: 0,
-          // leftStakeMark: endStakeMark || endStakeMarkRight,
-          // maxlength: leftHoleLength || rightHoleLength,
-           leftWidth: outerWidth * leftHoleLength + "px",
-          leftMargin: (startStakeMark - minstartStakeMark) * leftHoleLength + "px",
+          ...config,
+          leftWidth: outerWidth * leftHoleLength + "px",
+          leftMargin: leftMar * outerWidth + "px",
           rightWidth: rightHoleLength * outerWidth + "px",
-          rightMargin:
-            (startStakeMarkRight - minstartStakeMark) * leftHoleLength + "px",
-          leftStakeMark: minstartStakeMark,
+          rightMargin:0,
+          leftStakeMark: endStakeMark || endStakeMarkRight,
+          maxlength: leftHoleLength || rightHoleLength,
         };
       } else {
+        //startStakeMark 左洞开始
+        //endStakeMark   左洞结束
+        // startStakeMarkRight 右开
+        //endStakeMarkRight 右结
+       // console.log(rightMar)
         let res = {
           ...config,
           leftWidth: outerWidth * leftHoleLength + "px",
-          leftMargin: (startStakeMark - minstartStakeMark) * leftHoleLength + "px",
+          leftMargin: leftMar * outerWidth + "px",
           rightWidth: rightHoleLength * outerWidth + "px",
-          rightMargin:
-            (startStakeMarkRight - minstartStakeMark) * leftHoleLength + "px",
+          rightMargin:0,
+            //leftMar * outerWidth + "px",
           leftStakeMark: minstartStakeMark,
         };
-        console.log()
         /*
         let res = {
             ...config,
@@ -499,9 +499,10 @@ export default {
       this.tunnelBunntntt = Math.round(maxHoleLength / 1000) ;
       
       let outerWidths = document.getElementById("2d").scrollWidth;
+      this.outerWidthout =outerWidths;
       //console.log(outerWidths);
       this.outerWidth = (outerWidths / maxHoleLength) * 1000;
-       console.log(outerWidth)
+       //console.log(outerWidth)
     },
     showWait(id) {
       this.waitShowList = { ...this.waitShowList, [id]: true };
@@ -528,9 +529,16 @@ export default {
       var endMark = Math.max(endStakeMark, endStakeMarkRight); //获取最大桩号
       let rightHoleLength = (endMark - beginMark) / 10; //最大长度 Math.max(leftHoleLength, rightHoleLength);
       //let rightHoleLength = (endStakeMarkRight - startStakeMarkRight) / 10; //左洞长度
-      const defaultLeft =
-        ((pileNumber - leftStakeMark) / maxLength) * rightHoleLength + 10;
-
+        let maxEndStakeMark = Math.max(endStakeMark, endStakeMarkRight);
+        let minstartStakeMark = Math.max(startStakeMark, startStakeMarkRight);
+        let minEndStakeMark = Math.min(endStakeMark, endStakeMarkRight); 
+        let leftMar =Math.round(minstartStakeMark /1000)-Math.round(beginMark /1000);
+        let rightMar = Math.round(maxEndStakeMark /1000)-Math.round(minEndStakeMark /1000);
+       // let outerWidths = document.getElementById("2d").scrollWidth;
+      
+      const defaultLeft = //leftMar*this.outerWidthout/rightHoleLength;
+       //console.log(defaultLeft)
+         ((pileNumber - leftStakeMark) / maxLength) * rightHoleLength + 10 +leftMar*100;
       // console.log(defaultLeft)
       // emptyType  空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
       // rotateDegree  旋转度数
@@ -649,7 +657,13 @@ export default {
       var beginMark = Math.min(startStakeMark, startStakeMarkRight); //获取最小桩号
       var endMark = Math.max(endStakeMark, endStakeMarkRight); //获取最大桩号
       let rightHoleLength = (endMark - beginMark) / 10; //最大长度 Math.max(leftHoleLength, rightHoleLength);
-      const {
+       let maxEndStakeMark = Math.max(endStakeMark, endStakeMarkRight);
+        let minstartStakeMark = Math.max(startStakeMark, startStakeMarkRight);
+        let minEndStakeMark = Math.min(endStakeMark, endStakeMarkRight); 
+        let leftMar =Math.round(minstartStakeMark /1000)-Math.round(beginMark /1000);
+        let rightMar = Math.round(maxEndStakeMark /1000)-Math.round(minEndStakeMark /1000);
+       // let outerWidths = document.getElementById("2d").scrollWidth;
+     const {
         leftStakeMark,
         maxLength,
         sideHeight,
@@ -688,7 +702,7 @@ export default {
       //计算设备位置+10 起始加100m
       const defaultLeft =
         ((device.pileNumber - leftStakeMark) / maxLength) * rightHoleLength +
-        10;
+        10+leftMar*100;
       //console.log(defaultLeft);
       switch (orientationLocation) {
         case 0:
@@ -853,7 +867,7 @@ export default {
     -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   }
   .tunnel-2d {
-    padding: 0 12%;
+    padding-left: 1.6rem;
     .tunnel-line {
       //background: rgb(126, 214, 243);
       background: #3a5a8b;
@@ -932,6 +946,7 @@ i {
     line-height: 0.1rem;
     font-size: 14px;
   }
+}
   /deep/.el-button .el-button--default:focus {
     background-color: none;
     color: none;
@@ -941,7 +956,6 @@ i {
     background-color: none;
     color: none;
   }
-}
 .active {
   background-color: #337cf3;
   color: #c1d9ff;
