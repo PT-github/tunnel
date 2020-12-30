@@ -236,6 +236,14 @@ export default {
         this.checkList = [];
         this.workMode = 0;
         this.lightNess = 50;
+        this.isCheckAllLeft = false;
+        this.isCheckAllRight = false;
+        this.isCheckAllLeft1 = false;
+        this.isCheckAllLeft2 = false;
+        this.isCheckAllLeft3 = false;
+        this.isCheckAllRight1 = false;
+        this.isCheckAllRight2 = false;
+        this.isCheckAllRight3 = false;
       }
     },
     deviceName(v) {
