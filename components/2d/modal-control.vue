@@ -23,15 +23,39 @@
       <div class="modal-content" v-else>
         <div class="head">
           <el-input v-model="keyword" class="search" placeholder="请输入搜索的设备名"></el-input>
-          <!--<div class="head-right" v-if="hasOperation && classifyNumber!=='environment'&&keyword.length==0">
-            <span>行车道</span>
-            <el-checkbox :value="isCheckAll1" class="checkbox" @change="changeChe1"></el-checkbox>
-            <span>中间车道</span>
-            <el-checkbox :value="isCheckAll2" class="checkbox" @change="changeChe2"></el-checkbox>
-             <span>快车道</span>
-            <el-checkbox :value="isCheckAll3" class="checkbox" @change="changeChe3"></el-checkbox>
-          </div>-->
           <div class="head-right" v-if="hasOperation && classifyNumber!=='environment'">
+            <div>
+              <div class="head-right" v-if="hasOperation && classifyNumber==='draughtfan' && keyword.length==0">
+                <span>左洞</span>
+                <el-checkbox v-model="isCheckAllLeft" class="checkboxFilter" @change="changeCheck"></el-checkbox>
+                <span>右洞</span>
+                <el-checkbox v-model="isCheckAllRight" class="checkboxFilter" @change="changeCheck"></el-checkbox>
+              </div>
+              <div class="head-right" v-if="hasOperation && classifyNumber==='laneIndicator' && keyword.length==0 && laneNums===3">
+                  <span>左快</span>
+                  <el-checkbox v-model="isCheckAllLeft1" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                  <span>左行</span>
+                  <el-checkbox v-model="isCheckAllLeft2" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                  <span>左慢</span>
+                  <el-checkbox v-model="isCheckAllLeft3" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                  <span>右快</span>
+                  <el-checkbox v-model="isCheckAllRight1" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                  <span>右行</span>
+                  <el-checkbox v-model="isCheckAllRight2" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                  <span>右慢</span>
+                <el-checkbox v-model="isCheckAllRight3" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+              </div>
+              <div class="head-right" v-if="hasOperation && classifyNumber==='laneIndicator' && keyword.length==0 && laneNums===2">
+                <span>左超</span>
+                <el-checkbox v-model="isCheckAllLeft1" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <span>左行</span>
+                <el-checkbox v-model="isCheckAllLeft2" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <span>右超</span>
+                <el-checkbox v-model="isCheckAllRight1" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <span>右行</span>
+                <el-checkbox v-model="isCheckAllRight2" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+              </div>
+            </div>
             <span>全选</span>
             <el-checkbox :value="isCheckAll" class="checkbox" @change="changeCheckAll"></el-checkbox>
           </div>
@@ -164,7 +188,7 @@ export default {
     ModalInfoBoard,
     PopupMedia
   },
-  services: ['_2d'],
+  services: ['tunnel', '_2d'],
   props: {
     value: Boolean,
     deviceObj: Object,       // 直接传设备对象过来
@@ -191,6 +215,7 @@ export default {
         console.log(list)
         this.onCheck(list[0],0);
       }
+      console.log(this.listData)
       return list;
     },
     checkDevices() {
@@ -222,6 +247,7 @@ export default {
   },
   data() {
     return {
+      laneNums: 0,
       showMediaPopup: false,
       showMedias: [],
       show: false,
@@ -230,7 +256,17 @@ export default {
       title: '',
       checkList: [],
       workMode: 0,
-      lightNess: 50
+      lightNess: 50,
+      leftRightFlag:'',
+      orientationLocationFilter:'',
+      isCheckAllLeft:false,
+      isCheckAllRight:false,
+      isCheckAllLeft1:false,
+      isCheckAllLeft2:false,
+      isCheckAllLeft3:false,
+      isCheckAllRight1:false,
+      isCheckAllRight2:false,
+      isCheckAllRight3:false
     };
   },
   methods: {
@@ -313,11 +349,63 @@ export default {
         this.checkList = {};
       } else {
         let res = {};
+        console.log(this.showingList);
         this.showingList.forEach((v, idx) => {
           res[idx] = true;
         });
         this.checkList = res;
       }
+    },
+    changeCheck() {
+      let res = {};
+      this.showingList.forEach((v, idx) => {
+        if(v.leftRightFlag===2){
+          res[idx] = this.isCheckAllLeft;
+        }
+      });
+      this.showingList.forEach((v, idx) => {
+        if(v.leftRightFlag===1){
+          res[idx] = this.isCheckAllRight;
+        }
+      });
+
+      this.checkList = res;
+    },
+    changeCheck2() {
+      let res = {};
+
+      this.showingList.forEach((v, idx) => {
+        if(v.leftRightFlag===2 && v.orientationLocation===1){
+          res[idx] = this.isCheckAllLeft1;
+        }
+      });
+      this.showingList.forEach((v, idx) => {
+        if(v.leftRightFlag===2 && v.orientationLocation===2){
+          res[idx] = this.isCheckAllLeft2;
+        }
+      });
+      this.showingList.forEach((v, idx) => {
+        if(v.leftRightFlag===2 && v.orientationLocation===3){
+          res[idx] = this.isCheckAllLeft3;
+        }
+      });
+      this.showingList.forEach((v, idx) => {
+        if(v.leftRightFlag===1 && v.orientationLocation===1){
+          res[idx] = this.isCheckAllRight1;
+        }
+      });
+      this.showingList.forEach((v, idx) => {
+        if(v.leftRightFlag===1 && v.orientationLocation===2){
+          res[idx] = this.isCheckAllRight2;
+        }
+      });
+      this.showingList.forEach((v, idx) => {
+        if(v.leftRightFlag===1 && v.orientationLocation===3){
+          res[idx] = this.isCheckAllRight3;
+        }
+      });
+
+      this.checkList = res;
     },
     // 获取设备列表
     getDevices() {
@@ -329,6 +417,13 @@ export default {
             this.listData = this.resolveDeviceList(res);
           });
         }
+      }
+      if(this.classifyNumber === 'laneIndicator'){
+        //获取隧道信息里的车道数量，生成分组过滤/////
+        this.$service.tunnel.getById(this.tunnelId).then(res => {
+          this.laneNums = res.laneNums;
+          console.log(this.laneNums)
+        });
       }
     },
 
@@ -384,7 +479,9 @@ export default {
               statusIcon: isError ? errorImg : v.workMode && `/static/image/tunnel/${v.classifyNumber}_0_${v.workMode}.png`,
               checkbox: true,
               chainCheckbox: false,
-              chainCheckboxField: 'deviceCode'
+              chainCheckboxField: 'deviceCode',
+              leftRightFlag: v.leftRightFlag,
+              orientationLocation: v.orientationLocation
             };
 
             // 视频监控
@@ -415,6 +512,7 @@ export default {
             // 车道指示灯
           case 'laneIndicator':
             const ENUM = {'1': '正向通行', '2': '反向通行', '0': '道路封闭'};
+
             return {
               origin: v,
               name: v.deviceName,
@@ -422,7 +520,9 @@ export default {
               secondVal: v.pileNumberStr,
               statusStr: isError ? stateName : (ENUM[v.workMode] || ''),
               statusIcon: isError ? errorImg : v.workMode != null && `/static/image/tunnel/${v.classifyNumber}_0_${v.workMode}.png`,
-              checkbox: true
+              checkbox: true,
+              leftRightFlag: v.leftRightFlag,
+              orientationLocation: v.orientationLocation
             };
 
             // 紧急电话
@@ -574,7 +674,15 @@ export default {
     height: 24px;
     cursor: pointer;
     background-size: 100% 100%;
-    margin-left: 40px;
+    margin-left: 20px;
+  }
+  .el-checkbox{
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  .checkboxFilter{
+    margin-left: 5px;
+    margin-right: 20px;
   }
 
   .scroll {
@@ -711,7 +819,7 @@ export default {
       }
 
       .search {
-        width: 323px;
+        width: 253px;
       }
     }
   }
