@@ -192,14 +192,17 @@
             let {type, id} = this.$route.query;
             this.type = type;
             if (type === 'edit' && id) {
+               
                 this.$service.device.getById(id).then(res => {
+                    //console.log(String(res.pileNumber).)
+                    
                     this.deviceForm = {
                         ...res,
                         orientationLocation: String(res.orientationLocation),
                         deviceEmployState: String(res.deviceEmployState),
                         leftRightFlag: String(res.leftRightFlag),
-                        pileNumber1: String(res.pileNumber).substring(0, 3),
-                        pileNumber2: String(res.pileNumber).substring(3)
+                        pileNumber2: String(res.pileNumber).substring(String(res.pileNumber).length-3),
+                        pileNumber1: String(res.pileNumber).substring(0,String(res.pileNumber).length-3)
                     };
                 });
             } else {

@@ -145,7 +145,7 @@
           </div>
         </template>
       </div>
-      <!-- <div
+      <div
         v-for="(item, index) in tunnelBunntntt"
         :key="index"
         :style="divLeft(index)"
@@ -168,7 +168,7 @@
           :key="i"
           :style="backleft(i)"
         ></i>
-      </div>-->
+      </div>
     </div> 
     <div class="direction right">
       <img
