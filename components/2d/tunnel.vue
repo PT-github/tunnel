@@ -147,25 +147,25 @@
       </div>
       <div
         v-for="(item, index) in tunnelBunntntt"
-        :key="index"
+        :key="index+'a'"
         :style="divLeft(index)"
       >
         <i
           class="el-icon-back iconLeft"
           v-for="(item, i) in tunnelInfo.laneNums"
-          :key="i"
+          :key="i+'b'"
           :style="backleft(i)"
         ></i>
       </div>
       <div
         v-for="(item, index) in tunnelBunntntt"
-        :key="index"
+        :key="index+'c'"
         :style="divrRght(index)"
       >
         <i
           class="el-icon-right iconLeft"
           v-for="(item, i) in tunnelInfo.laneNums"
-          :key="i"
+          :key="i+'d'"
           :style="backleft(i)"
         ></i>
       </div>
@@ -837,6 +837,12 @@ export default {
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
+  -webkit-touch-callout:none;  /*系统默认菜单被禁用*/
+  -webkit-user-select:none; /*webkit浏览器*/
+  -khtml-user-select:none; /*早期浏览器*/
+  -moz-user-select:none;/*火狐*/
+  -ms-user-select:none; /*IE10*/
+  user-select:none;
 }
 
 .title {
@@ -853,6 +859,7 @@ export default {
   position: relative;
   display: flex;
   overflow-x: scroll;
+  overflow-y:hidden;
   align-items: center;
   justify-content: center;
   &::-webkit-scrollbar {
