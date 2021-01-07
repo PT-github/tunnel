@@ -170,7 +170,7 @@
         ></i>
       </div>
     </div> 
-    <div class="direction right">
+    <div class="direction right"> 
       <img
         class="img"
         src="../../assets/images/tunnel/tunnel-direction-right.png"

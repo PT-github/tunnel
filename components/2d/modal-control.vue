@@ -82,8 +82,8 @@
                 <img class="icon" v-if="item.statusIcon" :src="item.statusIcon">
                 <div v-if="item.statusStr">{{ item.statusStr }}</div>
               </div>
-
               <div v-if="item.operaBtn" class="view-btn" @click="onOperaBtnClick(item)">
+               
                 {{ item.operaBtn }}
               </div>
               <el-checkbox v-if="item.checkbox"
@@ -581,7 +581,7 @@ export default {
               statusStr: stateName,
               statusIcon: `/static/image/tunnel/${v.classifyNumber}_${v.deviceCommunicationsState}.png`,
               checkbox: v.deviceTypeCode === 'waterpump',
-              // operaBtn: '查看',
+              operaBtn: '查看',
               isProcess: true,
               waterProcess: process
             };
