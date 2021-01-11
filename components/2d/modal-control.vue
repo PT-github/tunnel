@@ -287,7 +287,7 @@ export default {
         const selectedDevice =this.checkDevices.filter(device => item.origin.id === device.id)
         arr = [...arr, ...selectedDevice]
         return arr
-      }, [])
+      }, []).map(v => v.id).join(',');
 
 
       let p = {
