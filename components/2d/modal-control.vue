@@ -215,7 +215,6 @@ export default {
         console.log(list)
         this.onCheck(list[0],0);
       }
-      console.log(this.listData)
       return list;
     },
     checkDevices() {
@@ -283,7 +282,13 @@ export default {
       if (!this.checkDevices.length) {
         return this.$message.warning('请选择设备');
       }
-      let deviceIds = this.showingList.filter((v, i) => !!this.checkDevices[i]).map(v => v.origin.id).join(',');
+
+      let deviceIds = this.showingList.reduce((arr, item) => {
+        const selectedDevice =this.checkDevices.filter(device => item.origin.id === device.id)
+        arr = [...arr, ...selectedDevice]
+        return arr
+      }, [])
+
 
       let p = {
         deviceIds,
