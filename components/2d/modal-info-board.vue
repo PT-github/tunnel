@@ -178,7 +178,7 @@ export default {
       this.deviceInfo = {}
       this.$service._2d.getInfoBoardFromDevice(id).then(res => {
         try {
-          const boardInfo = JSON.parse(res.content)
+          const boardInfo = JSON.parse(res.data)
           // boardInfo.text = '安全第一预防为主隧道行车打开大灯'
 
           const arr = []
