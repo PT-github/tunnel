@@ -302,9 +302,9 @@ export default {
 
       this.$service._2d.operatePlcDevice(p).then((r) => {
         console.log(r)
-        if(r.status==='-1'){
-          this.$message(r.message);
-        }
+        // if(r.status==='-1'){
+        //   this.$message(r.message);
+        // }
         this.$notifySuccess();
         this.getDevices();
         this.$emit('update');
