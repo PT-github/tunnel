@@ -16,13 +16,21 @@
       <div class="flex">
         <!--                <div class="board-show"></div>-->
         <!-- 情报板内容 -->
-        <div class="board-show">
-          <span v-for="(item, index) in deviceInfo.textArr" :key="index" :style="{
-                  fontFamily: `${deviceInfo.fontName}`,
-                   fontSize: `${deviceInfo.fontSize * 5}px`
-              }">
-            {{item}}
-          </span>
+        <div style="min-width:400px; position: relative">
+          <div class="board-show" :style="{
+                    marginTop: `-${deviceInfo.height / 2}px`,
+                    marginLeft: `-${deviceInfo.width / 2}px`,
+                    width: `${deviceInfo.width}px`,
+                    height: `${deviceInfo.height}px`}">
+            <span v-for="(item, index) in deviceInfo.textArr" :key="index" :style="{
+                    fontFamily: `${deviceInfo.fontName}`,
+                    color: `${deviceInfo.color}`,
+                    lineHeight:`${deviceInfo.fontSize}px`,
+                     fontSize: `${deviceInfo.fontSize}px`
+                }">
+              {{item}}
+            </span>
+          </div>
         </div>
 
 
@@ -170,32 +178,37 @@ export default {
     getDeviceInfo(row) {
       this.showingDeviceIdx = row.deviceName
 
-      this.getBoardDeviceInfo(row.id)
+      this.getBoardDeviceInfo(row)
     },
 
     // 情报板内容
-    getBoardDeviceInfo(id) {
+    getBoardDeviceInfo(row) {
       this.deviceInfo = {}
-      this.$service._2d.getInfoBoardFromDevice(id).then(res => {
-        try {
-          const boardInfo = JSON.parse(res.data)
-          // boardInfo.text = '安全第一预防为主隧道行车打开大灯'
-
+       this.$service._2d.getInfoBoardFromDevice(row.id).then(res => {
+         try {
+          //debugger
+          // const test = JSON.parse("{\"data\":{\"fontName\":\"宋体\",\"backgroundColor\":null,\"emergeFlag\":0,\"emergeSpeed\":0,\"spacing\":0,\"color\":\"#FFFF00\",\"templet\":\"\\\\fs2424\\\\c255255000000桥梁\\\\n压道\",\"fontSize\":24,\"interval\":1,\"text\":\"隧道严禁\\\\n变更车道\",\"point\":null}}")
+          // const boardInfo = test.data
+          const boardInfo = res.data
+          console.log('boardInfo',boardInfo)
           const arr = []
-          const arrText = boardInfo.text.split('')
-          for (let i = 0; i < boardInfo.text.length; i++) {
-            if (i % 8 === 0) {
-              arr.push(arrText.splice(0, 8).join(''))
-            }
+          const arrText = boardInfo.text.split("\\n")
+          for (let i = 0; i < arrText.length; i++) {
+            arr.push(arrText[i])
           }
 
           boardInfo.textArr = arr
-
+          if(row.reamrks && row.reamrks.split("*")[0]){
+            boardInfo.width = row.reamrks.split("*")[0]
+          }
+          if(row.reamrks && row.reamrks.split("*")[1]){
+            boardInfo.height = row.reamrks.split("*")[1]
+          }
           this.deviceInfo = boardInfo
-        } catch (e) {
-          console.log(e)
-        }
-      })
+         } catch (e) {
+           console.log(e)
+         }
+       })
     },
 
 
@@ -212,7 +225,7 @@ export default {
           return {index: i + 1, ...v};
         });
 
-        if (this.deviceList.length>0) this.getBoardDeviceInfo(this.deviceList[0].id)
+        if (this.deviceList.length>0) this.getBoardDeviceInfo(this.deviceList[0])
       });
     },
     updateTpls() {  // 更新模板
@@ -304,11 +317,16 @@ export default {
 </style>
 <style scoped lang="less">
 .board-show {
-  width: 500px;
-  height: 288px;
+  margin-top:-16px;
+  margin-left:-16px;
+  width: 32px;
+  height: 32px;
   background: rgba(12, 34, 83, 1);
   border-radius: 4px;
   margin-right: 20px;
+  top:50%;
+  left:50%;
+  position: relative;
 }
 
 .buttons {
@@ -393,8 +411,6 @@ export default {
 
 
 .board-show {
-  width: 500px;
-  height: 288px;
   background: rgba(12, 34, 83, 1);
   border-radius: 4px;
   margin-right: 20px;

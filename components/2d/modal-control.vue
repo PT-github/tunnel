@@ -301,8 +301,7 @@ export default {
       }
 
       this.$service._2d.operatePlcDevice(p).then((r) => {
-        console.log(r)
-        if(r.status==='-1'){
+        if(r && r.status && r.status==='-1'){
           this.$message(r.message);
         }
         this.$notifySuccess();
