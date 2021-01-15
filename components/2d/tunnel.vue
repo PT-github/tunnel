@@ -148,29 +148,37 @@
       <div
         v-for="(item, index) in tunnelBunntntt"
         :key="index+'a'"
-        :style="divLeft(index)"
+        :style="divLeftRight(index)"
       >
-        <i
-          class="el-icon-back iconLeft"
+
+        <span class="iconTextLeft"
           v-for="(item, i) in tunnelInfo.laneNums"
-          :key="i+'b'"
-          :style="backleft(i)"
-        ></i>
+          :style="backleft(i,2)">
+          <span style="margin-left: -0.15rem"
+                  class="el-icon-back iconLeft"
+                  v-for="(item, i) in tunnelInfo.laneNums"
+                  :key="i+'b'"
+
+          ></span>
+          {{ tunnelInfo.leftHoleDirection }}</span>
       </div>
       <div
         v-for="(item, index) in tunnelBunntntt"
         :key="index+'c'"
-        :style="divrRght(index)"
+        :style="divLeftRight(index)"
       >
-        <i
-          class="el-icon-right iconLeft"
+        <span class="iconTextRight"
           v-for="(item, i) in tunnelInfo.laneNums"
-          :key="i+'d'"
-          :style="backleft(i)"
-        ></i>
+          :style="backleft(i,1)">
+          {{ tunnelInfo.rightHoleDirection }}
+          <i class="el-icon-right iconLeft"
+           v-for="(item, i) in tunnelInfo.laneNums"
+           :key="i+'d'"
+           ></i></span>
+
       </div>
-    </div> 
-    <div class="direction right"> 
+    </div>
+    <div class="direction right">
       <img
         class="img"
         src="../../assets/images/tunnel/tunnel-direction-right.png"
@@ -246,7 +254,6 @@ export default {
     },
     // 隧道2d背景图的样式
     tunnelStyle() {
-      //console.log(this.tunnelInfo)
       // 如果不是双洞类型，就不用比较距离和长短
       let {
         leftHoleLength,
@@ -425,7 +432,7 @@ export default {
     //   $("#2d").unbind("mouseup", stop);
     // },
     //Scroll监听移动
-    divLeft(i) {
+    divLeftRight(i) {
       switch (i) {
         case 0:
           return {
@@ -442,38 +449,57 @@ export default {
         }
       }
     },
-    divrRght(i) {
-      switch (i) {
-        case 0:
-          return {
-            position: "absolute",
-            top: 165 + "px",
-            left: this.outerWidth / 2 + i * (this.outerWidth / 2) + "px",
-          };
-        default: {
-          return {
-            position: "absolute",
-            top: 165 + "px",
-            left: i * this.outerWidth + this.outerWidth / 2 + "px",
-          };
-        }
-      }
-    },
-    backleft(i) {
-      let { laneNums } = this.tunnelInfo;
-      switch (laneNums) {
-        case 2:
-          return {
-            top: 60 + i * 50 + "px",
-            zIndex: 8,
-          };
+    backleft(i,leftRightFlag) {
+      let { laneNums,singleDoubleType } = this.tunnelInfo;
+      const {
+        leftStakeMark,
+        maxLength,
+        sideHeight,
+        padding,
+        lineHeight,
+        contentHeight,
+        center,
+        tunnelLine,
+      } = this.tunnelStyle;
 
-        case 3:
-          return {
-            top: 50 + i * 35 + "px",
-            zIndex: 8,
-          };
+      const defaultTop =
+              padding +
+              sideHeight +
+              contentHeight / laneNums / 2 +
+              (i) * (contentHeight / laneNums + 2);
+      let top = defaultTop;
+
+      // 如果是双洞的话，设备位置还得根据左右洞位置调整
+      if (singleDoubleType === 3) {
+        if (leftRightFlag === 1) {
+          // 左洞要加上右洞+卷闸门的高度
+          top += tunnelLine + center;
+        }
+
+        if (leftRightFlag === 2) {
+          // 右洞的话设备位置从上到下应该是10~0，所以这里从上到下计算的高度要用整个洞的高度减掉，就可以调转过来了
+          top = tunnelLine - top;
+        }
       }
+
+      return {
+        top: top + 30 + "px",
+        zIndex: 8
+      };
+
+      // switch (laneNums) {
+      //   case 2:
+      //     return {
+      //       top: 67 + i * 50 + "px",
+      //       zIndex: 8,
+      //     };
+      //
+      //   case 3:
+      //     return {
+      //       top: 57 + i * 35 + "px",
+      //       zIndex: 8,
+      //     };
+      // }
     },
     orderScroll(e) {
       let abs = Math.round(this.$refs.orderBox.scrollLeft / this.outerWidth);
@@ -848,7 +874,7 @@ export default {
 .title {
   font-size: 28px;
   font-weight: bold;
-  color: rgba(51, 124, 243, 1);
+  color: white;
   line-height: 48px;
   text-align: center;
 }
@@ -897,29 +923,57 @@ export default {
       background: #ccc;
     }
   }
+}
+.direction {
+  position: absolute;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
 
+  &.left {
+    top: 20%;
+    left: 7%;
+    transform: translateX(-100%);
+  }
+
+  &.right {
+    bottom: 44%;
+    right: 9%;
+    transform: translateX(100%);
+  }
+}
+.full-2d{
   .direction {
-    position: absolute;
-    font-size: 18px;
-    font-weight: bold;
-    color: #337cf3;
-
     &.left {
-      top: 20%;
+      top: 250px;
       left: 7%;
       transform: translateX(-100%);
     }
-
     &.right {
-      bottom: 44%;
+      top: 500px;
       right: 9%;
       transform: translateX(100%);
     }
   }
 }
+.iconTextLeft,.iconTextRight {
+  transform: translate(0%, -50%) scale(1);
+  position: absolute;
+  width: 2rem;
+  color: #9babc5;
+  font-size: 0.1rem;
+  line-height: 0.23rem;
+  vert-align: middle;
+  margin-left: 0.2rem;
+}
 .iconLeft {
   position: absolute;
-  color: ghostwhite;
+  color: #9babc5;
+  transform: translate(0%, -8%) scale(1);
+}
+.el-icon-right:before,.el-icon-back:before {
+  line-height: 0rem;
+  font-size: 0.14rem;
 }
 i {
   display: inline-block;
