@@ -3,13 +3,14 @@
     <div class="title">
       {{ tunnelInfo.belongsStretch }} - {{ tunnelInfo.tunnelName }}
     </div>
-    <div class="map" id="map" v-drag ref="orderBox" @scroll="orderScroll">
+    <div class="map" id="map" v-drag ref="orderBox" @scroll="orderScroll"
+    :style="mapStyle">
       <!--2d背景图-->
       <div
         class="tunnel-2d"
         ref="2d"
         id="2d"
-        :style="{ width: `${outerWidth}px` }"
+        :style="tunnel2dStyle"
       >
         <!--类型是左洞或者双洞，展示左洞的图-->
         <template
@@ -145,7 +146,10 @@
           </div>
         </template>
       </div>
-      <div
+      <div v-if="
+            tunnelInfo.singleDoubleType === 3 ||
+            tunnelInfo.singleDoubleType === 2
+          "
         v-for="(item, index) in tunnelBunntntt"
         :key="index+'a'"
         :style="divLeftRight(index)"
@@ -162,7 +166,10 @@
           ></span>
           {{ tunnelInfo.leftHoleDirection }}</span>
       </div>
-      <div
+      <div v-if="
+      tunnelInfo.singleDoubleType === 3 ||
+      tunnelInfo.singleDoubleType === 1
+      "
         v-for="(item, index) in tunnelBunntntt"
         :key="index+'c'"
         :style="divLeftRight(index)"
@@ -178,19 +185,25 @@
 
       </div>
     </div>
-    <div class="direction right">
+    <div v-if="
+            tunnelInfo.singleDoubleType === 3 ||
+            tunnelInfo.singleDoubleType === 2
+          " class="direction left">
+      <img class="img" src="../../assets/images/tunnel/tunnel-direction.png" />
+      <div class="text">{{ this.tunnelInfo.leftHoleDirection }}</div>
+    </div>
+    <div v-if="
+            tunnelInfo.singleDoubleType === 3 ||
+            tunnelInfo.singleDoubleType === 1
+          " class="direction right">
       <img
         class="img"
         src="../../assets/images/tunnel/tunnel-direction-right.png"
       />
       <div class="text">{{ this.tunnelInfo.rightHoleDirection }}</div>
     </div>
-    <div class="direction left">
-      <img class="img" src="../../assets/images/tunnel/tunnel-direction.png" />
-      <div class="text">{{ this.tunnelInfo.leftHoleDirection }}</div>
-    </div>
 
-    <div class="tunnelBunntn">
+    <div class="tunnelBunntn" v-if="this.tunnelInfo.showMode === 1">
       <el-button
         v-for="(item, index) in tunnelBunntn"
         :key="index"
@@ -227,6 +240,8 @@ export default {
       tunnelBunntntt: [],
       tunnelInfo: {},
       tunnelToDTimer: null,
+      maxEndMapStakeMark: 0,
+      minStartMapStakeMark: 0
     };
   },
   computed: {
@@ -240,12 +255,12 @@ export default {
         startStakeMark,
         startStakeMarkRight,
       } = this.tunnelInfo;
-      let beginMark = Math.min(startStakeMark, startStakeMarkRight) / 1000; //获取最小桩号
-      let endMark = Math.max(endStakeMark, endStakeMarkRight) / 1000; //获取最大桩号
+      let beginMark = this.minStartMapStakeMark / 1000; //获取最小桩号
+      let endMark = this.maxEndMapStakeMark / 1000; //获取最大桩号
       let bottom = [];
-      let a = Math.round(beginMark);
-      let b = Math.round(endMark);
-      // console.log(a, b);
+      let a = Math.floor(beginMark);
+      let b = Math.floor(endMark);
+      //console.log(endStakeMarkRight/ 1000);
       for (let i = a; i < b; i++) {
         bottom.push(i);
       }
@@ -272,92 +287,153 @@ export default {
         center: 30, // 两个洞连接处的高度
       };
       config.tunnelLine =
-        config.contentHeight +
-        config.padding * 2 +
-        config.sideHeight * 2 +
-        (laneNums - 1) * config.lineHeight; // 一个洞的高度
-          var beginMark = Math.min(startStakeMark, startStakeMarkRight); //获取最小桩号
-        var endMark = Math.max(endStakeMark, endStakeMarkRight); //获取最大桩号
+      config.contentHeight +
+      config.padding * 2 +
+      config.sideHeight * 2 +
+      (laneNums - 1) * config.lineHeight; // 一个洞的高度
+        var beginMark = Math.min(startStakeMark, startStakeMarkRight); //获取最小桩号
+      var endMark = Math.max(endStakeMark, endStakeMarkRight); //获取最大桩号
 
-        let maxHoleLength = endMark - beginMark; //最大长度 Math.max(leftHoleLength, rightHoleLength);
+      let mapLength =  this.maxEndMapStakeMark - this.minStartMapStakeMark;
+      let maxHoleLength = endMark - beginMark; //最大长度 Math.max(leftHoleLength, rightHoleLength);
 
-        leftHoleLength = (endStakeMark - startStakeMark) / 1000; //左洞长度
-        rightHoleLength = (endStakeMarkRight - startStakeMarkRight) / 1000; //右洞长度
-        //console.log(leftHoleLength);
-        //console.log(rightHoleLength);
-        let maxEndStakeMark = Math.max(endStakeMark, endStakeMarkRight);
-        let minstartStakeMark = Math.max(startStakeMark, startStakeMarkRight);
-        let minEndStakeMark = Math.min(endStakeMark, endStakeMarkRight); 
-        let stakeDistance = Math.abs(endStakeMark - endStakeMarkRight);
-        //let stakeLeftDistance = Math.abs(endStakeMark - endStakeMarkRight);
+      leftHoleLength = endStakeMark - startStakeMark; //左洞长度
+      rightHoleLength = endStakeMarkRight - startStakeMarkRight; //右洞长度
+      //console.log('leftHoleLength',leftHoleLength);
+      //console.log(rightHoleLength);
+      let maxEndStakeMark = Math.max(endStakeMark, endStakeMarkRight);
+      let minStartStakeMark = Math.max(startStakeMark, startStakeMarkRight);
+      let minEndStakeMark = Math.min(endStakeMark, endStakeMarkRight);
+      let stakeDistance = Math.abs(endStakeMark - endStakeMarkRight);
+      //let stakeLeftDistance = Math.abs(endStakeMark - endStakeMarkRight);
 
-        var maxLength = endMark - beginMark;
+      var maxLength = endMark - beginMark;
 
-        var lengthV = 100 / maxHoleLength;
-        //计算方式
-        /*
-            1、得到最小桩号和最大桩号
-            2、得到画布长度：最大桩号-最小桩号
-            3、得到%1所表示的桩号长度 100/画布长度
-            3、左洞画布长度等于：(左洞结束桩号-左洞开始桩号)*%1所表示的桩号长度
-            4、左洞画布距离左侧长度：(最大桩号-左洞结束桩号)*%1所表示的桩号长度
-        */
-        let outerWidth = document.getElementById("map").offsetWidth;
+      var lengthV = (100 / maxHoleLength);
+      //计算方式
+      /*
+          1、得到最小设备桩号和最大设备桩号
+          2、得到画布长度：最大设备桩号-最小设备桩号
+          3、得到%1所表示的桩号长度 100/画布长度
+          3、左洞画布长度等于：(左洞结束桩号-左洞开始桩号)*%1所表示的桩号长度
+          4、左洞画布距离左侧长度：(最大桩号-左洞结束桩号)*%1所表示的桩号长度
+      */
 
-        
-        let leftMar =Math.round(minstartStakeMark /1000)-Math.round(beginMark /1000);
-        let rightMar = Math.round(maxEndStakeMark /1000)-Math.round(minEndStakeMark /1000);
-      console.log(leftHoleLength,rightHoleLength)
-      if (this.tunnelInfo.singleDoubleType !== 3) {
-        return {
-          ...config,
-          leftWidth: outerWidth * leftHoleLength + "px",
-          leftMargin: leftMar * outerWidth + "px",
-          rightWidth: rightHoleLength * outerWidth + "px",
-          rightMargin:0,
-          leftStakeMark: endStakeMark || endStakeMarkRight,
-          maxlength: leftHoleLength || rightHoleLength,
-        };
-      } else {
-        //startStakeMark 左洞开始
-        //endStakeMark   左洞结束
-        // startStakeMarkRight 右开
-        //endStakeMarkRight 右结
-       // console.log(rightMar)
-        let res = {
-          ...config,
-          leftWidth: outerWidth * leftHoleLength + "px",
-          leftMargin: leftMar * outerWidth + "px",
-          rightWidth: rightHoleLength * outerWidth + "px",
-          rightMargin:0,
-            //leftMar * outerWidth + "px",
-          leftStakeMark: minstartStakeMark,
-        };
-        /*
-        let res = {
+      //地图显示区域宽度，固定模式时值等于长度100%，分段模式时候的值等于长度1000米
+      //let outerWidth = document.getElementById("map").offsetWidth;
+      let outerWidth = document.body.clientWidth / 100 * 60;
+      //分段模式时候的值的比例
+      let mapScaleMode1 = outerWidth / 1000;
+      // console.log('mapScaleMode1',mapScaleMode1)
+
+      //左边间隔 隧道开始桩号 减去 设备开始桩号
+      let leftMar = startStakeMark - this.minStartMapStakeMark > 0 ? minStartStakeMark - this.minStartMapStakeMark : 0;
+      let rightMar = startStakeMarkRight - this.minStartMapStakeMark  > 0 ? startStakeMarkRight - this.minStartMapStakeMark : 0;
+      //console.log('minStartStakeMark - this.minStartMapStakeMark',minStartStakeMark - this.minStartMapStakeMark)
+      //console.log('startStakeMarkRight - this.minStartMapStakeMark',startStakeMarkRight - this.minStartMapStakeMark)
+
+      //分段模式显示时候 按outerWidth(地图显示区域)等于长度1000米的比例计算得到 PX
+      if(this.tunnelInfo.showMode === 1)
+      {
+        if (this.tunnelInfo.singleDoubleType !== 3) {
+          return {
             ...config,
-            leftWidth: (leftHoleLength / maxHoleLength) * 100 + '%',
-            leftMargin: ((maxEndStakeMark - endStakeMark) / stakeDistance) + '%',
-            rightWidth: (rightHoleLength / maxHoleLength) * 100 + '%',
-            rightMargin: ((maxEndStakeMark - endStakeMarkRight) / stakeDistance) + '%',
-            leftStakeMark: maxEndStakeMark
-        };*/
-        // 计算出画布总宽度(米)
-
-        if (leftHoleLength > rightHoleLength) {
-          res.maxLength =
-            leftHoleLength +
-            (endStakeMark > endStakeMarkRight ? 0 : stakeDistance);
-        } else {
-          res.maxLength =
-            rightHoleLength +
-            (endStakeMarkRight > endStakeMark ? 0 : stakeDistance);
+            leftWidth: mapScaleMode1 * leftHoleLength + "px",
+            leftMargin: mapScaleMode1 * leftMar + "px",
+            rightWidth: mapScaleMode1 * rightHoleLength + "px",
+            rightMargin: mapScaleMode1 * rightMar + "px",
+            leftStakeMark: endStakeMark || endStakeMarkRight,
+            maxlength: leftHoleLength || rightHoleLength,
+          };
         }
+        else {
+          let res = {
+            ...config,
+            leftWidth: mapScaleMode1 * leftHoleLength + "px",
+            leftMargin: mapScaleMode1 * leftMar + "px",
+            rightWidth: mapScaleMode1 * rightHoleLength + "px",
+            rightMargin: mapScaleMode1 * rightMar + "px",
+            leftStakeMark: minStartStakeMark
+          };
+          // 计算出画布总宽度(米)
+          if (leftHoleLength > rightHoleLength) {
+            res.maxLength =
+                    leftHoleLength +
+                    (endStakeMark > endStakeMarkRight ? 0 : stakeDistance);
+          } else {
+            res.maxLength =
+                    rightHoleLength +
+                    (endStakeMarkRight > endStakeMark ? 0 : stakeDistance);
+          }
 
-        res.maxLength = endMark - beginMark;
-        return res;
+          res.maxLength = endMark - beginMark;
+          return res;
+        }
+      }
+      //分段模式显示时候 按outerWidth(地图显示区域)等于100%的比例计算得到 %
+      else {
+        if (this.tunnelInfo.singleDoubleType !== 3) {
+          return {
+            ...config,
+            leftWidth: '100%',
+            leftMargin: 0,
+            rightWidth: '100%',
+            rightMargin: 0,
+            leftStakeMark: endStakeMark || endStakeMarkRight,
+            maxlength: leftHoleLength || rightHoleLength
+          };
+        }
+        else {
+          let res = {
+            ...config,
+            leftWidth: (leftHoleLength / mapLength)*100 + '%',
+            leftMargin: (leftMar / mapLength)*100 + '%',
+            rightWidth: (rightHoleLength / mapLength)*100 + '%',
+            rightMargin: (rightMar / mapLength)*100 + '%',
+            leftStakeMark: minStartStakeMark
+          };
+
+          if (leftHoleLength > rightHoleLength) {
+            res.maxLength =
+                    leftHoleLength +
+                    (endStakeMark > endStakeMarkRight ? 0 : stakeDistance);
+          } else {
+            res.maxLength =
+                    rightHoleLength +
+                    (endStakeMarkRight > endStakeMark ? 0 : stakeDistance);
+          }
+
+          res.maxLength = endMark - beginMark;
+          return res;
+        }
       }
     },
+    mapStyle() {
+      if (this.tunnelInfo.showMode === 0) {
+        return {
+        };
+      }
+      else if (this.tunnelInfo.showMode === 1)
+      {
+        return {
+          overflowX: "scroll",
+          overflowY: "hidden"
+        };
+      }
+    },
+    tunnel2dStyle() {
+      if (this.tunnelInfo.showMode === 0) {
+        return {
+          width: "100%"
+        };
+      }
+      else if (this.tunnelInfo.showMode === 1)
+      {
+        return {
+          width: this.outerWidth+"px"
+        };
+      }
+    }
   },
 
   watch: {
@@ -373,66 +449,28 @@ export default {
   },
 
   async mounted() {
+    await this.listDeviceBaseOfTunnelPage();
     await this.findTunnelBaseInfo();
-    this.listDeviceBaseOfTunnelPage();
     await this.outerWidths();
     document.addEventListener("scroll", this.Scroll);
     this.tunnelToDTimer = setInterval(async () => {
+      await this.listDeviceBaseOfTunnelPage();
       await this.findTunnelBaseInfo();
-      this.listDeviceBaseOfTunnelPage();
-      await this.outerWidths();
+      //await this.outerWidths();
     }, 5 * 1000);
+    ///////窗口改变的时候 重新计算隧道宽度
+    window.onresize = () => {
+      return (() => {
+        setTimeout(()=>{
+          this.outerWidths();
+        }, 3000);
+      })();
+    };
   },
-  // Vue.directive('drag',function(){
-  //  var oDiv=this.el;
-  //  oDiv.onmousedown=function(ev){
-  //   var disX=ev.clientX-oDiv.offsetLeft;
-  //   var disY=ev.clientY-oDiv.offsetTop;
-  //   document.onmousemove=function(ev){
-  //    var l=ev.clientX-disX;
-  //    var t=ev.clientY-disY;
-  //    oDiv.style.left=l+'px';
-  //    oDiv.style.top=t+'px';
-  //   };
-  //   document.onmouseup=function(){
-  //    document.onmousemove=null;
-  //    document.onmouseup=null;
-  //   };
-  //  };
-  // });
   methods: {
-    //监听移动
-    // mousedownScroll(e) {
-    //   console.log(e);
-    //   if (event.button == 0) {
-    //     //判断是否点击鼠标左键
-    //     this.gapX = e.clientX;
-
-    //     //movemove事件必须绑定到$(document)上，鼠标移动是在整个屏幕上的
-    //    // this.moves(e);
-    //     //$('#2d').bind("mousemove", moves);
-    //     //  此处的$(document)可以改为o  bj
-    //     // $('#2d').bind("mouseup", stop);
-    //   }
-    //   // return false; //阻止默认事件或冒泡
-    //   //this.$refs.orderBox.scrollLeft += e.clientX;
-    // },
-    // moves(event) {
-    //   // startx = this.$refs.orderBox.scrollLeft(); // scroll的初始位置
-    //   let startx = $("#map").scrollLeft();
-    //   var left = event.clientX - this.gapX; // 鼠标移动的相对距离
-    //   $("#map").scrollLeft(startx - left);
-    //   //this.$refs.orderBox.scrollLeft = startx - left;
-
-    //   return false; //阻止默认事件或冒泡
-    // },
-    // stop() {
-    //   //解绑定，这一步很必要，前面有解释
-    //   $("#2d").unbind("mousemove", moves);
-    //   $("#2d").unbind("mouseup", stop);
-    // },
     //Scroll监听移动
     divLeftRight(i) {
+      //console.log(this.outerWidth)
       switch (i) {
         case 0:
           return {
@@ -481,6 +519,16 @@ export default {
           top = tunnelLine - top;
         }
       }
+      //单左洞
+      else if(singleDoubleType === 2) {
+        // 右洞的话设备位置从上到下应该是10~0，所以这里从上到下计算的高度要用整个洞的高度减掉，就可以调转过来了
+        top = tunnelLine - top;
+      }
+      //单右洞
+      else if(singleDoubleType === 1) {
+        // 右洞要-卷闸门的高度
+        top = top - center;
+      }
 
       return {
         top: top + 30 + "px",
@@ -513,22 +561,22 @@ export default {
     },
     //获取初始宽度
     outerWidths() {
-      let {
-        endStakeMark,
-        endStakeMarkRight,
-        startStakeMark,
-        startStakeMarkRight,
-      } = this.tunnelInfo;
-      var beginMark = Math.min(startStakeMark, startStakeMarkRight); //获取最小桩号
-      var endMark = Math.max(endStakeMark, endStakeMarkRight); //获取最大桩号
-      let maxHoleLength = endMark - beginMark; //最大长度 Math.max(leftHoleLength, rightHoleLength);
-      this.tunnelBunntntt = Math.round(maxHoleLength / 1000) ;
-      
-      let outerWidths = document.getElementById("2d").scrollWidth;
-      this.outerWidthout =outerWidths;
+      let mapLength =  this.maxEndMapStakeMark - this.minStartMapStakeMark;
+      //console.log('this.tunnelBunntntt',this.tunnelBunntntt)
+      let outerWidths = document.body.clientWidth / 100 * 60;
+
+      this.outerWidthout = outerWidths;
       //console.log(outerWidths);
-      this.outerWidth = (outerWidths / maxHoleLength) * 1000;
+      this.outerWidth = outerWidths;
        //console.log(outerWidth)
+      if(this.tunnelInfo.showMode === 1)
+      {
+        this.tunnelBunntntt = Math.round(mapLength / 1000) ;
+      }
+      else
+      {
+        this.tunnelBunntntt = 1 ;
+      }
     },
     showWait(id) {
       this.waitShowList = { ...this.waitShowList, [id]: true };
@@ -551,21 +599,34 @@ export default {
           startStakeMarkRight,
         } = this.tunnelInfo;
       const { leftStakeMark, maxLength, tunnelLine, center } = this.tunnelStyle;
+      let mapLength =  this.maxEndMapStakeMark - this.minStartMapStakeMark;
       var beginMark = Math.min(startStakeMark, startStakeMarkRight); //获取最小桩号
       var endMark = Math.max(endStakeMark, endStakeMarkRight); //获取最大桩号
       let rightHoleLength = (endMark - beginMark) / 10; //最大长度 Math.max(leftHoleLength, rightHoleLength);
       //let rightHoleLength = (endStakeMarkRight - startStakeMarkRight) / 10; //左洞长度
         let maxEndStakeMark = Math.max(endStakeMark, endStakeMarkRight);
-        let minstartStakeMark = Math.max(startStakeMark, startStakeMarkRight);
-        let minEndStakeMark = Math.min(endStakeMark, endStakeMarkRight); 
-        let leftMar =Math.round(minstartStakeMark /1000)-Math.round(beginMark /1000);
+        let minStartStakeMark = Math.max(startStakeMark, startStakeMarkRight);
+        let minEndStakeMark = Math.min(endStakeMark, endStakeMarkRight);
+        let leftMar =Math.round(minStartStakeMark /1000)-Math.round(beginMark /1000);
         let rightMar = Math.round(maxEndStakeMark /1000)-Math.round(minEndStakeMark /1000);
        // let outerWidths = document.getElementById("2d").scrollWidth;
-      
-      const defaultLeft = //leftMar*this.outerWidthout/rightHoleLength;
-       //console.log(defaultLeft)
-         ((pileNumber - leftStakeMark) / maxLength) * rightHoleLength + 10 +leftMar*100;
-      // console.log(defaultLeft)
+      //地图显示区域宽度，固定模式时值等于长度100%，分段模式时候的值等于长度1000米
+      let outerWidth = document.body.clientWidth / 100 * 60;
+      //分段模式时候的值的比例
+      let mapScaleMode1 = outerWidth / 1000;
+      // console.log('mapScaleMode1',mapScaleMode1)
+
+      let defaultLeft = 0
+      //计算设备位置+10
+      //分段模式显示时候 按outerWidth(地图显示区域)等于长度1000米的比例计算得到 PX
+      if(this.tunnelInfo.showMode === 1) {
+        defaultLeft =  mapScaleMode1 * ((pileNumber-this.minStartMapStakeMark)) + 10 + 'px';
+      }
+      //分段模式显示时候 按outerWidth(地图显示区域)等于100%的比例计算得到 %
+      else{
+        defaultLeft = (((pileNumber-this.minStartMapStakeMark) + 10)/ mapLength) * 100 + '%';
+      }
+      //console.log('maxLength',maxLength)
       // emptyType  空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
       // rotateDegree  旋转度数
       // leftRightFlag 1 右洞 2 左洞 3 中间
@@ -584,7 +645,7 @@ export default {
                 : "0",
             height: tunnelLine + 30 + "px",
             width: (length / maxLength) * 100 + "%",
-            left: `${defaultLeft}%`,
+            left: `${defaultLeft}`,
             background: "#142470",
             zIndex: 9,
           };
@@ -596,7 +657,7 @@ export default {
             top: "calc(50% - 35px)",
             height: "70px",
             width: "20px",
-            left: `${defaultLeft}%`,
+            left: `${defaultLeft}`,
             background: "#3a5a8b",
             transform: `rotate(${item.rotateDegree}deg)`,
           };
@@ -610,8 +671,8 @@ export default {
             width: "50px",
             left:
               item.rotateDegree >= 30
-                ? `calc(${defaultLeft}% - 25px)`
-                : `${defaultLeft}%`,
+                ? `calc(${defaultLeft} - 25px)`
+                : `${defaultLeft}`,
             background: "#3a5a8b",
             transform: `rotate( ${item.rotateDegree}deg)`,
           };
@@ -625,7 +686,7 @@ export default {
                 : "0",
             width: "50px",
             height: "50px",
-            left: `${defaultLeft}%`,
+            left: `${defaultLeft}`,
             background: "#3a5a8b",
             zIndex: 9,
             color: "#ccc",
@@ -640,7 +701,7 @@ export default {
             top: `calc(50% - 30px)`,
             height: "60px",
             width: "80px",
-            left: `${defaultLeft}%`,
+            left: `${defaultLeft}`,
             background: "#3a5a8b",
             zIndex: 9,
             color: "#ccc",
@@ -654,7 +715,7 @@ export default {
             top: `calc(50% - 15px)`,
             height: "30px",
             width: "80px",
-            left: `${defaultLeft}%`,
+            left: `${defaultLeft}`,
             background: "#3a5a8b",
             zIndex: 9,
             color: "#ccc",
@@ -680,15 +741,24 @@ export default {
         startStakeMark,
         startStakeMarkRight,
       } = this.tunnelInfo;
+
+      let mapLength =  this.maxEndMapStakeMark - this.minStartMapStakeMark;
       var beginMark = Math.min(startStakeMark, startStakeMarkRight); //获取最小桩号
       var endMark = Math.max(endStakeMark, endStakeMarkRight); //获取最大桩号
       let rightHoleLength = (endMark - beginMark) / 10; //最大长度 Math.max(leftHoleLength, rightHoleLength);
        let maxEndStakeMark = Math.max(endStakeMark, endStakeMarkRight);
-        let minstartStakeMark = Math.max(startStakeMark, startStakeMarkRight);
-        let minEndStakeMark = Math.min(endStakeMark, endStakeMarkRight); 
-        let leftMar =Math.round(minstartStakeMark /1000)-Math.round(beginMark /1000);
-        let rightMar = Math.round(maxEndStakeMark /1000)-Math.round(minEndStakeMark /1000);
+        let minStartStakeMark = Math.max(startStakeMark, startStakeMarkRight);
+        let minEndStakeMark = Math.min(endStakeMark, endStakeMarkRight);
+
        // let outerWidths = document.getElementById("2d").scrollWidth;
+      //地图显示区域宽度，固定模式时值等于长度100%，分段模式时候的值等于长度1000米
+      //let outerWidth = document.getElementById("map").offsetWidth;
+      let outerWidth = document.body.clientWidth / 100 * 60;
+      //分段模式时候的值的比例
+      let mapScaleMode1 = outerWidth / 1000;
+      // console.log('mapScaleMode1',mapScaleMode1)
+
+
      const {
         leftStakeMark,
         maxLength,
@@ -725,11 +795,18 @@ export default {
           ? "rotate(180deg)"
           : ""
       }`;
-      //计算设备位置+10 起始加100m
-      const defaultLeft =
-        ((device.pileNumber - leftStakeMark) / maxLength) * rightHoleLength +
-        10+leftMar*100;
-      //console.log(defaultLeft);
+      //计算设备位置+10
+      let defaultLeft = 0;
+      //console.log('device.pileNumber-this.minStartMapStakeMark',mapScaleMode1)
+      //分段模式显示时候 按outerWidth(地图显示区域)等于长度1000米的比例计算得到 PX
+      if(this.tunnelInfo.showMode === 1) {
+        defaultLeft =  mapScaleMode1 * ((device.pileNumber-this.minStartMapStakeMark)) + 10 + 'px';
+      }
+      //分段模式显示时候 按outerWidth(地图显示区域)等于100%的比例计算得到 %
+      else{
+        defaultLeft = (((device.pileNumber-this.minStartMapStakeMark) + 10)/ mapLength) * 100 + '%';
+      }
+      console.log(rightDistance);
       switch (orientationLocation) {
         case 0:
           // 左边
@@ -768,11 +845,21 @@ export default {
           top = tunnelLine - top;
         }
       }
+      //单左洞
+      else if(singleDoubleType === 2) {
+        // 右洞的话设备位置从上到下应该是10~0，所以这里从上到下计算的高度要用整个洞的高度减掉，就可以调转过来了
+        top = tunnelLine - top;
+      }
+      //单右洞
+      else if(singleDoubleType === 1) {
+        // 右洞要-卷闸门的高度
+        top = top - center;
+      }
 
       const defaultStyle = {
         transform: defaultTransform,
         top: `${top + 30}px`,
-        left: `${defaultLeft}%`,
+        left: `${defaultLeft}`,
         zIndex: device.sortInt || 10,
       };
 
@@ -781,7 +868,7 @@ export default {
         return {
           ...defaultStyle,
           top: "calc(50% - 8px)",
-          left: `calc(${defaultLeft}% + 15px)`,
+          left: `calc(${defaultLeft} + 15px)`,
         };
       }
 
@@ -798,7 +885,7 @@ export default {
         return {
           ...defaultStyle,
           top: "calc(50% + 8px)",
-          left: `calc(${defaultLeft}% - 15px)`,
+          left: `calc(${defaultLeft} - 15px)`,
         };
       }
 
@@ -809,6 +896,42 @@ export default {
     findTunnelBaseInfo() {
       return this.$service.tunnel.getById(this.tunnelId).then((res) => {
         this.tunnelInfo = res;
+        //console.log('res',res)
+        //console.log('this.tunnelInfo.showMode',this.tunnelInfo.showMode)
+        if(!this.tunnelInfo.showMode || this.tunnelInfo.showMode==null)
+        {
+          this.tunnelInfo.showMode = 0;
+        }
+        // 对比设备与隧道的起止桩号 获取隧道地图的长度
+        let maxEndStakeMark = 0;
+        let minStartStakeMark = 0;
+        // 双洞
+        if(this.tunnelInfo.singleDoubleType === 3){
+          maxEndStakeMark = Math.max(this.tunnelInfo.endStakeMark, this.tunnelInfo.endStakeMarkRight);
+          minStartStakeMark = Math.min(this.tunnelInfo.startStakeMark, this.tunnelInfo.startStakeMarkRight);
+        }
+        // 单左洞
+        else if(this.tunnelInfo.singleDoubleType === 2){
+          maxEndStakeMark = this.tunnelInfo.endStakeMark;
+          minStartStakeMark = this.tunnelInfo.startStakeMark;
+        }
+        // 单右洞
+        else if(this.tunnelInfo.singleDoubleType === 1){
+          maxEndStakeMark = this.tunnelInfo.endStakeMarkRight;
+          minStartStakeMark = this.tunnelInfo.startStakeMarkRight;
+        }
+
+        if(this.maxEndMapStakeMark>0){
+          this.maxEndMapStakeMark = Math.max(maxEndStakeMark, this.maxEndMapStakeMark);
+        }
+        else{
+          this.maxEndMapStakeMark = maxEndStakeMark;
+        }
+        if(this.minStartMapStakeMark>0){
+          this.minStartMapStakeMark = Math.min(minStartStakeMark, this.minStartMapStakeMark);}
+        else{
+          this.minStartMapStakeMark = minStartStakeMark;
+        }
       });
     },
 
@@ -837,6 +960,20 @@ export default {
           return support; // positionFlag为空不显示
         });
         this.deviceList = list;
+        // 对比设备与隧道的起止桩号 获取隧道地图的长度
+        for(let index  in this.deviceList){
+          if(this.maxEndMapStakeMark>0){
+            this.maxEndMapStakeMark = Math.max(this.deviceList[index].pileNumber, this.maxEndMapStakeMark);
+          }
+          else{
+            this.maxEndMapStakeMark = this.deviceList[index].pileNumber;
+          }
+          if(this.minStartMapStakeMark>0){
+            this.minStartMapStakeMark = Math.min(this.deviceList[index].pileNumber, this.minStartMapStakeMark);}
+          else{
+            this.minStartMapStakeMark = this.deviceList[index].pileNumber;
+          }
+        }
         this.$emit("loaded", res);
       });
     },
@@ -884,10 +1021,8 @@ export default {
   margin-top: 36px;
   position: relative;
   display: flex;
-  overflow-x: scroll;
-  overflow-y:hidden;
   align-items: center;
-  justify-content: center;
+  /*justify-content: center;*/
   &::-webkit-scrollbar {
     width: 0.2rem !important;
     height: 0.10666667rem;
@@ -900,7 +1035,6 @@ export default {
     -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   }
   .tunnel-2d {
-    padding-left: 1.6rem;
     .tunnel-line {
       //background: rgb(126, 214, 243);
       background: #3a5a8b;
@@ -938,7 +1072,7 @@ export default {
 
   &.right {
     bottom: 44%;
-    right: 9%;
+    right: 7%;
     transform: translateX(100%);
   }
 }

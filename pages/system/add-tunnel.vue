@@ -69,6 +69,15 @@
                         placeholder="请输入路段名称"></el-input>
             </el-form-item>
 
+            <el-form-item label="2D显示模式:"
+                          :rules="[{ required: true, message: '请选择2D显示模式'}]"
+                          prop="singleDoubleType">
+              <el-radio-group v-model="tunnelForm.showMode">
+                <el-radio :label="0">固定模式</el-radio>
+                <el-radio :label="1">分段模式</el-radio>
+              </el-radio-group>
+            </el-form-item>
+
             <el-form-item label="限速:" prop="speedLimit">
               <div class="qzzh-ctn">
                 <el-input v-model="tunnelForm.speedLimit"
@@ -330,6 +339,7 @@ export default {
         leftHoleDirection: '',   //左洞方向
         rightHoleLength: '',   //有洞长度
         rightHoleDirection: '',  //右洞方向
+        showMode: 0,     //2D显示模式
         sortInt: '',     //排序
         enableStatusName: false     //是否启用
       },
@@ -349,7 +359,9 @@ export default {
 
     if (type === 'edit' && id) {
       this.$service.tunnel.getById(id).then(res => {
-        res.tunnelType = String(res.tunnelType);
+        if(res.tunnelType){
+          res.tunnelType = String(res.tunnelType);
+        }
         res.enableStatusName = res.enableStatus == 1 ? true : false;  //启用状态
         res.organName = res.organizationName || '';                  //组织机构名称
         this.tunnelForm = res;
@@ -491,6 +503,7 @@ export default {
         rightHoleLength: param.rightHoleLength || null,      //右洞长度
         rightHoleDirection: param.rightHoleDirection || null,//右洞方向
         sortInt: param.sortInt || null,                      //排序
+        showMode: param.showMode,                      //排序
         reamrks: param.reamrks || null,                      //备注
         speedLimit: param.speedLimit || null                 //限速
       };
