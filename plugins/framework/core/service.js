@@ -81,12 +81,16 @@ export default class Service {
         }).catch(err => {
             options.loadingText && this.$ctx.hideLoading && this.$ctx.hideLoading();
             let defaultCatch = e => {
+                //console.log('options',options)
                 if (options.isToastError !== false) {   // 除非明确指出不需要弹toast，否则接口失败默认弹出toast
                     if (e.message && e.message.includes('timeout')) {
                         //e.message = '网络请求超时';
                         console.log('网络请求超时');
                     }
-                    //this.$ctx.toastError(e.message || '网络请求失败');
+                    if(!e.message.includes('timeout'))
+                    {
+                        this.$ctx.toastError(e.message || '网络请求失败');
+                    }
                 }
                 return Promise.reject(err);
             };
