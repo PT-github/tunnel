@@ -50,11 +50,87 @@
           </div>
         </template>
 
+        <!--类型是单右洞，展示中间间隔与左洞为透明状态-->
+        <template
+                v-if="
+            tunnelInfo.singleDoubleType === 1
+          "
+        >
+        <div style="opacity:0.2;filter:alpha(opacity=20);">
+          <div
+                  class="tunnel-wall"
+                  style="height: 30px"
+                  :style="{
+              width: tunnelStyle.rightWidth,
+              marginLeft: tunnelStyle.rightMargin,
+            }"
+          ></div>
+          <div
+                  class="tunnel-line"
+                  :style="{
+              width: tunnelStyle.rightWidth,
+              marginLeft: tunnelStyle.rightMargin,
+            }"
+          >
+            <div class="line-side"></div>
+            <template v-for="(v, i) in tunnelInfo.laneNums">
+              <div
+                      class="line-road"
+                      v-if="i !== 0"
+                      :style="{
+                  margin: `${
+                    tunnelStyle.contentHeight / tunnelInfo.laneNums
+                  }px 0`,
+                }"
+              ></div>
+            </template>
+            <div class="line-side"></div>
+          </div>
+        </div>
+        </template>
+
         <!--类型是双洞，在中间放个间隔-->
-        <div
-          v-if="tunnelInfo.singleDoubleType === 3"
-          style="height: 30px"
+        <div style="height: 30px"
         ></div>
+
+        <!--类型是单左洞，展示中间间隔与右洞为透明状态-->
+        <template
+                v-if="
+            tunnelInfo.singleDoubleType === 2
+          "
+        >
+        <div style="opacity:0.2;filter:alpha(opacity=20);">
+          <div
+                  class="tunnel-line"
+                  :style="{
+              width: tunnelStyle.leftWidth,
+              marginLeft: tunnelStyle.leftMargin,
+            }"
+          >
+            <div class="line-side"></div>
+            <template v-for="(v, i) in tunnelInfo.laneNums">
+              <div
+                      class="line-road"
+                      v-if="i !== 0"
+                      :style="{
+                  margin: `${
+                    tunnelStyle.contentHeight / tunnelInfo.laneNums
+                  }px 0`,
+                }"
+              ></div>
+            </template>
+            <div class="line-side"></div>
+          </div>
+          <div
+                  class="tunnel-wall"
+                  style="height: 30px"
+                  :style="{
+              width: tunnelStyle.leftWidth,
+              marginLeft: tunnelStyle.leftMargin,
+            }"
+          ></div>
+        </div>
+        </template>
 
         <!--类型是右洞或者双洞，展示右洞的图-->
         <template
@@ -217,6 +293,9 @@
 </template>
 <script>
 export default {
+  events: {
+    'onDeviceStatusChange': 'deviceStatusChange'
+  },
   services: ["_2d", "tunnel"],
   props: {
     showActiveType: {
@@ -241,7 +320,8 @@ export default {
       tunnelInfo: {},
       tunnelToDTimer: null,
       maxEndMapStakeMark: 0,
-      minStartMapStakeMark: 0
+      minStartMapStakeMark: 0,
+      tunnelLine: 0
     };
   },
   computed: {
@@ -323,7 +403,9 @@ export default {
             leftWidth: mapScaleMode1 * leftHoleLength + "px",
             leftMargin: mapScaleMode1 * leftMar + "px",
             rightWidth: mapScaleMode1 * rightHoleLength + "px",
-            rightMargin: mapScaleMode1 * rightMar + "px"
+            rightMargin: mapScaleMode1 * rightMar + "px",
+            tunnelLine: config.tunnelLine,
+            mapLength: mapLength
           };
           return res;
       }
@@ -334,7 +416,9 @@ export default {
             leftWidth: (leftHoleLength / mapLength)*100 + '%',
             leftMargin: (leftMar / mapLength)*100 + '%',
             rightWidth: (rightHoleLength / mapLength)*100 + '%',
-            rightMargin: (rightMar / mapLength)*100 + '%'
+            rightMargin: (rightMar / mapLength)*100 + '%',
+            tunnelLine: config.tunnelLine,
+            mapLength: mapLength
           };
           return res;
       }
@@ -384,11 +468,11 @@ export default {
     await this.findTunnelBaseInfo();
     await this.outerWidths();
     document.addEventListener("scroll", this.Scroll);
-    this.tunnelToDTimer = setInterval(async () => {
-      await this.listDeviceBaseOfTunnelPage();
-      await this.findTunnelBaseInfo();
-      //await this.outerWidths();
-    }, 5 * 1000);
+    // this.tunnelToDTimer = setInterval(async () => {
+    //   await this.listDeviceBaseOfTunnelPage();
+    //   await this.findTunnelBaseInfo();
+    //   //await this.outerWidths();
+    // }, 5 * 1000);
     ///////窗口改变的时候 重新计算隧道宽度
     window.onresize = () => {
       return (() => {
@@ -399,6 +483,15 @@ export default {
     };
   },
   methods: {
+    //设备状态更新 刷新隧道图
+    async deviceStatusChange(id){
+      //console.log(id)
+      if(id === this.tunnelInfo.id){
+        await this.listDeviceBaseOfTunnelPage();
+        await this.findTunnelBaseInfo();
+        console.log('刷新隧道deviceStatusChange');
+      }
+    },
     //Scroll监听移动
     divLeftRight(i) {
       //console.log(this.outerWidth)
@@ -458,7 +551,7 @@ export default {
       //单右洞
       else if(singleDoubleType === 1) {
         // 右洞要-卷闸门的高度
-        top = top - center;
+        top = tunnelLine + top + center;
       }
 
       return {
@@ -750,15 +843,15 @@ export default {
         // 左洞的话设备位置从上到下应该是10~0，所以这里从上到下计算的高度要用整个洞的高度减掉，就可以调转过来了
         top = tunnelLine - top;
         if (device.leftRightFlag === 2) {
-          top=1000;
+          top=-1000;
         }
       }
       //单右洞
       else if(singleDoubleType === 1) {
         // 右洞要-卷闸门的高度
-        top = top - center;
+        top = tunnelLine + top + center;
         if (device.leftRightFlag === 1) {
-          top=1000;
+          top=-1000;
         }
       }
 
@@ -1030,7 +1123,11 @@ i {
 .offi {
   background: red;
 }
-
+.emptyTunnel
+{
+  background-color: #0E4586;
+  z-index: 99999;
+}
 .tunnel-wall {
   height: 30px;
   background-image: url("/static/image/tunnel/wall.png");

@@ -34,8 +34,8 @@
                 this.$service.alarm.voiceAlarmTrigger(eventContent);
             },
             connect () {
-                 let ws = new WebSocket(`ws://${top.window.location.host}/api/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
-                //let ws = new WebSocket(`ws://w8.qcxt.com:65036/api/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
+                let ws = new WebSocket(`ws://${top.window.location.host}/api/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
+                //let ws = new WebSocket(`ws://localhost:18080/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
                 ws.onopen = e => {
                     console.log('---------ws已连接---------', e);
                 };
@@ -56,6 +56,11 @@
                             this.$em.$fire('onShowEvent');
                             this.event = res;
                         });
+                    }
+                    if (eventMsg && eventMsg.tunnelId && eventMsg.type === 'deviceStatusChange') { // 设备状态更新，刷新隧道图
+                        //console.log('deviceStatusChange')
+                        this.$em.$fire('onDeviceStatusChange', eventMsg.tunnelId);
+                        this.event = res;
                     }
                 };
                 ws.onerror = error => {

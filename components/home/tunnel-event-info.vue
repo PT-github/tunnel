@@ -125,7 +125,7 @@ export default {
 
     this.tunnelEventTimer = setInterval(() => {
       this.refresh()
-    }, 10 * 1000)
+    }, 30 * 1000)
   },
   methods: {
     refresh() {    // 收到事件推送的时候刷新数据

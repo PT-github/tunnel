@@ -211,9 +211,9 @@ export default {
   mounted() {
     this.init();
 
-    this.homeTimer = setInterval(() => {
-      this.init()
-    }, 5 * 1000)
+    // this.homeTimer = setInterval(() => {
+    //   this.init()
+    // }, 5 * 1000)
   },
   methods: {
     init() {
