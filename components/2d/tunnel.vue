@@ -418,7 +418,7 @@ export default {
           };
           return res;
       }
-      //分段模式显示时候 按outerWidth(地图显示区域)等于100%的比例计算得到 %
+      //固定模式显示时候 按outerWidth(地图显示区域)等于100%的比例计算得到 %
       else {
           let res = {
             ...config,
@@ -640,7 +640,7 @@ export default {
       if(this.tunnelInfo.showMode === 1) {
         defaultLeft =  mapScaleMode1 * ((pileNumber-this.minStartMapStakeMark)) + 10 + 'px';
       }
-      //分段模式显示时候 按outerWidth(地图显示区域)等于100%的比例计算得到 %
+      //固定模式显示时候 按outerWidth(地图显示区域)等于100%的比例计算得到 %
       else{
         defaultLeft = (((pileNumber-this.minStartMapStakeMark) + 10)/ mapLength) * 100 + '%';
       }
@@ -797,16 +797,20 @@ export default {
           ? "rotate(180deg)"
           : ""
       }`;
-      //计算设备位置+10
+      //计算设备位置+5
       let defaultLeft = 0;
       //console.log('device.pileNumber-this.minStartMapStakeMark',mapScaleMode1)
       //分段模式显示时候 按outerWidth(地图显示区域)等于长度1000米的比例计算得到 PX
       if(this.tunnelInfo.showMode === 1) {
-        defaultLeft =  mapScaleMode1 * ((device.pileNumber-this.minStartMapStakeMark)) + 10 + 'px';
+        defaultLeft =  mapScaleMode1 * ((device.pileNumber-this.minStartMapStakeMark))+ 5 + 'px';
+        //如果是最左边第一个设备，则最小左间距为12px，防止设备图标显示不全
+        if((mapScaleMode1 * ((device.pileNumber-this.minStartMapStakeMark))) <= 12){
+          defaultLeft='12px';
+        }
       }
-      //分段模式显示时候 按outerWidth(地图显示区域)等于100%的比例计算得到 %
+      //固定模式显示时候 按outerWidth(地图显示区域)等于100%的比例计算得到 %
       else{
-        defaultLeft = (((device.pileNumber-this.minStartMapStakeMark) + 10)/ mapLength) * 100 + '%';
+        defaultLeft = (((device.pileNumber-this.minStartMapStakeMark))/ mapLength) * 100 + '%';
       }
       //console.log(rightDistance);
       switch (orientationLocation) {

@@ -61,7 +61,6 @@
                     if (eventMsg && eventMsg.tunnelId && eventMsg.type === 'deviceStatusChange') { // 设备状态更新，刷新隧道图
                         //console.log('deviceStatusChange')
                         this.$em.$fire('onDeviceStatusChange', eventMsg.tunnelId);
-                        this.event = res;
                     }
                 };
                 ws.onerror = error => {
