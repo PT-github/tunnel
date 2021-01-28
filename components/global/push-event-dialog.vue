@@ -13,7 +13,8 @@
         services: [ 'alarm' ],
         data () {
             return {
-                event: null
+                event: null,
+                timer: null
             };
         },
         events: {
@@ -70,7 +71,9 @@
                 };
                 ws.onclose = e => {
                     console.error('---------ws断开连接---------', e);
-                    this.connect();
+                    //10秒钟后重新连接
+                    this.timer = setTimeout(()=> { this.connect();clearTimeout(this.timer); }, 10000);
+
                 };
                 this.ws = ws;
             }

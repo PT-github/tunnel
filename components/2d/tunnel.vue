@@ -3,6 +3,33 @@
     <div class="title">
       {{ tunnelInfo.belongsStretch }} - {{ tunnelInfo.tunnelName }}
     </div>
+    <div class="direction-container">
+      <div v-if="
+              tunnelInfo.singleDoubleType === 3 ||
+              tunnelInfo.singleDoubleType === 2
+            "
+           :style="{
+              top: ((tunnelStyle.tunnelLine+30)*2+30)*(1/4)-30+'px'
+            }"
+           class="direction left">
+        <img class="img" src="../../assets/images/tunnel/tunnel-direction.png" />
+        <div class="text">{{ this.tunnelInfo.leftHoleDirection }}</div>
+      </div>
+      <div v-if="
+              tunnelInfo.singleDoubleType === 3 ||
+              tunnelInfo.singleDoubleType === 1
+            "
+           :style="{
+              top: ((tunnelStyle.tunnelLine+30)*2+30)*(3/4)-30+'px'
+            }"
+           class="direction right">
+        <img
+                class="img"
+                src="../../assets/images/tunnel/tunnel-direction-right.png"
+        />
+        <div class="text">{{ this.tunnelInfo.rightHoleDirection }}</div>
+      </div>
+    </div>
     <div class="map" id="map" v-drag ref="orderBox" @scroll="orderScroll"
     :style="mapStyle">
       <!--2d背景图-->
@@ -261,24 +288,6 @@
 
       </div>
     </div>
-    <div v-if="
-            tunnelInfo.singleDoubleType === 3 ||
-            tunnelInfo.singleDoubleType === 2
-          " class="direction left">
-      <img class="img" src="../../assets/images/tunnel/tunnel-direction.png" />
-      <div class="text">{{ this.tunnelInfo.leftHoleDirection }}</div>
-    </div>
-    <div v-if="
-            tunnelInfo.singleDoubleType === 3 ||
-            tunnelInfo.singleDoubleType === 1
-          " class="direction right">
-      <img
-        class="img"
-        src="../../assets/images/tunnel/tunnel-direction-right.png"
-      />
-      <div class="text">{{ this.tunnelInfo.rightHoleDirection }}</div>
-    </div>
-
     <div class="tunnelBunntn" v-if="this.tunnelInfo.showMode === 1">
       <el-button
         v-for="(item, index) in tunnelBunntn"
@@ -391,7 +400,7 @@ export default {
       //左边间隔 隧道开始桩号 减去 设备开始桩号
       let leftMar = startStakeMark - this.minStartMapStakeMark > 0 ? minStartStakeMark - this.minStartMapStakeMark : 0;
       let rightMar = startStakeMarkRight - this.minStartMapStakeMark  > 0 ? startStakeMarkRight - this.minStartMapStakeMark : 0;
-      console.log('rightMar',rightMar)
+      //console.log('rightMar',rightMar)
       //console.log('minStartStakeMark - this.minStartMapStakeMark',minStartStakeMark - this.minStartMapStakeMark)
       //console.log('startStakeMarkRight - this.minStartMapStakeMark',startStakeMarkRight - this.minStartMapStakeMark)
 
@@ -799,7 +808,7 @@ export default {
       else{
         defaultLeft = (((device.pileNumber-this.minStartMapStakeMark) + 10)/ mapLength) * 100 + '%';
       }
-      console.log(rightDistance);
+      //console.log(rightDistance);
       switch (orientationLocation) {
         case 0:
           // 左边
@@ -995,6 +1004,7 @@ export default {
 }
 
 .tunnel-container {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1017,7 +1027,6 @@ export default {
 
 .map {
   width: 80%;
-  margin-top: 36px;
   position: relative;
   display: flex;
   align-items: center;
@@ -1057,6 +1066,11 @@ export default {
     }
   }
 }
+.direction-container {
+  margin-top: 36px;
+  position: relative;
+  width: 100%
+}
 .direction {
   position: absolute;
   font-size: 18px;
@@ -1064,29 +1078,13 @@ export default {
   color: white;
 
   &.left {
-    top: 20%;
     left: 7%;
     transform: translateX(-100%);
   }
 
   &.right {
-    bottom: 44%;
     right: 7%;
     transform: translateX(100%);
-  }
-}
-.full-2d{
-  .direction {
-    &.left {
-      top: 250px;
-      left: 7%;
-      transform: translateX(-100%);
-    }
-    &.right {
-      top: 500px;
-      right: 9%;
-      transform: translateX(100%);
-    }
   }
 }
 .iconTextLeft,.iconTextRight {
