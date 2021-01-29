@@ -125,8 +125,8 @@
                         <el-form-item label="设备配置:">
                             <el-input type="textarea"
                                       style="overflow:hidden; resize:none; "
-                                      :autosize="{ minRows: 2, maxRows: 20 }"
-                                      maxlength="2000"
+                                      :autosize="{ minRows: 5, maxRows: 20 }"
+                                      maxlength="5000"
                                       show-word-limit
                                       placeholder="请输入设备配置信息"
                                       v-model="deviceForm.deviceConfig">

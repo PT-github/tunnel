@@ -58,12 +58,28 @@ var qcxt = {
             var pluginVideoId = "dhVideo" + new Date().getTime();
             switch (recordType) {
                 case "dh"://大华
-                    if (top.location.host.indexOf(data.recordIP) < 0) {
-                        if (top.location.host.indexOf(data.recordIP1) < 0) {
-                            data.recordIP = top.location.hostname;
-                            data.recordPort = 65038;
+                var  dhip=top.location.hostname;
+                var ddhPort=data.recordPort||65038;
+                    if(data.nethost1){
+                        if (top.location.host.indexOf(data.nethost1) >= 0) {
+                            dhip=data.recordIP1;
+                            ddhPort= data.recordPort1||ddhPort;
+                        }
+                    }else if(data.nethost2){
+                        if (top.location.host.indexOf(data.nethost2) >= 0) {
+                            dhip=data.recordIP2;
+                            ddhPort= data.recordPort2||ddhPort;
                         }
                     }
+                    else if(data.nethost3){
+                        if (top.location.host.indexOf(data.nethost3) >= 0) {
+                            dhip=data.recordIP3;
+                            ddhPort= data.recordPort3||ddhPort;
+                        }
+                    }
+                    data.recordIP =dhip;
+                    data.recordPort =parseInt(ddhPort) ;
+                    console.log(data)
                     if (qcxt.video.checkPluginInstall(recordType)) {
                         if ($(elementId).find("[data-channel]").length == 0) {
                             if (window.ActiveXObject || "ActiveXObject" in window) {
@@ -97,7 +113,7 @@ var qcxt = {
                             $(elementId).html('<div class="nop"  style="background-color: #000;position:relative;text-align:color: #FFF;min-height: 50px;center;width:' + width + 'px;height:' + height + 'px;line-height:' + height + 'px;" id="' + pluginVideoId + '"><a type="application/octet-stream" style="color:#FFF;position:absolute;" href="/vlc-3.0.11-win32.exe">请安装控件包</a></div>');
                             return;
                         }
-                        var rtsp=data.rtsp||"rtsp://"+data.username+":"+data.password+"@"+data.recordIP+":"+(data.iRtspPort||554)+"/ch1/main/av_stream";
+                        var rtsp=data.rtsp||data.rtspUrl||data.rtspurl||"rtsp://"+data.username+":"+data.password+"@"+data.recordIP+":"+(data.iRtspPort||554)+"/ch1/main/av_stream";
                         //rtsp://admin:abcd1234@10.99.250.151:554/h264/ch1/main/av_stream
                         $(elementId).html('<object type="application/x-vlc-plugin" id="vlc" events="True" width="'+width+'" height="'+height+'" pluginspage="http://www.videolan.org" codebase="npapi-vlc-2.0.6.tar.xz"><param name="mrl" value="'+rtsp+'" /><param name="autoplay" value="true" /><param name="ShowDisplay" value="false" /><param name="fullscreen" value="true" /> </object>');
                         break;

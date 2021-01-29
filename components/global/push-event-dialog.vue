@@ -71,7 +71,7 @@
                 ws.onclose = e => {
                     console.error('---------ws断开连接---------', e);
                     //10秒钟后重新连接
-                    this.timer = setTimeout(()=> { this.connect();clearTimeout(this.timer); }, 10000);
+                    this.timer = setTimeout(()=> { this.connect();clearTimeout(this.timer); }, 1000*30);
 
                 };
                 this.ws = ws;

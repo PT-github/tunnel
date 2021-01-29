@@ -212,8 +212,7 @@ export default {
     showingList() {
       var list= this.listData ? this.listData.filter(v => v.name.indexOf(this.keyword) !== -1) : [];
       if(list.length==1&&list[0].checkbox){
-        console.log(list)
-        this.onCheck(list[0],0);
+        this.$set(this.checkList, 0, true);
       }
       return list;
     },
@@ -299,7 +298,6 @@ export default {
       if (this.classifyNumber === 'lighting') {
         p.lightNess = this.lightNess;
       }
-
       this.$service._2d.operatePlcDevice(p).then((r) => {
         if(r && r.status && r.status==='-1'){
           this.$message(r.message);
@@ -326,6 +324,7 @@ export default {
 
     onCheck(device, idx) {    // 点击选中
       let isChecked = !this.checkList[idx];
+      console.log('isChecked',isChecked)
       this.$set(this.checkList, idx, isChecked);
       if (device.chainCheckbox) {     // 联动选择
         this.showingList.forEach((v, i) => {
