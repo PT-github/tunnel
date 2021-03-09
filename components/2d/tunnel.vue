@@ -121,7 +121,7 @@
                 (showActiveType === 'all' ||
                   item.classifyNumber === showActiveType)
               "
-              :src="`/static/image/tunnel/${item.deviceTypeCode}_${
+             :src="`/static/image/tunnel/${item.deviceTypeCode}${ item.reamrks=='轴流风机'?'_axial':'' }_${
                 item.deviceCommunicationsState
               }${item.workMode != null ? '_' + item.workMode : ''}.png`"
             />
