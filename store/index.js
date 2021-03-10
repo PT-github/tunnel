@@ -1,4 +1,9 @@
+import tunnel from './modules/tunnel'
 export default {
+    modules: {
+        tunnel
+    },
+
     state: () => ({
         myUserInfo: null,
         buttonAuthList: []

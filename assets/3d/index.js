@@ -14,8 +14,8 @@ import {
 } from 'three';
 import data from '../../assets/3d/data';
 
-import { OBJLoader } from '../../assets/3d/threePlugin/loaders/OBJLoader';
-import { MTLLoader } from '../../assets/3d/threePlugin/loaders/MTLLoader';
+import {OBJLoader} from '../../assets/3d/threePlugin/loaders/OBJLoader';
+import {MTLLoader} from '../../assets/3d/threePlugin/loaders/MTLLoader';
 
 export default class View extends threeBase {
     $;
@@ -28,7 +28,7 @@ export default class View extends threeBase {
             up: new Vector3(0, 1, 0),
             lookAt: new Vector3(0, 0, 0)
         },
-        bgColors: [ '#ffffff', '#353535' ],
+        bgColors: ['#ffffff', '#353535'],
         exposure: 1.5
     };
     fengji = [];
@@ -40,36 +40,36 @@ export default class View extends threeBase {
     canRotated = false;
     canRoateList = [];
 
-    constructor (dom, $, infos) {
+    constructor(dom, $, infos) {
         super(dom);
         this.$ = $;
         console.log(infos);
         this.initBase();
     }
 
-    changeLight (value) {
+    changeLight(value) {
         if (value == '0') {
-            this.currentLight.material[ 1 ].opacity = .0;
+            this.currentLight.material[1].opacity = .0;
         } else {
-            this.currentLight.material[ 1 ].opacity = this.$.lightInfo.brightnessVal / 100.0;
+            this.currentLight.material[1].opacity = this.$.lightInfo.brightnessVal / 100.0;
         }
     }
 
-    resetLightInfo () {
+    resetLightInfo() {
         this.$.lightInfo = this.copyLight;
-        this.currentLight.material[ 1 ].opacity = this.copyLight.brightnessVal / 100.0;
+        this.currentLight.material[1].opacity = this.copyLight.brightnessVal / 100.0;
     }
 
-    setLight (value) {
-        this.currentLight.material[ 1 ].opacity = value / 100.0;
+    setLight(value) {
+        this.currentLight.material[1].opacity = value / 100.0;
     }
 
-    openLight (id, flag) {
+    openLight(id, flag) {
         this.objects = [];
         if (flag) {
             var selectedObjs = this.findObjects('zhaoming');
             for (var i = 0; i < selectedObjs.length; i++) {
-                this.objects.push(selectedObjs[ i ]);
+                this.objects.push(selectedObjs[i]);
             }
             this.outlinePass.selectedObjects = this.objects;
         } else {
@@ -93,7 +93,7 @@ export default class View extends threeBase {
         }
     };
 
-    async initBase () {
+    async initBase() {
         super.init();
         super.setCamera(this.config.camera);
         this.initOutLine();
@@ -101,7 +101,7 @@ export default class View extends threeBase {
         this.initLight();
 
         for (let i = 0; i < data.length; i++) {
-            this.loadObj(data[ i ]);
+            this.loadObj(data[i]);
         }
 
         await this.setInnerCamera();
@@ -116,7 +116,7 @@ export default class View extends threeBase {
         this.bindClick(true);
     }
 
-    async setHouse () {
+    async setHouse() {
         let {scene} = await this.loadModel('/static/models/', 'house.glb');
         scene.scale.set(70, 70, 70);
         scene.traverse(m => {
@@ -136,9 +136,9 @@ export default class View extends threeBase {
         this.scene.add(scene);
     }
 
-    async setFire () {
+    async setFire() {
         let model = await this.loadModel('/static/models/', 'fire.glb');
-        const fire = model.scene.children[ 0 ];
+        const fire = model.scene.children[0];
         fire.name = 'fire';
         fire.scale.set(500, 100, 500);
         fire.position.y += 200;
@@ -156,9 +156,9 @@ export default class View extends threeBase {
         }
     }
 
-    async setDoor () {
+    async setDoor() {
         let model = await this.loadModel('/static/models/', 'door.glb');
-        const door = model.scene.children[ 0 ];
+        const door = model.scene.children[0];
         door.name = 'door';
         door.scale.set(100, 10, 100);
         door.position.z -= 500;
@@ -167,9 +167,9 @@ export default class View extends threeBase {
         this.scene.add(door);
     }
 
-    async setOutCamera () {
+    async setOutCamera() {
         let model = await this.loadModel('/static/models/TV彩色固定摄像机/', '洞外.glb');
-        const camera_out = model.scene.children[ 0 ];
+        const camera_out = model.scene.children[0];
         camera_out.scale.set(100, 100, 100);
         camera_out.position.y += 850;
         camera_out.position.x -= 2500;
@@ -178,9 +178,9 @@ export default class View extends threeBase {
         this.scene.add(camera_out);
     }
 
-    async setInnerCamera () {
+    async setInnerCamera() {
         let model = await this.loadModel('/static/models/VTV车型横洞摄像机/', '洞内.glb');
-        const camera_in = model.scene.children[ 0 ];
+        const camera_in = model.scene.children[0];
         camera_in.name = 'camera';
         camera_in.scale.set(150, 150, 150);
         camera_in.position.y += 700;
@@ -196,7 +196,7 @@ export default class View extends threeBase {
         }
     }
 
-    setDirection () {
+    setDirection() {
         let geometry = new PlaneBufferGeometry(4096, 2048);
         let material = new MeshBasicMaterial({
             map: this.loadTexture('/static/image/2.png'),
@@ -215,16 +215,16 @@ export default class View extends threeBase {
         this.scene.add(direction2);
     }
 
-    reset () {
+    reset() {
         (this.tweenAnimate(this.camera.position, this.config.camera.position.clone(), 1000, null, () => {
             this.controls.target = new Vector3();
             this.controls.update();
         })).start();
     }
 
-    findObject (_objname) {
+    findObject(_objname) {
         for (let i = 0; i < this.objects.length; i++) {
-            let _obj = this.objects[ i ];
+            let _obj = this.objects[i];
             if (_obj.name != null && _obj.name != '') {
                 if (_obj.name == _objname) {
                     return _obj;
@@ -234,10 +234,10 @@ export default class View extends threeBase {
         return null;
     }
 
-    findObjects (_objname) {
+    findObjects(_objname) {
         let findedobj = [];
         for (let i = 0; i < this.clickobjects.length; i++) {
-            let _obj = this.clickobjects[ i ];
+            let _obj = this.clickobjects[i];
             if (_obj.name != null && _obj.name != '') {
                 if (_obj.name == _objname) {
                     findedobj.push(_obj);
@@ -247,55 +247,55 @@ export default class View extends threeBase {
         return findedobj;
     }
 
-    setCheliangLight (item) {
+    setCheliangLight(item) {
         let _objs1 = this.findObjects('chedaojinxing');
         let _objs2 = this.findObjects('chedaotongxing');
         if (item == 1) {
-            _objs1[ 0 ].visible = !_objs1[ 0 ].visible;
-            _objs2[ 0 ].visible = !_objs2[ 0 ].visible;
-            _objs1[ 2 ].visible = !_objs1[ 2 ].visible;
-            _objs2[ 2 ].visible = !_objs2[ 2 ].visible;
+            _objs1[0].visible = !_objs1[0].visible;
+            _objs2[0].visible = !_objs2[0].visible;
+            _objs1[2].visible = !_objs1[2].visible;
+            _objs2[2].visible = !_objs2[2].visible;
         }
         if (item == 2) {
-            _objs1[ 1 ].visible = !_objs1[ 1 ].visible;
-            _objs2[ 1 ].visible = !_objs2[ 1 ].visible;
+            _objs1[1].visible = !_objs1[1].visible;
+            _objs2[1].visible = !_objs2[1].visible;
 
-            _objs1[ 3 ].visible = !_objs1[ 3 ].visible;
-            _objs2[ 3 ].visible = !_objs2[ 3 ].visible;
+            _objs1[3].visible = !_objs1[3].visible;
+            _objs2[3].visible = !_objs2[3].visible;
         }
 
     }
 
-    setTrafficLight (type) {
+    setTrafficLight(type) {
         let _obj = null;
         if (type == 1) {
             _obj = this.findObject('dengganhonglvdeng');
             if (_obj.userData.color1 == null) {
-                _obj.userData.color1 = _obj.material[ 3 ].color.clone();
-                _obj.material[ 3 ].color.set(0xffffff);
+                _obj.userData.color1 = _obj.material[3].color.clone();
+                _obj.material[3].color.set(0xffffff);
             } else {
-                let _color1 = _obj.material[ 3 ].color.clone();
-                _obj.material[ 3 ].color = _obj.userData.color1.clone();
+                let _color1 = _obj.material[3].color.clone();
+                _obj.material[3].color = _obj.userData.color1.clone();
                 _obj.userData.color1 = _color1;
             }
         } else if (type == 2) {
             _obj = this.findObject('dengganhonglvdeng');
             if (_obj.userData.color2 == null) {
-                _obj.userData.color2 = _obj.material[ 1 ].color.clone();
-                _obj.material[ 1 ].color.set(0xffffff);
+                _obj.userData.color2 = _obj.material[1].color.clone();
+                _obj.material[1].color.set(0xffffff);
             } else {
-                let _color2 = _obj.material[ 1 ].color.clone();
-                _obj.material[ 1 ].color = _obj.userData.color2.clone();
+                let _color2 = _obj.material[1].color.clone();
+                _obj.material[1].color = _obj.userData.color2.clone();
                 _obj.userData.color2 = _color2;
             }
         } else if (type == 3) {
             _obj = this.findObject('dengganhonglvdeng');
             if (_obj.userData.color3 == null) {
-                _obj.userData.color3 = _obj.material[ 5 ].color.clone();
-                _obj.material[ 5 ].color.set(0xffffff);
+                _obj.userData.color3 = _obj.material[5].color.clone();
+                _obj.material[5].color.set(0xffffff);
             } else {
-                let _color3 = _obj.material[ 5 ].color.clone();
-                _obj.material[ 5 ].color = _obj.userData.color3.clone();
+                let _color3 = _obj.material[5].color.clone();
+                _obj.material[5].color = _obj.userData.color3.clone();
                 _obj.userData.color3 = _color3;
             }
         }
@@ -303,7 +303,7 @@ export default class View extends threeBase {
         ;
     }
 
-    loadObj (item) {
+    loadObj(item) {
         let mtlLoader = new MTLLoader();
         mtlLoader.setPath('/static/models/');
         mtlLoader.load(item.model + '.mtl', materials => {
@@ -312,7 +312,7 @@ export default class View extends threeBase {
             objLoader.setMaterials(materials);
             objLoader.setPath('/static/models/');
             objLoader.load(item.model + '.obj', (obj) => {
-                obj = obj.children[ 0 ];
+                obj = obj.children[0];
                 obj.scale.x = item.scale.x;
                 obj.scale.y = item.scale.y;
                 obj.scale.z = item.scale.z;
@@ -357,36 +357,36 @@ export default class View extends threeBase {
                 } else if (item.model == 'zhaoming-liangbian') {
                     const lights = this.$.lights;
 
-                    obj.material[ 1 ].color = new Color(0xfff000);
-                    obj.material[ 1 ].emissive = new Color(0xfff000);
-                    obj.material[ 1 ].transparent = true;
-                    obj.material[ 1 ].depthTest = false;
-                    obj.material[ 1 ].depthWrite = false;
+                    obj.material[1].color = new Color(0xfff000);
+                    obj.material[1].emissive = new Color(0xfff000);
+                    obj.material[1].transparent = true;
+                    obj.material[1].depthTest = false;
+                    obj.material[1].depthWrite = false;
                     // obj.position.x += 20000;
 
                     for (let i = 0; i < lights.length; i += 2) {
-                        const m1 = lights[ i ]; //左
-                        const m2 = lights[ i + 1 ]; //右
+                        const m1 = lights[i]; //左
+                        const m2 = lights[i + 1]; //右
                         m1.brightnessVal = Number(m1.brightnessVal);
                         m2.brightnessVal = Number(m2.brightnessVal);
                         let o1 = obj.clone(true);
                         o1.material = [
-                            obj.material[ 0 ].clone(),
-                            obj.material[ 1 ].clone(),
-                            obj.material[ 2 ].clone()
+                            obj.material[0].clone(),
+                            obj.material[1].clone(),
+                            obj.material[2].clone()
                         ];
-                        o1.material[ 1 ].opacity = m1.brightnessVal / 100.0;
+                        o1.material[1].opacity = m1.brightnessVal / 100.0;
                         o1.position.x = 135 * i - 2200;
                         o1.userData.info = m1;
                         this.clickobjects.push(o1);
                         this.addObject(o1);
                         let o2 = o1.clone(true);
                         o2.material = [
-                            obj.material[ 0 ].clone(),
-                            obj.material[ 1 ].clone(),
-                            obj.material[ 2 ].clone()
+                            obj.material[0].clone(),
+                            obj.material[1].clone(),
+                            obj.material[2].clone()
                         ];
-                        o2.material[ 1 ].opacity = m2.brightnessVal / 100.0;
+                        o2.material[1].opacity = m2.brightnessVal / 100.0;
                         o2.position.z = -o2.position.z;
                         o2.rotation.x = 0;
                         o2.userData.info = m2;
@@ -476,7 +476,7 @@ export default class View extends threeBase {
         });
     };
 
-    setSuiDao (obj, target) {
+    setSuiDao(obj, target) {
         let transform = new Object3D();
         transform.scale.copy(obj.scale);
         let obj1 = obj.clone();
@@ -500,7 +500,7 @@ export default class View extends threeBase {
         }
     }
 
-    setFengjiX (obj, target) {
+    setFengjiX(obj, target) {
         let transform = new Object3D();
         transform.scale.copy(obj.scale);
         let obj1 = obj.clone();
@@ -544,12 +544,12 @@ export default class View extends threeBase {
 
     }
 
-    addObject (obj) {
+    addObject(obj) {
         this.objects.push(obj);
         this.scene.add(obj);
     };
 
-    addFengji (obj) {
+    addFengji(obj) {
         if (obj.name == 'fengji-shanye') {
             this.fengji.push(obj);
             obj.geometry.center();
@@ -557,11 +557,11 @@ export default class View extends threeBase {
         }
     }
 
-    bindClick () {
+    bindClick() {
         this.canvas.addEventListener('click', (e) => {
             let raycasters = this.getRaycasters(e, this.clickobjects);
             if (raycasters.length > 0) {
-                const {object, point, instanceId} = raycasters[ 0 ];
+                const {object, point, instanceId} = raycasters[0];
                 if (object.name == 'zhaoming' ||
                     object.name == 'fengji-waikuang' ||
                     object.name == 'fengji-shanye' ||
@@ -633,7 +633,7 @@ export default class View extends threeBase {
                     if (object.name == 'fengji-waikuang' || object.name == 'fengji-shanye') {
                         if (instanceId < this.$.fengjis.length) {
                             this.$.fanDialog = true;
-                            this.$.fanInfo = this.$.fengjis[ instanceId ];
+                            this.$.fanInfo = this.$.fengjis[instanceId];
                         }
                         let matrix = new Matrix4();
                         object.getMatrixAt(instanceId, matrix);

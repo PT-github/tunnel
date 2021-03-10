@@ -1,5 +1,5 @@
 <template>
-  <div v-if="displayMode==='2d'" class="page">
+  <div v-if="displayMode === '2d'" class="page">
     <!--左边-->
     <div class="left">
       <!--隧道图-->
@@ -9,49 +9,68 @@
           <el-radio-group v-model="displayMode" size="medium">
             <el-radio-button label="2d">2d</el-radio-button>
             <el-radio-button label="full2d">2d全屏</el-radio-button>
-            <el-radio-button label="3d" v-if="threeDStatus === '1'">3d</el-radio-button>
+            <el-radio-button label="3d" v-if="threeDStatus === '1'"
+            >3d
+            </el-radio-button
+            >
           </el-radio-group>
         </div>
 
         <!-- 隧道信息 -->
-        <tunnel-component @detail="doShowModalDevice"
-                          ref="tunnel"
-                          :showActiveType="showActiveType">
+        <tunnel-component
+            @detail="doShowModalDevice"
+            ref="tunnel"
+            :showActiveType="showActiveType"
+        >
           <div slot="controls" class="buttons">
-            <div class="button-item" v-for="(item, index) in deviceTypes" :key="index"
-                 @click="doShowModal(item.classifyNumber)">
+            <div
+                class="button-item"
+                v-for="(item, index) in deviceTypes"
+                :key="index"
+                @click="doShowModal(item.classifyNumber)"
+            >
               <div class="img-wrap">
-                <img class="img" :src="require('../../assets/images/warning/icons/'+item.classifyNumber+'.png')">
+                <img
+                    class="img"
+                    :src="
+                    require('../../assets/images/warning/icons/' +
+                      item.classifyNumber +
+                      '.png')
+                  "
+                />
               </div>
               <p>{{ item.classifyName }}</p>
             </div>
           </div>
         </tunnel-component>
-
       </div>
 
       <!-- 隧道左右洞视频 -->
       <div class="videos">
         <div class="video">
-          <VideoRtsp click-to-play
-                     :can-play="!showModal"
-                     v-if="videoList.length"
-                     :title="videoList[0].firstVedioName"
-                     :bg-height="400"
-                     :width="500"
-                     :deviceConfig="videoList[0].deviceConfig"/>
+          <VideoRtsp
+              click-to-play
+              :can-play="!showModal"
+              v-if="videoList.length"
+              :title="videoList[0].firstVedioName"
+              :bg-height="400"
+              :width="500"
+              :deviceConfig="videoList[0].deviceConfig"
+          />
         </div>
 
         <div class="spacer"></div>
 
         <div class="video">
-          <VideoRtsp click-to-play
-                     :can-play="!showModal"
-                     v-if="videoList.length>1"
-                     :title="videoList[1].firstVedioName"
-                     :bg-height="400"
-                     :width="500"
-                     :deviceConfig="videoList[1].deviceConfig"/>
+          <VideoRtsp
+              click-to-play
+              :can-play="!showModal"
+              v-if="videoList.length > 1"
+              :title="videoList[1].firstVedioName"
+              :bg-height="400"
+              :width="500"
+              :deviceConfig="videoList[1].deviceConfig"
+          />
         </div>
       </div>
     </div>
@@ -66,31 +85,48 @@
         <div class="stat-wrap">
           <div class="label">亮度(cd/m2)</div>
           <div class="stat brightness">
-            <template v-if="tunnelData.singleDoubleType===3">
+            <template v-if="tunnelData.singleDoubleType === 3">
               <div class="num">左洞：{{ tunnelData.brightNessLeft || 0 }}</div>
               <div class="num">右洞：{{ tunnelData.brightNessRight || 0 }}</div>
             </template>
-            <div class="num" v-else>{{ tunnelData.brightNessLeft || tunnelData.brightNessRight || 0 }}</div>
+            <div class="num" v-else>
+              {{ tunnelData.brightNessLeft || tunnelData.brightNessRight || 0 }}
+            </div>
           </div>
         </div>
         <div class="stat-wrap">
           <div class="label">CO/VI(ppm/m)</div>
           <div class="stat co">
-            <template v-if="tunnelData.singleDoubleType===3">
+            <template v-if="tunnelData.singleDoubleType === 3">
               <div class="num">左洞：{{ tunnelData.viLeft || 0 }}</div>
               <div class="num">右洞：{{ tunnelData.viRight || 0 }}</div>
             </template>
-            <div class="num" v-else>{{ tunnelData.viLeft || tunnelData.viRight || 0 }}</div>
+            <div class="num" v-else>
+              {{ tunnelData.viLeft || tunnelData.viRight || 0 }}
+            </div>
           </div>
         </div>
-        <div class="stat-wrap"><!--狮子笼专用-->
+        <div class="stat-wrap">
+          <!--狮子笼专用-->
           <div class="label">风速(m/s)</div>
           <div class="stat vi">
-            <template v-if="tunnelData.singleDoubleType===3">
-              <div class="num">左洞：{{ tunnelData.windSpeedLeft || tunnelData.windDirectionLeft || 0 }}</div>
-              <div class="num">右洞：{{ tunnelData.windSpeedRight || tunnelData.windDirectionRight || 0 }}</div>
+            <template v-if="tunnelData.singleDoubleType === 3">
+              <div class="num">
+                左洞：{{
+                  tunnelData.windSpeedLeft || tunnelData.windDirectionLeft || 0
+                }}
+              </div>
+              <div class="num">
+                右洞：{{
+                  tunnelData.windSpeedRight ||
+                  tunnelData.windDirectionRight ||
+                  0
+                }}
+              </div>
             </template>
-            <div class="num" v-else>{{ tunnelData.windSpeedLeft || tunnelData.windSpeedRight || 0 }}</div>
+            <div class="num" v-else>
+              {{ tunnelData.windSpeedLeft || tunnelData.windSpeedRight || 0 }}
+            </div>
           </div>
         </div>
 
@@ -121,68 +157,115 @@
     </div>
 
     <!--弹窗-->
-    <modal-control :device-name="showModalDeviceName" :classify-number="showModalClassify" v-model="showModal"
-                   @update="$refs.tunnel.listDeviceBaseOfTunnelPage()" :tunnel-id="tunnelId"></modal-control>
-
+    <modal-control
+        :device-name="showModalDeviceName"
+        :classify-number="showModalClassify"
+        v-model="showModal"
+        @update="$refs.tunnel.listDeviceBaseOfTunnelPage()"
+        :tunnel-id="tunnelId"
+    ></modal-control>
   </div>
-  <div v-else-if="displayMode==='3d'">
-    <div style="width:100%;">
-      <iframe :src='iframeUrl' v-if="iframeUrl" class="myframe" frameborder="0" scrolling="auto"
-              style="position:absolute;bottom: 0;left: 0;z-index:1"></iframe>
-    </div>
+  <div v-else-if="displayMode === '3d'">
+    <three-d-view ref="ThreeDViewRef" :tunnel-devices="deviceList"/>
+    <!--    <div style="width:100%;">-->
+    <!--      <iframe :src='iframeUrl' v-if="iframeUrl" class="myframe" frameborder="0" scrolling="auto"-->
+    <!--              style="position:absolute;bottom: 0;left: 0;z-index:1"></iframe>-->
+    <!-- <iframe
+      src="http://172.16.22.233:5000"
+      class="myframe"
+      frameborder="0"
+      scrolling="auto"
+      style="position:absolute;bottom: 0;left: 0;z-index:1"
+    ></iframe> -->
+    <!--    </div>-->
     <div class="switcher-wrapper threed">
       <el-radio-group v-model="displayMode" size="medium">
         <div class="page-list">
           <el-radio-button label="2d">2d</el-radio-button>
           <el-radio-button label="full2d">2d全屏</el-radio-button>
-          <el-radio-button label="3d" v-if="threeDStatus === '1'">3d</el-radio-button>
+          <el-radio-button label="3d" v-if="threeDStatus === '1'"
+          >3d
+          </el-radio-button
+          >
         </div>
       </el-radio-group>
     </div>
   </div>
-  <div v-else-if="displayMode==='full2d'" class="full-2d">
+  <div v-else-if="displayMode === 'full2d'" class="full-2d">
     <!--控制3d和2d-->
     <div class="switcher-wrapper threed">
       <el-radio-group v-model="displayMode" size="medium">
         <div class="page-list">
           <el-radio-button label="2d">2d</el-radio-button>
           <el-radio-button label="full2d">2d全屏</el-radio-button>
-          <el-radio-button label="3d" v-if="threeDStatus === '1'">3d</el-radio-button>
+          <el-radio-button label="3d" v-if="threeDStatus === '1'"
+          >3d
+          </el-radio-button
+          >
         </div>
       </el-radio-group>
     </div>
-    <tunnel-component @detail="doShowModalDevice" full-screen ref="tunnel"
-                      :showActiveType="showActiveType"></tunnel-component>
+
+    <tunnel-component
+        @detail="doShowModalDevice"
+        full-screen
+        ref="tunnel"
+        :showActiveType="showActiveType"/>
+
     <div class="buttons">
-      <div class="button-item" v-for="(item, index) in deviceTypes" :key="index"
-           @click="doShowModal(item.classifyNumber)">
+      <div
+          class="button-item"
+          v-for="(item, index) in deviceTypes"
+          :key="index"
+          @click="doShowModal(item.classifyNumber)"
+      >
         <div class="img-wrap">
-          <img class="img"
-               :src="require('../../assets/images/warning/icons/'+item.classifyNumber+'.png')">
+          <img
+              class="img"
+              :src="
+              require('../../assets/images/warning/icons/' +
+                item.classifyNumber +
+                '.png')
+            "
+          />
         </div>
         <p>{{ item.classifyName }}</p>
       </div>
     </div>
     <!--弹窗-->
-    <modal-control :device-name="showModalDeviceName" :classify-number="showModalClassify" v-model="showModal"
-                   @update="$refs.tunnel.listDeviceBaseOfTunnelPage()" :tunnel-id="tunnelId"></modal-control>
+    <modal-control
+        :device-name="showModalDeviceName"
+        :classify-number="showModalClassify"
+        v-model="showModal"
+        @update="$refs.tunnel.listDeviceBaseOfTunnelPage()"
+        :tunnel-id="tunnelId"
+    ></modal-control>
   </div>
 </template>
 
 <script>
-import TunnelComponent from '../../components/2d/tunnel';
-import TipsTitle from '../../components/index/tips-title';
-import VideoRtsp from '../../components/video/video-rtsp';
-import TunnelEventInfo from '../../components/home/tunnel-event-info';
-import ModalControl from '../../components/2d/modal-control';
+import TunnelComponent from '../../components/2d/tunnel'
+import TipsTitle from '../../components/index/tips-title'
+import VideoRtsp from '../../components/video/video-rtsp'
+import TunnelEventInfo from '../../components/home/tunnel-event-info'
+import ModalControl from '../../components/2d/modal-control'
+
+import ThreeDView from './3d'
 
 export default {
-  components: {TunnelComponent, TipsTitle, VideoRtsp, TunnelEventInfo, ModalControl},
+  components: {
+    ThreeDView,
+    TunnelComponent,
+    TipsTitle,
+    VideoRtsp,
+    TunnelEventInfo,
+    ModalControl,
+  },
   services: ['_2d'],
   watch: {
-    '$route': function () {
-      location.reload();
-    }
+    $route: function () {
+      location.reload()
+    },
   },
 
   data() {
@@ -191,16 +274,19 @@ export default {
       deviceList: [],
       videoList: [],
       deviceTypes: [],
-      showModal: false,   // 弹窗
-      showModalClassify: '',  // 弹窗的设备分类
-      showModalDeviceName: null,   // 弹窗选中的设备名
+      showModal: false, // 弹窗
+      showModalClassify: '', // 弹窗的设备分类
+      showModalDeviceName: null, // 弹窗选中的设备名
       showActiveType: 'all',
-      iframeUrl: `/home/3d?tunnelId=${this.$route.query.tunnelId}`,
+      // iframeUrl: `/home/3d?tunnelId=${this.$route.query.tunnelId}`,
+      iframeUrl: `/static/3d/index.html`,
       tunnelId: '',
       tunnelData: {},
       threeDStatus: '0',
-      homeTimer: null
-    };
+      homeTimer: null,
+      maxEndMapStakeMark: 0,
+      minStartMapStakeMark: 0,
+    }
   },
 
   beforeDestroy() {
@@ -209,61 +295,268 @@ export default {
   },
 
   mounted() {
-    this.init();
+    // console.log(this.$store.dispatch('TUNNEL_DEVICES'))
+
+    this.$store.dispatch('TUNNEL_DEVICES', this.$route.query.tunnelId)
+
+    this.init()
+
+    window.addEventListener('message', function (event) {
+      var data = event.data
+
+      console.log('message', data)
+      switch (data.msgType) {
+        case "loaded": // 初始化完成，可以添加设备主体和设备
+          var msg = {
+            msgType: "loadTunnel",
+            msgData: {
+              tunnelId: "a32932b8-7355-4de5-adf9-034075c89d2c", // 隧道id
+              leftHoleLength: 1056, // 左洞长度（米）
+              rightHoleLength: 1107, // 右洞长度（米）
+              endStakeMark: 710213,  // 左洞结束桩号（桩号米）
+              endStakeMarkRight: 710253, // 右洞结束桩号（桩号米）
+              laneNums: 3,  // 车道数（个）
+              startStakeMark: 709157,  // 左洞开始桩号（桩号米）
+              startStakeMarkRight: 709146,  // 右洞开始桩号（桩号米）
+              leftHoleDirection: "岳阳方向", // 左洞方向
+              rightHoleDirection: "湘潭方向", // 右洞方向
+              singleDoubleType: 3, // 单双洞类型（1单右洞 2单左洞 3双洞）
+            }
+          }
+          window.frames[0].postMessage(msg); // 添加隧道
+
+          ////////////////////////////////////////////////////////////////////////
+          // 测试消防器材
+          for (var i = 0; i < 10; ++i) {
+            var msg1 = {
+              msgType: "addDevice",
+              msgData: {
+                id: "6703006a-9b93-4147-9e78-ef53483a2d8" + i, // 设备id
+                deviceTypeCode: "conflagration", // 设备类型  火灾消防
+                orientationLocation: 0, //位置类型
+                leftRightFlag: 1,// 左右洞标识（1右洞，2左洞）
+                pileNumber: 709160 + i * 50,// 设备桩号
+                deviceName: "火灾消防设备", // 设备名称
+                deviceCommunicationsState: 0, // 设备状态
+                deviceCommunicationsStateName: "正常",// 设备状态描述
+              }
+            }
+            window.frames[0].postMessage(msg1); // 添加设备
+          }
+          ////////////////////////////////////////////////////////////////////////
+          // 测试风机
+          var msg2 = {
+            msgType: "addDevice",
+            msgData: {
+              id: "1703006a-9b93-4147-9e78-ef53483a2d8", // 设备id
+              deviceTypeCode: "draughtfan", // 设备类型  火灾消防
+              orientationLocation: 1, //位置类型
+              leftRightFlag: 1,// 左右洞标识（1右洞，2左洞）
+              pileNumber: 709157,// 设备桩号
+              deviceName: "风机1", // 设备名称
+              deviceCommunicationsState: 0, // 设备状态
+              deviceCommunicationsStateName: "正常",// 设备状态描述
+            }
+          }
+          window.frames[0].postMessage(msg2); // 添加设备
+
+          ////////////////////////////////////////////////////////////////////////
+          // 测试情报板M
+          var msg3 = {
+            msgType: "addDevice",
+            msgData: {
+              id: "1703006a-9b93-4147-9e78-3", // 设备id
+              deviceTypeCode: "intelligenceboard", // 设备类型  情报板
+              deviceSubtypeCode: "M",  // 设备子类型  情报板M
+              orientationLocation: 0, //位置类型 情报板M位置固定居中 此参数无效
+              leftRightFlag: 1,// 左右洞标识（1右洞，2左洞）
+              pileNumber: 709130,// 设备桩号
+              deviceName: "情报板M", // 设备名称
+              deviceCommunicationsState: 0, // 设备状态
+              deviceCommunicationsStateName: "正常",// 设备状态描述
+              contentText: "道路千万条,安全第一条,行车不规范,亲人两行泪", // 显示文本
+            }
+          }
+          window.frames[0].postMessage(msg3); // 添加设备
+
+          ////////////////////////////////////////////////////////////////////////
+          // 测试情报板F
+          var msg4 = {
+            msgType: "addDevice",
+            msgData: {
+              id: "1703006a-9b93-4147-9e78-4", // 设备id
+              deviceTypeCode: "intelligenceboard", // 设备类型  情报板
+              deviceSubtypeCode: "F",  // 设备子类型  情报板F
+              orientationLocation: 0, //位置类型 情报板F位置固定靠右 此参数无效
+              leftRightFlag: 1,// 左右洞标识（1右洞，2左洞）
+              pileNumber: 709120,// 设备桩号
+              deviceName: "情报板M", // 设备名称
+              deviceCommunicationsState: 0, // 设备状态
+              deviceCommunicationsStateName: "正常",// 设备状态描述
+              contentText: "众志成城\n抗击疫情", // 显示文本
+            }
+          }
+          window.frames[0].postMessage(msg4); // 添加设备
+          ////////////////////////////////////////////////////////////////////////
+          // 照明灯
+          for (var i = 0; i < 10; ++i) {
+            var msg5 = {
+              msgType: "addDevice",
+              msgData: {
+                id: "1703006a-9b93-4147-9e78-5" + i, // 设备id
+                deviceTypeCode: "lighting", // 设备类型  照明灯
+                orientationLocation: 0, //位置类型 照明灯应该只有0和10两种位置
+                leftRightFlag: 1,// 左右洞标识（1右洞，2左洞）
+                pileNumber: 709160 + i * 30,// 设备桩号
+                deviceName: "照明灯", // 设备名称
+                deviceCommunicationsState: i % 2, // 设备状态
+                deviceCommunicationsStateName: "正常",// 设备状态描述
+              }
+            }
+            window.frames[0].postMessage(msg5); // 添加设备
+          }
+          ////////////////////////////////////////////////////////////////////////
+          // 照明灯回路
+          var msg6 = {
+            msgType: "addDevice",
+            msgData: {
+              id: "1703006a-9b93-4147-9e78-6", // 设备id
+              deviceTypeCode: "lightingloop", // 设备类型  照明灯
+              orientationLocation: 10, //位置类型 照明灯应该只有0和10两种位置
+              leftRightFlag: 1,// 左右洞标识（1右洞，2左洞）
+              pileNumber: 709170,// 设备桩号
+              deviceName: "照明灯", // 设备名称
+              deviceCommunicationsState: 0, // 设备状态
+              deviceCommunicationsStateName: "正常",// 设备状态描述
+            }
+          }
+          window.frames[0].postMessage(msg6); // 添加设备
+
+          break;
+
+        case "clickDevice": // 点击选择某设备
+          console.log("click device:" + data.msgData);
+          break;
+      }
+    })
 
     // this.homeTimer = setInterval(() => {
     //   this.init()
     // }, 5 * 1000)
   },
   methods: {
+
+    // 隧道的设备列表
+    listDeviceBaseOfTunnelPage() {
+      this.$service._2d.getTunnelDevices(this.$route.query.tunnelId).then((res) => {
+        const supportList = [
+          'signallamp',
+          'laneIndicator',
+          'urgentphone',
+          'broadcast',
+          'conflagration',
+          'guidelight',
+          'lighting',
+          'waterlevel',
+          'electronicfence',
+          'environment',
+          'tunneldoor',
+          'draughtfan',
+          'video',
+          'intelligenceboard',
+        ]
+        let list = res.filter((v) => {
+          let support = supportList.includes(v.classifyNumber)
+          if (!support) console.warn('不支持显示设备', v)
+          return support // positionFlag为空不显示
+        })
+
+
+        this.deviceList = list
+        // 对比设备与隧道的起止桩号 获取隧道地图的长度
+        for (let index in this.deviceList) {
+          if (this.maxEndMapStakeMark > 0) {
+            this.maxEndMapStakeMark = Math.max(
+                this.deviceList[index].pileNumber,
+                this.maxEndMapStakeMark
+            )
+          } else {
+            this.maxEndMapStakeMark = this.deviceList[index].pileNumber
+          }
+          if (this.minStartMapStakeMark > 0) {
+            this.minStartMapStakeMark = Math.min(
+                this.deviceList[index].pileNumber,
+                this.minStartMapStakeMark
+            )
+          } else {
+            this.minStartMapStakeMark = this.deviceList[index].pileNumber
+          }
+        }
+
+        console.log(this.deviceList)
+
+        // this.$refs.ThreeDViewRef.initTunnel()
+        // this.$emit('loaded', res)
+      })
+    },
+
     init() {
-      this.tunnelId = this.$route.query.tunnelId;
-      this.$service._2d.getTunnelVideos(this.tunnelId).then(res => {   // 获取隧道视频
-        this.videoList = res;
-      });
-      this.$service._2d.getTunnelDeviceTypes(this.tunnelId).then(res => {  // 获取隧道设备类型
-        const deviceTypeis = res.filter(item => item.classifyName !== '控制器' && item.classifyName !== '诱导灯' && item.classifyName !== '电子围栏' && item.classifyNumber !== 'other' )
+      this.tunnelId = this.$route.query.tunnelId
+      this.$service._2d.getTunnelVideos(this.tunnelId).then((res) => {
+        // 获取隧道视频
+        this.videoList = res
+      })
+
+
+      this.$service._2d.getTunnelDeviceTypes(this.tunnelId).then((res) => {
+        // 获取隧道设备类型
+        const deviceTypeis = res.filter(
+            (item) =>
+                item.classifyName !== '控制器' &&
+                item.classifyName !== '诱导灯' &&
+                item.classifyName !== '电子围栏' &&
+                item.classifyNumber !== 'other'
+        )
+
+        this.deviceTypes = [
+          {classifyName: '全部', classifyNumber: 'all'},
+        ].concat(deviceTypeis)
+
         // console.log(res, 'device types')
         // console.log(deviceTypeis, 'device types filter')
-        this.deviceTypes = [{classifyName: '全部', classifyNumber: 'all'}].concat(deviceTypeis);
-      });
+        // console.log(this.deviceTypes)
+      })
 
       // 获取是否显示3D
-      this.$service._2d.getTunnelShow3D().then(res => {
-        const threeDInfo = [...res].find(item => item.name === 'Show3D')
+      this.$service._2d.getTunnelShow3D().then((res) => {
+        const threeDInfo = [...res].find((item) => item.name === 'Show3D')
         // value === '1' 开启
         if (threeDInfo && threeDInfo.value) this.threeDStatus = threeDInfo.value
-
       })
     },
 
     onLoadTunnelData(e) {
-      this.tunnelData = e;
+      this.tunnelData = e
       // console.log(e)
     },
 
     doShowModalDevice(device) {
-      this.doShowModal(device.classifyNumber, device.deviceName);
+      this.doShowModal(device.classifyNumber, device.deviceName)
     },
 
     doShowModal(classifyNumber, deviceName) {
-      this.showActiveType = classifyNumber;
-      if (classifyNumber === 'all') return;
-      this.showModal = true;
-      this.showModalDeviceName = deviceName;
-      this.showModalClassify = classifyNumber;
-    }
-  }
-};
+      this.showActiveType = classifyNumber
+      if (classifyNumber === 'all') return
+      this.showModal = true
+      this.showModalDeviceName = deviceName
+      this.showModalClassify = classifyNumber
+    },
+  },
+}
 </script>
 
 <style scoped lang="less">
 
-.myframe {
-  width: 100vw;
-  height: 90vh;
-  top: 100px;
-}
 
 .switcher-wrapper {
   position: absolute;
@@ -286,7 +579,6 @@ export default {
     font-size: 22px;
     color: #1e6bc8;
   }
-
 }
 
 .full-2d {
@@ -382,23 +674,23 @@ export default {
       .num {
         font-size: 13px;
         font-weight: bold;
-        color: #C1D9FF;
+        color: #c1d9ff;
         line-height: 20px;
         text-align: center;
       }
 
       &.brightness {
-        background: url("../../assets/images/warning/icons/brightness.png") no-repeat;
+        background: url('../../assets/images/warning/icons/brightness.png') no-repeat;
         background-size: 100% 100%;
       }
 
       &.co {
-        background: url("../../assets/images/warning/icons/co.png") no-repeat;
+        background: url('../../assets/images/warning/icons/co.png') no-repeat;
         background-size: 100% 100%;
       }
 
       &.vi {
-        background: url("../../assets/images/warning/icons/vi.png") no-repeat;
+        background: url('../../assets/images/warning/icons/vi.png') no-repeat;
         background-size: 100% 100%;
       }
     }
