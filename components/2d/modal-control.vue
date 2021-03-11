@@ -61,7 +61,7 @@
           </div>
         </div>
         <ul class="scroll">
-          <template v-for="(item,idx) in showingList" >  
+          <template v-for="(item,idx) in showingList" >
             <li class="device-item">
               <div class="idx">{{ idx + 1 }}</div>
               <div class="content">
@@ -83,7 +83,7 @@
                 <div v-if="item.statusStr">{{ item.statusStr }}</div>
               </div>
               <div v-if="item.operaBtn" class="view-btn" @click="onOperaBtnClick(item)">
-               
+
                 {{ item.operaBtn }}
               </div>
               <el-checkbox v-if="item.checkbox"

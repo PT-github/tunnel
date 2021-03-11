@@ -6,89 +6,6 @@
             frameborder="0"
             scrolling="auto"
             style="position:absolute;bottom: 0;left: 0;z-index:1"/>
-    <!--    <div id="container" width="100%" height="100%">-->
-    <!--      <div class="btn">-->
-    <!--        <div size="mini" @click="reset()">复位</div>-->
-    <!--      </div>-->
-    <!--    </div>-->
-    <!--    <dev-info v-if="devInfoVisible"-->
-    <!--              @refreshData="updateUI"-->
-    <!--              @openLight="openLight"-->
-    <!--              @setLight="setLight"-->
-    <!--              ref="devInfo"-->
-    <!--              @close="close"-->
-    <!--    />-->
-
-    <!--    <dev-details ref="devDetails" @close="close"/>-->
-
-    <!--    <div class="mydialog" v-if="lightDialog">-->
-    <!--      <img id="close" @click="close" src="../../assets/3d/u1033.png" alt/>-->
-    <!--      <div class="title">-->
-    <!--        <div class="icon">-->
-    <!--          <img src="../../assets/3d/u1042.png" alt/>-->
-    <!--        </div>-->
-    <!--        <div class="label">单灯控制</div>-->
-    <!--      </div>-->
-    <!--      <div class="content2">-->
-    <!--        <table>-->
-    <!--          <tr>-->
-    <!--            <td style="width:80px">设备状态:</td>-->
-    <!--            <td>-->
-    <!--              <el-switch-->
-    <!--                  active-value="1"-->
-    <!--                  inactive-value="0"-->
-    <!--                  @change="changeLight"-->
-    <!--                  v-model="lightInfo.switchStatus"-->
-    <!--              ></el-switch>-->
-    <!--            </td>-->
-    <!--          </tr>-->
-    <!--          <tr>-->
-    <!--            <td>设备亮度:</td>-->
-    <!--            <td>-->
-    <!--              <el-slider style="width:200px" v-model="lightInfo.brightnessVal"-->
-    <!--                         @input="setLight"></el-slider>-->
-    <!--            </td>-->
-    <!--          </tr>-->
-    <!--        </table>-->
-    <!--        <div class="footer">-->
-    <!--          <div class="btn1" @click="close">取消</div>-->
-    <!--          <div class="btn1" @click="submit">确定</div>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </div>-->
-
-    <!--    <div class="mydialog" v-if="fanDialog">-->
-    <!--      <img id="close" @click="close2" src="../../assets/3d/u1033.png" alt/>-->
-    <!--      <div class="title">-->
-    <!--        <div class="icon">-->
-    <!--          <img src="../../assets/3d/u1042.png" alt/>-->
-    <!--        </div>-->
-    <!--        <div class="label">风扇控制</div>-->
-    <!--      </div>-->
-    <!--      <div class="content2">-->
-    <!--        <table>-->
-    <!--          <tr>-->
-    <!--            <td>运行状态</td>-->
-    <!--            <td>-->
-    <!--              <el-radio-group @change="change" v-model="controls">-->
-    <!--                <el-radio label="0">关闭</el-radio>-->
-    <!--                <el-radio label="1">正转</el-radio>-->
-    <!--                <el-radio label="2">反转</el-radio>-->
-    <!--              </el-radio-group>-->
-    <!--            </td>-->
-    <!--          </tr>-->
-    <!--        </table>-->
-    <!--        <div class="footer">-->
-    <!--          <div class="btn1" @click="close2">取消</div>-->
-    <!--          <div class="btn1" @click="submit2">确定</div>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </div>-->
-
-    <!--弹窗-->
-<!--    <modal-control :classify-number="classifyNumber"-->
-<!--                   v-model="showModal"-->
-<!--                   :tunnel-id="tunnelId"/>-->
   </div>
 </template>
 
@@ -107,7 +24,7 @@ import ModalControl from '../../components/2d/modal-control';
 // };
 
 export default {
-  components: {ModalControl, DevInfo, DevDetails},
+  // components: {ModalControl, DevInfo, DevDetails},
   props: {
     tunnelId: {
       type: String,

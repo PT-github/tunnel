@@ -1,12 +1,12 @@
 <template>
   <div class="tunnel-container">
     <div class="title">
-      {{ tunnelInfo.belongsStretch }} - {{ tunnelInfo.tunnelName }}
+      {{ tunnelInfoData.belongsStretch }} - {{ tunnelInfoData.tunnelName }}
     </div>
     <div class="direction-container">
       <div
           v-if="
-          tunnelInfo.singleDoubleType === 3 || tunnelInfo.singleDoubleType === 2
+          tunnelInfoData.singleDoubleType === 3 || tunnelInfoData.singleDoubleType === 2
         "
           :style="{
           top: ((tunnelStyle.tunnelLine + 30) * 2 + 30) * (1 / 4) - 30 + 'px',
@@ -17,11 +17,11 @@
             class="img"
             src="../../assets/images/tunnel/tunnel-direction.png"
         />
-        <div class="text">{{ this.tunnelInfo.leftHoleDirection }}</div>
+        <div class="text">{{ this.tunnelInfoData.leftHoleDirection }}</div>
       </div>
       <div
           v-if="
-          tunnelInfo.singleDoubleType === 3 || tunnelInfo.singleDoubleType === 1
+          tunnelInfoData.singleDoubleType === 3 || tunnelInfoData.singleDoubleType === 1
         "
           :style="{
           top: ((tunnelStyle.tunnelLine + 30) * 2 + 30) * (3 / 4) - 30 + 'px',
@@ -32,7 +32,7 @@
             class="img"
             src="../../assets/images/tunnel/tunnel-direction-right.png"
         />
-        <div class="text">{{ this.tunnelInfo.rightHoleDirection }}</div>
+        <div class="text">{{ this.tunnelInfoData.rightHoleDirection }}</div>
       </div>
     </div>
     <div
@@ -48,8 +48,8 @@
         <!--类型是左洞或者双洞，展示左洞的图-->
         <template
             v-if="
-            tunnelInfo.singleDoubleType === 3 ||
-              tunnelInfo.singleDoubleType === 2
+            tunnelInfoData.singleDoubleType === 3 ||
+              tunnelInfoData.singleDoubleType === 2
           "
         >
           <div
@@ -68,13 +68,13 @@
             }"
           >
             <div class="line-side"></div>
-            <template v-for="(v, i) in tunnelInfo.laneNums">
+            <template v-for="(v, i) in tunnelInfoData.laneNums">
               <div
                   class="line-road"
                   v-if="i !== 0"
                   :style="{
                   margin: `${tunnelStyle.contentHeight /
-                    tunnelInfo.laneNums}px 0`,
+                    tunnelInfoData.laneNums}px 0`,
                 }"
               ></div>
             </template>
@@ -83,7 +83,7 @@
         </template>
 
         <!--类型是单右洞，展示中间间隔与左洞为透明状态-->
-        <template v-if="tunnelInfo.singleDoubleType === 1">
+        <template v-if="tunnelInfoData.singleDoubleType === 1">
           <div style="opacity:0.2;filter:alpha(opacity=20);">
             <div
                 class="tunnel-wall"
@@ -101,13 +101,13 @@
               }"
             >
               <div class="line-side"></div>
-              <template v-for="(v, i) in tunnelInfo.laneNums">
+              <template v-for="(v, i) in tunnelInfoData.laneNums">
                 <div
                     class="line-road"
                     v-if="i !== 0"
                     :style="{
                     margin: `${tunnelStyle.contentHeight /
-                      tunnelInfo.laneNums}px 0`,
+                      tunnelInfoData.laneNums}px 0`,
                   }"
                 ></div>
               </template>
@@ -120,7 +120,7 @@
         <div style="height: 30px"></div>
 
         <!--类型是单左洞，展示中间间隔与右洞为透明状态-->
-        <template v-if="tunnelInfo.singleDoubleType === 2">
+        <template v-if="tunnelInfoData.singleDoubleType === 2">
           <div style="opacity:0.2;filter:alpha(opacity=20);">
             <div
                 class="tunnel-line"
@@ -130,13 +130,13 @@
               }"
             >
               <div class="line-side"></div>
-              <template v-for="(v, i) in tunnelInfo.laneNums">
+              <template v-for="(v, i) in tunnelInfoData.laneNums">
                 <div
                     class="line-road"
                     v-if="i !== 0"
                     :style="{
                     margin: `${tunnelStyle.contentHeight /
-                      tunnelInfo.laneNums}px 0`,
+                      tunnelInfoData.laneNums}px 0`,
                   }"
                 ></div>
               </template>
@@ -156,8 +156,8 @@
         <!--类型是右洞或者双洞，展示右洞的图-->
         <template
             v-if="
-            tunnelInfo.singleDoubleType === 3 ||
-              tunnelInfo.singleDoubleType === 1
+            tunnelInfoData.singleDoubleType === 3 ||
+              tunnelInfoData.singleDoubleType === 1
           "
         >
           <div
@@ -168,13 +168,13 @@
             }"
           >
             <div class="line-side"></div>
-            <template v-for="(v, i) in tunnelInfo.laneNums">
+            <template v-for="(v, i) in tunnelInfoData.laneNums">
               <div
                   class="line-road"
                   v-if="i !== 0"
                   :style="{
                   margin: `${tunnelStyle.contentHeight /
-                    tunnelInfo.laneNums}px 0`,
+                    tunnelInfoData.laneNums}px 0`,
                 }"
               ></div>
             </template>
@@ -191,7 +191,7 @@
         </template>
 
         <!--设备列表-->
-        <template v-for="item in deviceList">
+        <template v-for="item in tunnelDevices">
 
           <el-popover placement="top" trigger="hover">
             <div class="popover">
@@ -234,8 +234,8 @@
 
         <!-- 隧道空洞、人行横洞、车辆横洞、配电房、水泵房 -->
         <template
-            v-if="tunnelInfo.emptyrecordList"
-            v-for="empty in tunnelInfo.emptyrecordList"
+            v-if="tunnelInfoData.emptyrecordList"
+            v-for="empty in tunnelInfoData.emptyrecordList"
         >
           <div :style="getEmptyStyle(empty)">
             <span v-if="empty.emptyType === 3" style="font-size: 14px"
@@ -252,7 +252,7 @@
 
       <div
           v-if="
-          tunnelInfo.singleDoubleType === 3 || tunnelInfo.singleDoubleType === 2
+          tunnelInfoData.singleDoubleType === 3 || tunnelInfoData.singleDoubleType === 2
         "
           v-for="(item, index) in tunnelBunntntt"
           :key="index + 'a'"
@@ -260,22 +260,22 @@
       >
         <span
             class="iconTextLeft"
-            v-for="(item, i) in tunnelInfo.laneNums"
+            v-for="(item, i) in tunnelInfoData.laneNums"
             :style="backleft(i, 2)"
         >
           <span
               style="margin-left: -0.15rem"
               class="el-icon-back iconLeft"
-              v-for="(item, i) in tunnelInfo.laneNums"
+              v-for="(item, i) in tunnelInfoData.laneNums"
               :key="i + 'b'"
           ></span>
-          {{ tunnelInfo.leftHoleDirection }}</span
+          {{ tunnelInfoData.leftHoleDirection }}</span
         >
       </div>
 
       <div
           v-if="
-          tunnelInfo.singleDoubleType === 3 || tunnelInfo.singleDoubleType === 1
+          tunnelInfoData.singleDoubleType === 3 || tunnelInfoData.singleDoubleType === 1
         "
           v-for="(item, index) in tunnelBunntntt"
           :key="index + 'c'"
@@ -283,20 +283,20 @@
       >
         <span
             class="iconTextRight"
-            v-for="(item, i) in tunnelInfo.laneNums"
+            v-for="(item, i) in tunnelInfoData.laneNums"
             :style="backleft(i, 1)"
         >
-          {{ tunnelInfo.rightHoleDirection }}
+          {{ tunnelInfoData.rightHoleDirection }}
           <i
               class="el-icon-right iconLeft"
-              v-for="(item, i) in tunnelInfo.laneNums"
+              v-for="(item, i) in tunnelInfoData.laneNums"
               :key="i + 'd'"
           ></i
           ></span>
       </div>
     </div>
 
-    <div class="tunnelBunntn" v-if="this.tunnelInfo.showMode === 1">
+    <div class="tunnelBunntn" v-if="this.tunnelInfoData.showMode === 1">
       <el-button
           v-for="(item, index) in tunnelBunntn"
           :key="index"
@@ -318,18 +318,24 @@ export default {
   },
   services: ['_2d', 'tunnel'],
   props: {
+    // tunnelInfoData: {
+    //   type: Object,
+    //   default: () => {}
+    // },
     showActiveType: {
       type: String | Number,
       default: 'all',
     }, // 正在展示的type
     wait: Boolean,
     fullScreen: Boolean,
+
   },
   data() {
     return {
       waitShowList: {},
-      tunnelId: this.$route.query.tunnelId,
-      deviceList: [],
+      tunnelId: this.$route.params.id,
+      tunnelInfoData: {},
+      tunnelDevices: [],
       modal: false,
       //隧道基本信息
       outerWidth: 0,
@@ -337,7 +343,6 @@ export default {
       buttonClass: 0,
       gapX: 0,
       tunnelBunntntt: [],
-      tunnelInfo: {},
       tunnelToDTimer: null,
       maxEndMapStakeMark: 0,
       minStartMapStakeMark: 0,
@@ -369,7 +374,7 @@ export default {
         laneNums,
         startStakeMark,
         startStakeMarkRight,
-      } = this.tunnelInfo
+      } = this.tunnelInfoData
       let config = {
         sideHeight: 6, // 左右两边的线的宽度
         padding: 10, // 背景的padding
@@ -422,7 +427,7 @@ export default {
       //console.log('startStakeMarkRight - this.minStartMapStakeMark',startStakeMarkRight - this.minStartMapStakeMark)
 
       //分段模式显示时候 按outerWidth(地图显示区域)等于长度1000米的比例计算得到 PX
-      if (this.tunnelInfo.showMode === 1) {
+      if (this.tunnelInfoData.showMode === 1) {
         let res = {
           ...config,
           leftWidth: mapScaleMode1 * leftHoleLength + 'px',
@@ -450,9 +455,9 @@ export default {
     },
 
     mapStyle() {
-      if (this.tunnelInfo.showMode === 0) {
+      if (this.tunnelInfoData.showMode === 0) {
         return {}
-      } else if (this.tunnelInfo.showMode === 1) {
+      } else if (this.tunnelInfoData.showMode === 1) {
         return {
           overflowX: 'scroll',
           overflowY: 'hidden',
@@ -461,11 +466,11 @@ export default {
     },
 
     tunnel2dStyle() {
-      if (this.tunnelInfo.showMode === 0) {
+      if (this.tunnelInfoData.showMode === 0) {
         return {
           width: '100%',
         }
-      } else if (this.tunnelInfo.showMode === 1) {
+      } else if (this.tunnelInfoData.showMode === 1) {
         return {
           width: this.outerWidth + 'px',
         }
@@ -489,13 +494,16 @@ export default {
     await this.listDeviceBaseOfTunnelPage()
     await this.findTunnelBaseInfo()
     await this.outerWidths()
+
     document.addEventListener('scroll', this.Scroll)
-    // this.tunnelToDTimer = setInterval(async () => {
-    //   await this.listDeviceBaseOfTunnelPage();
-    //   await this.findTunnelBaseInfo();
-    //   //await this.outerWidths();
-    // }, 5 * 1000);
-    ///////窗口改变的时候 重新计算隧道宽度
+
+    this.tunnelToDTimer = setInterval(async () => {
+      await this.listDeviceBaseOfTunnelPage();
+      await this.findTunnelBaseInfo();
+      await this.outerWidths();
+    }, 5 * 1000);
+
+    // 窗口改变的时候 重新计算隧道宽度
     window.onresize = () => {
       return (() => {
         setTimeout(() => {
@@ -508,7 +516,7 @@ export default {
     //设备状态更新 刷新隧道图
     async deviceStatusChange(id) {
       //console.log(id)
-      if (id === this.tunnelInfo.id) {
+      if (id === this.tunnelInfoData.id) {
         await this.listDeviceBaseOfTunnelPage()
         await this.findTunnelBaseInfo()
         console.log('刷新隧道deviceStatusChange')
@@ -535,7 +543,7 @@ export default {
     },
 
     backleft(i, leftRightFlag) {
-      let {laneNums, singleDoubleType} = this.tunnelInfo
+      let {laneNums, singleDoubleType} = this.tunnelInfoData
       const {
         leftStakeMark,
         maxLength,
@@ -606,6 +614,7 @@ export default {
       document.getElementById('map').scrollLeft = i * this.outerWidth
       this.buttonClass = i
     },
+
     //获取初始宽度
     outerWidths() {
       let mapLength = this.maxEndMapStakeMark - this.minStartMapStakeMark
@@ -616,7 +625,7 @@ export default {
       //console.log(outerWidths);
       this.outerWidth = outerWidths
       //console.log(outerWidth)
-      if (this.tunnelInfo.showMode === 1) {
+      if (this.tunnelInfoData.showMode === 1) {
         this.tunnelBunntntt = Math.round(mapLength / 1000)
       } else {
         this.tunnelBunntntt = 1
@@ -633,7 +642,7 @@ export default {
     // 计算空洞位置
     getEmptyStyle(item) {
       const {length, pileNumber, leftRightFlag} = item,
-          {singleDoubleType} = this.tunnelInfo
+          {singleDoubleType} = this.tunnelInfoData
       const {maxLength, tunnelLine, center} = this.tunnelStyle
       let mapLength = this.maxEndMapStakeMark - this.minStartMapStakeMark
 
@@ -646,7 +655,7 @@ export default {
       let defaultLeft = 0
       //计算设备位置+10
       //分段模式显示时候 按outerWidth(地图显示区域)等于长度1000米的比例计算得到 PX
-      if (this.tunnelInfo.showMode === 1) {
+      if (this.tunnelInfoData.showMode === 1) {
         defaultLeft =
             mapScaleMode1 * (pileNumber - this.minStartMapStakeMark) + 10 + 'px'
       }
@@ -762,7 +771,7 @@ export default {
       // 16 横洞左  17 横洞中  18 横洞右
       // console.log(device)
       const {orientationLocation} = device
-      const {laneNums, singleDoubleType} = this.tunnelInfo
+      const {laneNums, singleDoubleType} = this.tunnelInfoData
 
       let mapLength = this.maxEndMapStakeMark - this.minStartMapStakeMark
       //地图显示区域宽度，固定模式时值等于长度100%，分段模式时候的值等于长度1000米
@@ -810,7 +819,7 @@ export default {
       let defaultLeft = 0
       //console.log('device.pileNumber-this.minStartMapStakeMark',mapScaleMode1)
       //分段模式显示时候 按outerWidth(地图显示区域)等于长度1000米的比例计算得到 PX
-      if (this.tunnelInfo.showMode === 1) {
+      if (this.tunnelInfoData.showMode === 1) {
         defaultLeft =
             mapScaleMode1 * (device.pileNumber - this.minStartMapStakeMark) +
             5 +
@@ -924,35 +933,35 @@ export default {
     // 隧道基本信息
     findTunnelBaseInfo() {
       return this.$service.tunnel.getById(this.tunnelId).then((res) => {
-        this.tunnelInfo = res
+        this.tunnelInfoData = res
         //console.log('res',res)
-        //console.log('this.tunnelInfo.showMode',this.tunnelInfo.showMode)
-        if (!this.tunnelInfo.showMode || this.tunnelInfo.showMode == null) {
-          this.tunnelInfo.showMode = 0
+        //console.log('this.tunnelInfoData.showMode',this.tunnelInfoData.showMode)
+        if (!this.tunnelInfoData.showMode || this.tunnelInfoData.showMode == null) {
+          this.tunnelInfoData.showMode = 0
         }
         // 对比设备与隧道的起止桩号 获取隧道地图的长度
         let maxEndStakeMark = 0
         let minStartStakeMark = 0
         // 双洞
-        if (this.tunnelInfo.singleDoubleType === 3) {
+        if (this.tunnelInfoData.singleDoubleType === 3) {
           maxEndStakeMark = Math.max(
-              this.tunnelInfo.endStakeMark,
-              this.tunnelInfo.endStakeMarkRight
+              this.tunnelInfoData.endStakeMark,
+              this.tunnelInfoData.endStakeMarkRight
           )
           minStartStakeMark = Math.min(
-              this.tunnelInfo.startStakeMark,
-              this.tunnelInfo.startStakeMarkRight
+              this.tunnelInfoData.startStakeMark,
+              this.tunnelInfoData.startStakeMarkRight
           )
         }
         // 单左洞
-        else if (this.tunnelInfo.singleDoubleType === 2) {
-          maxEndStakeMark = this.tunnelInfo.endStakeMark
-          minStartStakeMark = this.tunnelInfo.startStakeMark
+        else if (this.tunnelInfoData.singleDoubleType === 2) {
+          maxEndStakeMark = this.tunnelInfoData.endStakeMark
+          minStartStakeMark = this.tunnelInfoData.startStakeMark
         }
         // 单右洞
-        else if (this.tunnelInfo.singleDoubleType === 1) {
-          maxEndStakeMark = this.tunnelInfo.endStakeMarkRight
-          minStartStakeMark = this.tunnelInfo.startStakeMarkRight
+        else if (this.tunnelInfoData.singleDoubleType === 1) {
+          maxEndStakeMark = this.tunnelInfoData.endStakeMarkRight
+          minStartStakeMark = this.tunnelInfoData.startStakeMarkRight
         }
 
         if (this.maxEndMapStakeMark > 0) {
@@ -1001,29 +1010,30 @@ export default {
 
         // console.log(list)
 
-        this.deviceList = list
+        this.tunnelDevices = list
         // 对比设备与隧道的起止桩号 获取隧道地图的长度
-        for (let index in this.deviceList) {
+        for (let index in this.tunnelDevices) {
           if (this.maxEndMapStakeMark > 0) {
             this.maxEndMapStakeMark = Math.max(
-                this.deviceList[index].pileNumber,
+                this.tunnelDevices[index].pileNumber,
                 this.maxEndMapStakeMark
             )
           } else {
-            this.maxEndMapStakeMark = this.deviceList[index].pileNumber
+            this.maxEndMapStakeMark = this.tunnelDevices[index].pileNumber
           }
           if (this.minStartMapStakeMark > 0) {
             this.minStartMapStakeMark = Math.min(
-                this.deviceList[index].pileNumber,
+                this.tunnelDevices[index].pileNumber,
                 this.minStartMapStakeMark
             )
           } else {
-            this.minStartMapStakeMark = this.deviceList[index].pileNumber
+            this.minStartMapStakeMark = this.tunnelDevices[index].pileNumber
           }
         }
         this.$emit('loaded', res)
       })
     },
+
     showDetail(item) {
       this.$emit('detail', item)
     },

@@ -1,24 +1,23 @@
 <template>
-  <div v-if="displayMode === '2d'" class="page">
+  <div class="">
     <!--左边-->
-    <div class="left">
+    <div class="">
       <!--隧道图-->
-      <div class="block wide map">
-        <!--控制3d和2d-->
-        <div class="switcher-wrapper">
-          <el-radio-group v-model="displayMode" size="medium">
-            <el-radio-button label="2d">2d</el-radio-button>
-            <el-radio-button label="full2d">2d全屏</el-radio-button>
-            <el-radio-button label="3d" v-if="threeDStatus === '1'">3d</el-radio-button>
-          </el-radio-group>
-        </div>
+      <div class=" wide map">
+<!--        &lt;!&ndash;控制3d和2d&ndash;&gt;-->
+<!--        <div class="switcher-wrapper">-->
+<!--          <el-radio-group v-model="displayMode" size="medium">-->
+<!--            <el-radio-button label="2d">2d</el-radio-button>-->
+<!--            <el-radio-button label="full2d">2d全屏</el-radio-button>-->
+<!--            <el-radio-button label="3d" v-if="threeDStatus === '1'">3d</el-radio-button>-->
+<!--          </el-radio-group>-->
+<!--        </div>-->
 
         <!-- 隧道信息 -->
         <tunnel-component
             @detail="doShowModalDevice"
             ref="tunnel"
-            :showActiveType="showActiveType"
-        >
+            :showActiveType="showActiveType">
           <div slot="controls" class="buttons">
             <div
                 class="button-item"
@@ -73,176 +72,110 @@
     </div>
 
     <!--右边-->
-    <div class="block right">
-      <!-- 隧道事件信息 -->
-      <!--      <tunnel-event-info @loaded="onLoadTunnelData" _2d></tunnel-event-info>-->
-      <tunnel-event-info @loaded="onLoadTunnelData" _2d/>
+<!--    <div class="block right">-->
+<!--      &lt;!&ndash; 隧道事件信息 &ndash;&gt;-->
+<!--      &lt;!&ndash;      <tunnel-event-info @loaded="onLoadTunnelData" _2d></tunnel-event-info>&ndash;&gt;-->
+<!--      <tunnel-event-info @loaded="onLoadTunnelData" _2d/>-->
 
-      <TipsTitle title="隧道关键参数" style="margin-top: 30px;"></TipsTitle>
-      <div class="stats">
-        <div class="stat-wrap">
-          <div class="label">亮度(cd/m2)</div>
-          <div class="stat brightness">
-            <template v-if="tunnelData.singleDoubleType === 3">
-              <div class="num">左洞：{{ tunnelData.brightNessLeft || 0 }}</div>
-              <div class="num">右洞：{{ tunnelData.brightNessRight || 0 }}</div>
-            </template>
-            <div class="num" v-else>
-              {{ tunnelData.brightNessLeft || tunnelData.brightNessRight || 0 }}
-            </div>
-          </div>
-        </div>
-        <div class="stat-wrap">
-          <div class="label">CO/VI(ppm/m)</div>
-          <div class="stat co">
-            <template v-if="tunnelData.singleDoubleType === 3">
-              <div class="num">左洞：{{ tunnelData.viLeft || 0 }}</div>
-              <div class="num">右洞：{{ tunnelData.viRight || 0 }}</div>
-            </template>
-            <div class="num" v-else>
-              {{ tunnelData.viLeft || tunnelData.viRight || 0 }}
-            </div>
-          </div>
-        </div>
-        <div class="stat-wrap">
-          <!--狮子笼专用-->
-          <div class="label">风速(m/s)</div>
-          <div class="stat vi">
-            <template v-if="tunnelData.singleDoubleType === 3">
-              <div class="num">
-                左洞：{{
-                  tunnelData.windSpeedLeft || tunnelData.windDirectionLeft || 0
-                }}
-              </div>
-              <div class="num">
-                右洞：{{
-                  tunnelData.windSpeedRight ||
-                  tunnelData.windDirectionRight ||
-                  0
-                }}
-              </div>
-            </template>
-            <div class="num" v-else>
-              {{ tunnelData.windSpeedLeft || tunnelData.windSpeedRight || 0 }}
-            </div>
-          </div>
-        </div>
+<!--      <TipsTitle title="隧道关键参数" style="margin-top: 30px;"></TipsTitle>-->
+<!--      <div class="stats">-->
+<!--        <div class="stat-wrap">-->
+<!--          <div class="label">亮度(cd/m2)</div>-->
+<!--          <div class="stat brightness">-->
+<!--            <template v-if="tunnelData.singleDoubleType === 3">-->
+<!--              <div class="num">左洞：{{ tunnelData.brightNessLeft || 0 }}</div>-->
+<!--              <div class="num">右洞：{{ tunnelData.brightNessRight || 0 }}</div>-->
+<!--            </template>-->
+<!--            <div class="num" v-else>-->
+<!--              {{ tunnelData.brightNessLeft || tunnelData.brightNessRight || 0 }}-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="stat-wrap">-->
+<!--          <div class="label">CO/VI(ppm/m)</div>-->
+<!--          <div class="stat co">-->
+<!--            <template v-if="tunnelData.singleDoubleType === 3">-->
+<!--              <div class="num">左洞：{{ tunnelData.viLeft || 0 }}</div>-->
+<!--              <div class="num">右洞：{{ tunnelData.viRight || 0 }}</div>-->
+<!--            </template>-->
+<!--            <div class="num" v-else>-->
+<!--              {{ tunnelData.viLeft || tunnelData.viRight || 0 }}-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="stat-wrap">-->
+<!--          &lt;!&ndash;狮子笼专用&ndash;&gt;-->
+<!--          <div class="label">风速(m/s)</div>-->
+<!--          <div class="stat vi">-->
+<!--            <template v-if="tunnelData.singleDoubleType === 3">-->
+<!--              <div class="num">-->
+<!--                左洞：{{-->
+<!--                  tunnelData.windSpeedLeft || tunnelData.windDirectionLeft || 0-->
+<!--                }}-->
+<!--              </div>-->
+<!--              <div class="num">-->
+<!--                右洞：{{-->
+<!--                  tunnelData.windSpeedRight ||-->
+<!--                  tunnelData.windDirectionRight ||-->
+<!--                  0-->
+<!--                }}-->
+<!--              </div>-->
+<!--            </template>-->
+<!--            <div class="num" v-else>-->
+<!--              {{ tunnelData.windSpeedLeft || tunnelData.windSpeedRight || 0 }}-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
 
-        <!--
-        <div class="stat-wrap">
-          <div class="label">风速(m/s)</div>
-          <div class="stat vi">
-            <template v-if="tunnelData.singleDoubleType===3">
-              <div class="num">左洞：{{ tunnelData.windSpeedLeft || 0 }}</div>
-              <div class="num">右洞：{{ tunnelData.windSpeedRight || 0 }}</div>
-            </template>
-            <div class="num" v-else>{{ tunnelData.windSpeedLeft || tunnelData.windSpeedRight || 0 }}</div>
-          </div>
-        </div>
+<!--        &lt;!&ndash;-->
+<!--        <div class="stat-wrap">-->
+<!--          <div class="label">风速(m/s)</div>-->
+<!--          <div class="stat vi">-->
+<!--            <template v-if="tunnelData.singleDoubleType===3">-->
+<!--              <div class="num">左洞：{{ tunnelData.windSpeedLeft || 0 }}</div>-->
+<!--              <div class="num">右洞：{{ tunnelData.windSpeedRight || 0 }}</div>-->
+<!--            </template>-->
+<!--            <div class="num" v-else>{{ tunnelData.windSpeedLeft || tunnelData.windSpeedRight || 0 }}</div>-->
+<!--          </div>-->
+<!--        </div>-->
 
-        <div class="stat-wrap">
-          <div class="label">风向</div>
-          <div class="stat brightness direction">
-            <template v-if="tunnelData.singleDoubleType===3">
-              <div class="num">左洞：{{ tunnelData.windDirectionLeft || 0 }}</div>
-              <div class="num">右洞：{{ tunnelData.windDirectionRight || 0 }}</div>
-            </template>
-            <div class="num" v-else>{{ tunnelData.windDirectionLeft || tunnelData.windDirectionRight || 0 }}</div>
-          </div>
-        </div>
-        !-->
-      </div>
-    </div>
-
-    <!--弹窗-->
-    <modal-control
-        :device-name="showModalDeviceName"
-        :classify-number="showModalClassify"
-        v-model="showModal"
-        @update="$refs.tunnel.listDeviceBaseOfTunnelPage()"
-        :tunnel-id="tunnelId"
-    />
-  </div>
-
-  <div v-else-if="displayMode === '3d'">
-    <three-d-view ref="ThreeDViewRef"
-                  :tunnel-info="tunnelInfo"
-                  :tunnel-devices="deviceList"
-                  @on-load="on3DLoad"/>
-
-    <div class="switcher-wrapper threed">
-      <el-radio-group v-model="displayMode" size="medium">
-        <div class="page-list">
-          <el-radio-button label="2d">2d</el-radio-button>
-          <el-radio-button label="full2d">2d全屏</el-radio-button>
-          <el-radio-button label="3d" v-if="threeDStatus === '1'"
-          >3d
-          </el-radio-button
-          >
-        </div>
-      </el-radio-group>
-    </div>
-  </div>
-
-  <div v-else-if="displayMode === 'full2d'" class="full-2d">
-    <!--控制3d和2d-->
-    <div class="switcher-wrapper threed">
-      <el-radio-group v-model="displayMode" size="medium">
-        <div class="page-list">
-          <el-radio-button label="2d">2d</el-radio-button>
-          <el-radio-button label="full2d">2d全屏</el-radio-button>
-          <el-radio-button label="3d" v-if="threeDStatus === '1'">3d</el-radio-button>
-        </div>
-      </el-radio-group>
-    </div>
-
-    <tunnel-component @detail="doShowModalDevice"
-                      full-screen
-                      ref="tunnel"
-                      :showActiveType="showActiveType"/>
-    <div class="buttons">
-      <div class="button-item"
-           v-for="(item, index) in deviceTypes"
-           :key="index"
-           @click="doShowModal(item.classifyNumber)"
-      >
-        <div class="img-wrap">
-          <img
-              class="img"
-              :src="
-              require('../../assets/images/warning/icons/' +
-                item.classifyNumber +
-                '.png')
-            "
-          />
-        </div>
-        <p>{{ item.classifyName }}</p>
-      </div>
-    </div>
+<!--        <div class="stat-wrap">-->
+<!--          <div class="label">风向</div>-->
+<!--          <div class="stat brightness direction">-->
+<!--            <template v-if="tunnelData.singleDoubleType===3">-->
+<!--              <div class="num">左洞：{{ tunnelData.windDirectionLeft || 0 }}</div>-->
+<!--              <div class="num">右洞：{{ tunnelData.windDirectionRight || 0 }}</div>-->
+<!--            </template>-->
+<!--            <div class="num" v-else>{{ tunnelData.windDirectionLeft || tunnelData.windDirectionRight || 0 }}</div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        !&ndash;&gt;-->
+<!--      </div>-->
+<!--    </div>-->
 
     <!--弹窗-->
-    <modal-control
-        :device-name="showModalDeviceName"
-        :classify-number="showModalClassify"
-        v-model="showModal"
-        @update="$refs.tunnel.listDeviceBaseOfTunnelPage()"
-        :tunnel-id="tunnelId"
-    />
+<!--    <modal-control-->
+<!--        :device-name="showModalDeviceName"-->
+<!--        :classify-number="showModalClassify"-->
+<!--        v-model="showModal"-->
+<!--        @update="$refs.tunnel.listDeviceBaseOfTunnelPage()"-->
+<!--        :tunnel-id.sync="tunnelInfoId"-->
+<!--    />-->
   </div>
+
+
 </template>
 
 <script>
-import TunnelComponent from '../../components/2d/tunnel'
-import TipsTitle from '../../components/index/tips-title'
-import VideoRtsp from '../../components/video/video-rtsp'
-import TunnelEventInfo from '../../components/home/tunnel-event-info'
-import ModalControl from '../../components/2d/modal-control'
-
-import ThreeDView from './3d'
+import TunnelComponent from '@/components/2d/tunnel'
+import TipsTitle from '@/components/index/tips-title'
+import VideoRtsp from '@/components/video/video-rtsp'
+import TunnelEventInfo from '@/components/home/tunnel-event-info'
+import ModalControl from '@/components/2d/modal-control'
 
 export default {
   components: {
-    ThreeDView,
+    // ThreeDView,
     TunnelComponent,
     TipsTitle,
     VideoRtsp,
@@ -250,6 +183,12 @@ export default {
     ModalControl,
   },
   services: ['_2d', 'tunnel'],
+  props: {
+    tunnelInfoId: {
+      type: String,
+      default: ''
+    }
+  },
   watch: {
     $route: function () {
       location.reload()
@@ -258,18 +197,17 @@ export default {
 
   data() {
     return {
-      // displayMode: '2d',
-      displayMode: '3d',
-      deviceList: [],
+      displayMode: '2d',
+      // displayMode: '3d',
       videoList: [],
       deviceTypes: [],
       showModal: false, // 弹窗
       showModalClassify: '', // 弹窗的设备分类
       showModalDeviceName: null, // 弹窗选中的设备名
       showActiveType: 'all',
-      tunnelId: '',
       tunnelData: {},
       tunnelInfo: {},
+      tunnelDevices: [],
       threeDStatus: '0',
       homeTimer: null,
       maxEndMapStakeMark: 0,
@@ -290,22 +228,21 @@ export default {
     //   this.init()
     // }, 5 * 1000)
     // initEvent
-    this.$refs.ThreeDViewRef.initEvent()
+    // this.$refs.ThreeDViewRef.initEvent()
   },
   methods: {
-    on3DLoad() {
-
-      this.$refs.ThreeDViewRef.initInfo()
-    },
+    // on3DLoad() {
+    //   this.$refs.ThreeDViewRef.initInfo()
+    // },
 
     // 隧道的设备列表
     listDeviceBaseOfTunnelPage() {
-      this.$service.tunnel.getById(this.$route.query.tunnelId).then((res) => {
+      this.$service.tunnel.getById(this.tunnelInfoId).then((res) => {
         console.log(res)
         this.tunnelInfo = res;
       })
 
-      this.$service._2d.getTunnelDevices(this.$route.query.tunnelId).then((res) => {
+      this.$service._2d.getTunnelDevices(this.tunnelInfoId).then((res) => {
         const supportList = [
           'signallamp',
           'laneIndicator',
@@ -329,28 +266,28 @@ export default {
         })
 
 
-        this.deviceList = list
+        this.tunnelDevices = list
         // 对比设备与隧道的起止桩号 获取隧道地图的长度
-        for (let index in this.deviceList) {
+        for (let index in this.tunnelDevices) {
           if (this.maxEndMapStakeMark > 0) {
             this.maxEndMapStakeMark = Math.max(
-                this.deviceList[index].pileNumber,
+                this.tunnelDevices[index].pileNumber,
                 this.maxEndMapStakeMark
             )
           } else {
-            this.maxEndMapStakeMark = this.deviceList[index].pileNumber
+            this.maxEndMapStakeMark = this.tunnelDevices[index].pileNumber
           }
           if (this.minStartMapStakeMark > 0) {
             this.minStartMapStakeMark = Math.min(
-                this.deviceList[index].pileNumber,
+                this.tunnelDevices[index].pileNumber,
                 this.minStartMapStakeMark
             )
           } else {
-            this.minStartMapStakeMark = this.deviceList[index].pileNumber
+            this.minStartMapStakeMark = this.tunnelDevices[index].pileNumber
           }
         }
 
-        console.log(this.deviceList)
+        // console.log(this.tunnelDevices)
 
 
         // this.$emit('loaded', res)
@@ -358,14 +295,14 @@ export default {
     },
 
     init() {
-      this.tunnelId = this.$route.query.tunnelId
-      this.$service._2d.getTunnelVideos(this.tunnelId).then((res) => {
+      // this.tunnelInfoId = this.$route.query.tunnelInfoId
+      this.$service._2d.getTunnelVideos(this.tunnelInfoId).then((res) => {
         // 获取隧道视频
         this.videoList = res
       })
 
 
-      this.$service._2d.getTunnelDeviceTypes(this.tunnelId).then((res) => {
+      this.$service._2d.getTunnelDeviceTypes(this.tunnelInfoId).then((res) => {
         // 获取隧道设备类型
         const deviceTypeis = res.filter(
             (item) =>
@@ -398,16 +335,17 @@ export default {
     },
 
     doShowModalDevice(device) {
-      this.doShowModal(device.classifyNumber, device.deviceName)
+      this.$emit('on-chose-device', device)
+      // this.doShowModal(device.classifyNumber, device.deviceName)
     },
 
-    doShowModal(classifyNumber, deviceName) {
-      this.showActiveType = classifyNumber
-      if (classifyNumber === 'all') return
-      this.showModal = true
-      this.showModalDeviceName = deviceName
-      this.showModalClassify = classifyNumber
-    },
+    // doShowModal(classifyNumber, deviceName) {
+    //   this.showActiveType = classifyNumber
+    //   if (classifyNumber === 'all') return
+    //   this.showModal = true
+    //   this.showModalDeviceName = deviceName
+    //   this.showModalClassify = classifyNumber
+    // },
   },
 }
 </script>
