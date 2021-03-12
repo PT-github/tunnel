@@ -170,7 +170,7 @@ export default {
       this.$service._2d
         .getTunnelDeviceTypeList(this.tunnelId, "broadcast")
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           this.deviceList = res.map((v) => {
             return {
               ...v,

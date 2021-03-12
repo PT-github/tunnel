@@ -1,11 +1,6 @@
 <template>
   <div>
-    <iframe :src='iframeUrl'
-            v-if="iframeUrl"
-            id="frame-view"
-            frameborder="0"
-            scrolling="auto"
-            style="position:absolute;bottom: 0;left: 0;z-index:1"/>
+    <iframe :src='iframeUrl' id="frame-view"  frameborder="0"  scrolling="auto"/>
   </div>
 </template>
 
@@ -34,9 +29,10 @@ export default {
       type: Array,
       default: () => []
     },
-    tunnelInfo: {
+    tunnelInfoData: {
       type: Object,
       default: () => {
+        return {}
       }
     }
   },
@@ -67,6 +63,9 @@ export default {
     };
   },
   services: ['_2d', 'tunnel'],
+  beforeDestroy() {
+    window.removeEventListener('message', () => {})
+  },
   methods: {
     initEvent() {
       window.addEventListener("message", event => {
@@ -89,7 +88,7 @@ export default {
 
       postMessage({
         msgType: "loadTunnel",
-        msgData: this.tunnelInfo
+        msgData: this.tunnelInfoData
       })
 
       postMessage({
@@ -116,6 +115,7 @@ export default {
   width: 100vw;
   height: 90vh;
   top: 100px;
+  margin-top: 36px;
 }
 
 .mydialog {

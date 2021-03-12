@@ -66,20 +66,22 @@ position: fiexd;
 				}
 				////////////////////////////////////////////////////////////////////////
 				// 测试风机
-				var msg2 = {
-					msgType:"addDevice",
-					msgData:{
-						id:"1703006a-9b93-4147-9e78-ef53483a2d8", // 设备id
-						deviceTypeCode:"draughtfan", // 设备类型  火灾消防
-						orientationLocation:1, //位置类型
-						leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
-						pileNumber:709157,// 设备桩号
-						deviceName:"风机1", // 设备名称
-						deviceCommunicationsState:0, // 设备状态
-						deviceCommunicationsStateName:"正常",// 设备状态描述
+				for(var i =0; i < 3; ++i){
+					var msg2 = {
+						msgType:"addDevice",
+						msgData:{
+							id:"1703006a-9b93-4147-9e78-2" + i, // 设备id
+							deviceTypeCode:"draughtfan", // 设备类型  火灾消防
+							orientationLocation:1 + i, //位置类型
+							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
+							pileNumber:709152,// 设备桩号
+							deviceName:"风机1", // 设备名称
+							deviceCommunicationsState:i, // 设备状态
+							deviceCommunicationsStateName:"正常",// 设备状态描述
+						}
+						}
+						window.frames[0].postMessage(msg2); // 添加设备
 					}
-					}
-					window.frames[0].postMessage(msg2); // 添加设备
 
 				////////////////////////////////////////////////////////////////////////
 				// 测试情报板M
@@ -148,13 +150,51 @@ position: fiexd;
 						orientationLocation:10, //位置类型 照明灯应该只有0和10两种位置
 						leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
 						pileNumber:709170,// 设备桩号
-						deviceName:"照明灯", // 设备名称
+						deviceName:"照明灯回路", // 设备名称
 						deviceCommunicationsState:0, // 设备状态
 						deviceCommunicationsStateName:"正常",// 设备状态描述
 					}
 				}
 				window.frames[0].postMessage(msg6); // 添加设备
+
+				////////////////////////////////////////////////////////////////////////
+				// 车道指示器
+				for(var i =0; i < 3; ++i){
+					var msg7 = {
+						msgType:"addDevice",
+						msgData:{
+							id:"1703006a-9b93-4147-9e78-7" + i, // 设备id
+							deviceTypeCode:"laneIndicator", // 设备类型  照明灯
+							orientationLocation:1 + i, //位置类型 
+							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
+							pileNumber:709138,// 设备桩号
+							deviceName:"指示器", // 设备名称
+							deviceCommunicationsState:2, // 设备状态
+							deviceCommunicationsStateName:"正常",// 设备状态描述
+						}
+					}
+					window.frames[0].postMessage(msg7); // 添加设备
+				}
 				
+				////////////////////////////////////////////////////////////////////////
+				// 信号灯
+				
+				for(var i =0; i < 2; ++i){
+					var msg8 = {
+						msgType:"addDevice",
+						msgData:{
+							id:"1703006a-9b93-4147-9e78-8" + i, // 设备id
+							deviceTypeCode:"signallamp", // 设备类型  照明灯
+							orientationLocation:1, //位置类型 
+							leftRightFlag:1+i,// 左右洞标识（1右洞，2左洞）
+							pileNumber:709137,// 设备桩号
+							deviceName:"信号灯", // 设备名称
+							deviceCommunicationsState:0 +i, // 设备状态
+							deviceCommunicationsStateName:"正常",// 设备状态描述
+						}
+					}
+					window.frames[0].postMessage(msg8); // 添加设备
+				}
 			break;
 			
 			case "clickDevice": // 点击选择某设备

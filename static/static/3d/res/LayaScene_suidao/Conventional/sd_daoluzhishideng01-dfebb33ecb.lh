@@ -2,7 +2,7 @@
 	"version":"LAYAHIERARCHY:02",
 	"data":{
 		"type":"Sprite3D",
-		"instanceID":49,
+		"instanceID":50,
 		"props":{
 			"name":"sd_daoluzhishideng01",
 			"active":true,
@@ -52,7 +52,7 @@
 		"child":[
 			{
 				"type":"MeshSprite3D",
-				"instanceID":50,
+				"instanceID":51,
 				"props":{
 					"name":"sd_daoluzhishideng01 1",
 					"active":true,
@@ -89,7 +89,7 @@
 			},
 			{
 				"type":"MeshSprite3D",
-				"instanceID":51,
+				"instanceID":52,
 				"props":{
 					"name":"sd_daoluzhishideng02",
 					"active":true,
@@ -126,16 +126,16 @@
 			},
 			{
 				"type":"MeshSprite3D",
-				"instanceID":52,
+				"instanceID":53,
 				"props":{
 					"name":"sd_jinzhi01",
 					"active":true,
 					"isStatic":false,
 					"layer":0,
 					"position":[
-						3.814697E-06,
-						-0.1015475,
-						-0.7526
+						0,
+						0.113,
+						-0.753
 					],
 					"rotation":[
 						0,
@@ -163,7 +163,7 @@
 			},
 			{
 				"type":"MeshSprite3D",
-				"instanceID":53,
+				"instanceID":54,
 				"props":{
 					"name":"sd_jinzhi02",
 					"active":true,
@@ -171,8 +171,8 @@
 					"layer":0,
 					"position":[
 						3.814697E-06,
-						0.1015475,
-						-0.7526
+						-0.107,
+						-0.753
 					],
 					"rotation":[
 						0,
@@ -200,7 +200,7 @@
 			},
 			{
 				"type":"MeshSprite3D",
-				"instanceID":54,
+				"instanceID":55,
 				"props":{
 					"name":"sd_zhengxiang01",
 					"active":true,
@@ -237,14 +237,14 @@
 			},
 			{
 				"type":"MeshSprite3D",
-				"instanceID":55,
+				"instanceID":56,
 				"props":{
 					"name":"sd_zhengxiang02",
 					"active":true,
 					"isStatic":false,
 					"layer":0,
 					"position":[
-						7.629395E-06,
+						0,
 						0.1015475,
 						-0.7526
 					],
@@ -274,7 +274,7 @@
 			},
 			{
 				"type":"MeshSprite3D",
-				"instanceID":56,
+				"instanceID":57,
 				"props":{
 					"name":"sd_zuozhuan01",
 					"active":true,
@@ -311,14 +311,14 @@
 			},
 			{
 				"type":"MeshSprite3D",
-				"instanceID":57,
+				"instanceID":58,
 				"props":{
 					"name":"sd_zuozhuan02",
 					"active":true,
 					"isStatic":false,
 					"layer":0,
 					"position":[
-						3.814697E-06,
+						0,
 						0.1015475,
 						-0.7526
 					],

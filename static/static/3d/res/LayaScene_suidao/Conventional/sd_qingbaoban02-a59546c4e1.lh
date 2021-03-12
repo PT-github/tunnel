@@ -2,16 +2,16 @@
 	"version":"LAYAHIERARCHY:02",
 	"data":{
 		"type":"MeshSprite3D",
-		"instanceID":14,
+		"instanceID":13,
 		"props":{
-			"name":"sd_qingbaoban01",
+			"name":"sd_qingbaoban02",
 			"active":true,
 			"isStatic":false,
 			"layer":0,
 			"position":[
-				7.48,
 				0,
-				32.38
+				9.28,
+				22.83
 			],
 			"rotation":[
 				0.7071068,
@@ -24,13 +24,13 @@
 				1,
 				1
 			],
-			"meshPath":"Assets/Scenes/res2/fbx/sd_qingbaoban01-sd_qingbaoban01.lm",
+			"meshPath":"Assets/Scenes/res2/fbx/sd_qingbaoban02-sd_qingbaoban02.lm",
 			"enableRender":true,
 			"receiveShadows":true,
 			"castShadow":true,
 			"materials":[
 				{
-					"path":"Assets/Scenes/res2/mat/sd_qingbaoban01.lmat"
+					"path":"Assets/Scenes/res2/mat/chedaozhideng01.lmat"
 				}
 			]
 		},
@@ -44,14 +44,14 @@
 					{
 						"type":"BoxColliderShape",
 						"center":[
-							-2.100563,
-							0.0008201599,
-							8.045491
+							-0.03473186,
+							0,
+							-0.8320444
 						],
 						"size":[
-							5.0876,
-							0.8788002,
-							2.227024
+							7.57716,
+							0.1904,
+							0.8490885
 						]
 					}
 				],
@@ -61,16 +61,16 @@
 		"child":[
 			{
 				"type":"MeshSprite3D",
-				"instanceID":15,
+				"instanceID":14,
 				"props":{
 					"name":"textinput",
 					"active":true,
 					"isStatic":false,
 					"layer":0,
 					"position":[
-						-2.699,
-						-0.138,
-						8.042
+						-0.018,
+						-0.18,
+						-0.836
 					],
 					"rotation":[
 						-1,
@@ -79,9 +79,9 @@
 						0
 					],
 					"scale":[
-						0.35382,
+						0.7159949,
 						1,
-						0.1603202
+						0.06602612
 					],
 					"meshPath":"Library/unity default resources-Plane.lm",
 					"enableRender":true,
@@ -89,11 +89,30 @@
 					"castShadow":true,
 					"materials":[
 						{
-							"path":"Assets/Scenes/fbx/mat/textdis.lmat"
+							"path":"Assets/Scenes/SampleScene/input.lmat"
 						}
 					]
 				},
-				"components":[],
+				"components":[
+					{
+						"type":"Animator",
+						"layers":[
+							{
+								"name":"Base Layer",
+								"weight":0,
+								"blendingMode":0,
+								"states":[
+									{
+										"name":"textmove",
+										"clipPath":"Assets/Scenes/SampleScene/textmove-textmove.lani"
+									}
+								]
+							}
+						],
+						"cullingMode":0,
+						"playOnWake":true
+					}
+				],
 				"child":[]
 			}
 		]

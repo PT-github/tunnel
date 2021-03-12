@@ -82,6 +82,10 @@ export default {
     'onPushEvent': 'refresh'
   },
   props: {
+    tunnelId: {
+      type: String,
+      default: ''
+    },
     _2d: Boolean,
     title: {
       type: String,
@@ -104,7 +108,7 @@ export default {
       tabs: ['事件报警', '设备报警'],
       totalWarn: 0,
       rolling: [],
-      tunnelId: null,
+      // tunnelId: null,
       passPercent: 0,
       passCount: 0,
       countData: {},
@@ -118,7 +122,7 @@ export default {
   },
 
   mounted() {
-    this.tunnelId = this.$route.query.tunnelId || null;
+    // this.tunnelId = this.$route.query.tunnelId || null;
     this.refresh();
     this.choseTabs(0);
 

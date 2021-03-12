@@ -2,7 +2,7 @@
 	"version":"LAYAHIERARCHY:02",
 	"data":{
 		"type":"Sprite3D",
-		"instanceID":9,
+		"instanceID":10,
 		"props":{
 			"name":"sd_wj_sd_fengji01",
 			"active":true,
@@ -52,7 +52,7 @@
 		"child":[
 			{
 				"type":"MeshSprite3D",
-				"instanceID":10,
+				"instanceID":11,
 				"props":{
 					"name":"sd_wj_sd_fengji01_01",
 					"active":true,
@@ -89,7 +89,7 @@
 			},
 			{
 				"type":"MeshSprite3D",
-				"instanceID":11,
+				"instanceID":12,
 				"props":{
 					"name":"sd_wj_sd_fengji01_02",
 					"active":true,

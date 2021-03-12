@@ -2,7 +2,7 @@
 	"version":"LAYAHIERARCHY:02",
 	"data":{
 		"type":"Sprite3D",
-		"instanceID":22,
+		"instanceID":23,
 		"props":{
 			"name":"sd_dadeng01",
 			"active":true,
@@ -52,7 +52,7 @@
 		"child":[
 			{
 				"type":"MeshSprite3D",
-				"instanceID":23,
+				"instanceID":24,
 				"props":{
 					"name":"sd_dadeng01 1",
 					"active":true,
@@ -89,7 +89,7 @@
 			},
 			{
 				"type":"MeshSprite3D",
-				"instanceID":24,
+				"instanceID":25,
 				"props":{
 					"name":"sd_dadeng02",
 					"active":true,
@@ -125,7 +125,7 @@
 				"child":[
 					{
 						"type":"Sprite3D",
-						"instanceID":25,
+						"instanceID":26,
 						"props":{
 							"name":"Light_01",
 							"active":true,
@@ -152,7 +152,7 @@
 						"child":[
 							{
 								"type":"Sprite3D",
-								"instanceID":26,
+								"instanceID":27,
 								"props":{
 									"name":"Light",
 									"active":true,
@@ -179,7 +179,7 @@
 								"child":[
 									{
 										"type":"ShuriKenParticle3D",
-										"instanceID":27,
+										"instanceID":28,
 										"props":{
 											"name":"lv_gydi",
 											"active":true,
@@ -202,7 +202,7 @@
 												1
 											],
 											"main":{
-												"randomSeed":3.412232E+09,
+												"randomSeed":0,
 												"bases":{
 													"isPerformanceMode":true,
 													"duration":3,
