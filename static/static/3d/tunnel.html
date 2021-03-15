@@ -29,11 +29,11 @@ position: fiexd;
 		switch(revMsg.msgType){
 			case "loaded": // 初始化完成，可以添加设备主体和设备
 				var msg = {
-					msgType:"loadTunnel",
+					msgType:"loadTunnel", // 初始化隧道，横洞空洞数据必须一起带上
 					msgData:{
 						tunnelId:"a32932b8-7355-4de5-adf9-034075c89d2c", // 隧道id
-						leftHoleLength:1056, // 左洞长度（米）
-						rightHoleLength:1107, // 右洞长度（米）
+						leftHoleLength:4056, // 左洞长度（米）
+						rightHoleLength:4107, // 右洞长度（米）
 						endStakeMark:710213,  // 左洞结束桩号（桩号米）
 						endStakeMarkRight:710253, // 右洞结束桩号（桩号米）
 						laneNums:3,  // 车道数（个）  
@@ -42,9 +42,38 @@ position: fiexd;
 						leftHoleDirection: "岳阳方向", // 左洞方向 
 						rightHoleDirection: "湘潭方向", // 右洞方向 
 						singleDoubleType: 3, // 单双洞类型（1单右洞 2单左洞 3双洞）
-					}
+					},
+					
+					// 附加的横洞空洞数据
+					addData:[
+						{
+							id:"8e46993d-1a72-11eb-ab8a-11",
+							emptyType:2, // 空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
+							length:30, // 长度
+							pileNumber:709157 + 90, // 桩号 
+							leftRightFlag:3, // 左右洞标识1 右洞 2 左洞 3 中间
+							singleDoubleType:3, // 单双洞类型（1单右洞 2单左洞 3双洞）
+						},
+						{
+							id:"8e46993d-1a72-11eb-ab8a-22",
+							emptyType:1, // 空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
+							length:30, // 长度
+							pileNumber:709157 + 40, // 桩号 
+							leftRightFlag:3, // 左右洞标识1 右洞 2 左洞 3 中间
+							singleDoubleType:3, // 单双洞类型（1单右洞 2单左洞 3双洞）
+						},
+						{
+							id:"8e46993d-1a72-11eb-ab8a-33",
+							emptyType:0, // 空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
+							length:60, // 长度
+							pileNumber:709157 + 200, // 桩号 
+							leftRightFlag:2, // 左右洞标识1 右洞 2 左洞 3 中间
+							singleDoubleType:2, // 单双洞类型（1单右洞 2单左洞 3双洞）
+						},
+					], 
 				}
-				window.frames[0].postMessage(msg); // 添加隧道
+				
+				window.frames[0].postMessage(msg); // 初始化隧道
 				
 				////////////////////////////////////////////////////////////////////////
 				// 测试消防器材
@@ -178,13 +207,12 @@ position: fiexd;
 				
 				////////////////////////////////////////////////////////////////////////
 				// 信号灯
-				
 				for(var i =0; i < 2; ++i){
 					var msg8 = {
 						msgType:"addDevice",
 						msgData:{
 							id:"1703006a-9b93-4147-9e78-8" + i, // 设备id
-							deviceTypeCode:"signallamp", // 设备类型  照明灯
+							deviceTypeCode:"signallamp", // 设备类型  信号灯
 							orientationLocation:1, //位置类型 
 							leftRightFlag:1+i,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709137,// 设备桩号
@@ -195,6 +223,47 @@ position: fiexd;
 					}
 					window.frames[0].postMessage(msg8); // 添加设备
 				}
+				
+				////////////////////////////////////////////////////////////////////////
+				// 卷闸门
+				var msg9 = {
+					msgType:"addDevices",
+					msgData:new Array(),
+				}
+				// 右洞卷闸门
+				msg9.msgData.push({
+					id:"1703006a-9b93-4147-9e78-91", // 设备id
+					deviceTypeCode:"tunneldoor", // 设备类型  卷闸门
+					orientationLocation:18, //位置类型
+					leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
+					pileNumber:709157 + 90,// 设备桩号 必须和对应的横洞一致
+					deviceName:"卷闸门", // 设备名称
+					deviceCommunicationsState: 2, // 设备状态
+					deviceCommunicationsStateName:"正常",// 设备状态描述
+				});
+				// 左洞卷闸门
+				msg9.msgData.push({
+					id:"1703006a-9b93-4147-9e78-92", // 设备id
+					deviceTypeCode:"tunneldoor", // 设备类型  卷闸门
+					orientationLocation:16, //位置类型
+					leftRightFlag:2,// 左右洞标识（1右洞，2左洞）
+					pileNumber:709157 + 90,// 设备桩号 必须和对应的横洞一致
+					deviceName:"卷闸门", // 设备名称
+					deviceCommunicationsState: 1, // 设备状态
+					deviceCommunicationsStateName:"正常",// 设备状态描述
+				});
+				// 横洞中的灯
+				msg9.msgData.push({
+					id:"1703006a-9b93-4147-9e78-93" + 1, // 设备id
+					deviceTypeCode:"lightingloop", // 设备类型  卷闸门
+					orientationLocation:17, //位置类型
+					leftRightFlag:2,// 左右洞标识（1右洞，2左洞）
+					pileNumber:709157 + 90,// 设备桩号 必须和对应的横洞一致
+					deviceName:"6连灯", // 设备名称
+					deviceCommunicationsState: 1, // 设备状态
+					deviceCommunicationsStateName:"正常",// 设备状态描述
+				});
+				window.frames[0].postMessage(msg9); // 添加设备
 			break;
 			
 			case "clickDevice": // 点击选择某设备

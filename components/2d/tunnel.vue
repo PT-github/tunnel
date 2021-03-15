@@ -5,7 +5,10 @@
       {{ tunnelInfoData.belongsStretch }} - {{ tunnelInfoData.tunnelName }}
     </div>
 
-    <section class="tunnel-container" v-show="tunnelStatus !== 'TunnelThreeView'">
+    <section
+      class="tunnel-container"
+      v-show="tunnelStatus !== 'TunnelThreeView'"
+    >
       <div class="direction-container">
         <div
           v-if="
@@ -322,10 +325,17 @@
     </section>
 
     <section v-show="tunnelStatus === 'TunnelThreeView'">
-      <tunnel-three-view
+      <iframe
+        :src="iframeUrl"
+        id="frame-view"
+        frameborder="0"
+        scrolling="auto"
+      />
+      <!-- <tunnel-three-view
         :tunnel-info-data="tunnelInfoData"
         :tunnel-devices="tunnelDevices"
-      />
+        @on-load="onIframeLoad"
+      /> -->
     </section>
 
     <slot name="controls"></slot>
@@ -380,9 +390,6 @@ export default {
   data() {
     return {
       waitShowList: {},
-      // tunnelId: this.$route.params.id,
-      // tunnelInfoData: {},
-      // tunnelDevices: [],
       modal: false,
       //隧道基本信息
       outerWidth: 0,
@@ -394,6 +401,7 @@ export default {
       maxEndMapStakeMark: 0,
       minStartMapStakeMark: 0,
       tunnelLine: 0,
+      iframeUrl: `/static/3d/index.html`,
     }
   },
   computed: {
@@ -536,6 +544,7 @@ export default {
       immediate: true,
       handler(val, oldVal) {
         this.findTunnelBaseInfo()
+        this.initEvent()
       },
     },
   },
@@ -543,6 +552,7 @@ export default {
   beforeDestroy() {
     clearInterval(this.tunnelToDTimer)
     this.tunnelToDTimer = null
+    window.removeEventListener('message', () => {})
   },
 
   async mounted() {
@@ -568,6 +578,41 @@ export default {
     }
   },
   methods: {
+    // 初始化3d事件
+    initEvent() {
+      window.addEventListener('message', (event) => {
+        const { msgType, msgData } = event.data
+        switch (msgType) {
+          case 'loaded': // 初始化完成，可以添加设备主体和设备
+            // this.$emit('on-load')
+            this.initInfo()
+            break
+          case 'clickDevice': // 点击选择某设备
+            // this.$emit('on-chose', msgData)
+            this.showDetail(msgData)
+            // console.log('click device:', msgData)
+            break
+        }
+      })
+    },
+
+    // 添加隧道设备
+    initInfo() {
+      const el = this.$el.querySelector('#frame-view')
+      const { postMessage } = el.contentWindow
+
+      postMessage({
+        msgType: 'loadTunnel',
+        msgData: this.tunnelInfoData,
+      })
+
+      postMessage({
+        msgType: 'addDevices',
+        msgData: this.tunnelDevices,
+      })
+      // console.log(postMessage)
+    },
+
     //设备状态更新 刷新隧道图
     async deviceStatusChange(id) {
       //console.log(id)
@@ -659,6 +704,7 @@ export default {
       //     };
       // }
     },
+
     orderScroll(e) {
       let abs = Math.round(this.$refs.orderBox.scrollLeft / this.outerWidth)
       this.buttonClass = abs
@@ -1069,6 +1115,14 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+/* 3d隧道 */
+#frame-view {
+  width: 100vw;
+  height: 90vh;
+  top: 100px;
+  margin-top: 36px;
+}
+
 .icon {
   position: absolute;
   cursor: pointer;
