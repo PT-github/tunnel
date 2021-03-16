@@ -301,7 +301,7 @@ export default {
     // 隧道的设备列表
     listDeviceBaseOfTunnelPage() {
       this.$service.tunnel.getById(this.$route.query.tunnelId).then((res) => {
-        console.log(res)
+        // console.log(res)
         this.tunnelInfo = res;
       })
 
