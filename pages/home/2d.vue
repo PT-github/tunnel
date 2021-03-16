@@ -212,7 +212,7 @@ export default {
     this.init();
 
     this.homeTimer = setInterval(() => {
-      this.init()
+      //this.init()
     }, 5 * 1000)
   },
   methods: {
@@ -221,6 +221,32 @@ export default {
       this.$service._2d.getTunnelVideos(this.tunnelId).then(res => {   // 获取隧道视频
         this.videoList = res;
       });
+
+    this.$service._2d.getDict("vertical").then((res) => {
+      localStorage.setItem("vertical", JSON.stringify(res));
+    });
+    this.$service._2d.getDict("horizontal").then((res) => {
+      localStorage.setItem("horizontal", JSON.stringify(res));
+    });
+    //分辨率
+    this.$service._2d.getDict("resolutionPower").then((res) => {
+      localStorage.setItem("resolutionPower", JSON.stringify(res));
+    });
+    this.$service._2d.getDict("fontSize").then((res) => {
+      localStorage.setItem("fontSize", JSON.stringify(res));
+    });
+    this.$service._2d.getDict("font").then((res) => {
+      localStorage.setItem("font", JSON.stringify(res));
+    });
+    this.$service._2d.getDict("bgColor").then((res) => {
+      localStorage.setItem("bgColor", JSON.stringify(res));
+    });
+    this.$service._2d.getDict("fontColor").then((res) => {
+      localStorage.setItem("fontColor", JSON.stringify(res));
+    });
+    this.$service._2d.getDict("contentType").then((res) => {
+      localStorage.setItem("contentType", JSON.stringify(res));
+    });
       this.$service._2d.getTunnelDeviceTypes(this.tunnelId).then(res => {  // 获取隧道设备类型
         const deviceTypeis = res.filter(item => item.classifyName !== '控制器' && item.classifyName !== '诱导灯' && item.classifyName !== '电子围栏' && item.classifyNumber !== 'other' )
         // console.log(res, 'device types')

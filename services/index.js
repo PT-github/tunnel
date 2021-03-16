@@ -31,4 +31,20 @@ export default class IndexService extends Service {
             data
         })
     }
+    // 获取字典值
+    getDict (code) {
+        return this.post({
+            url: '/System/Dictionary/FindDictionaryListByParentCode',
+            contentType: 'form',
+            data: {code}
+        }).then(res => {
+            return res.map(v => {
+                return {
+                    name: v.Name,
+                    value: v.Value || v.DictionaryId
+                };
+            });
+        });
+    }
+
 }
