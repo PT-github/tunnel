@@ -209,7 +209,7 @@ export default {
       this.modalObjarr = val;
     },
     deleteClick(row) {
-      let id = row.id;
+      let id = row.id; 
       this.$service._2d.deleteInfoBoardTmp(id).then(() => {
         this.updateTpls();
         this.$notifySuccess();
