@@ -36,7 +36,7 @@ position: fiexd;
 						rightHoleLength:507, // 右洞长度（米）
 						endStakeMark:710213,  // 左洞结束桩号（桩号米）
 						endStakeMarkRight:710253, // 右洞结束桩号（桩号米）
-						laneNums:2,  // 车道数（个）  
+						laneNums:3,  // 车道数（个）  
 						startStakeMark:709157,  // 左洞开始桩号（桩号米） 
 						startStakeMarkRight:709146,  // 右洞开始桩号（桩号米）
 						leftHoleDirection: "岳阳方向", // 左洞方向 
@@ -176,7 +176,7 @@ position: fiexd;
 					msgData:{
 						id:"1703006a-9b93-4147-9e78-6", // 设备id
 						deviceTypeCode:"lightingloop", // 设备类型  照明灯
-						orientationLocation:10, //位置类型 照明灯应该只有0和10两种位置
+						orientationLocation:0, //位置类型 照明灯应该只有0和10两种位置
 						leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
 						pileNumber:709170,// 设备桩号
 						deviceName:"照明灯回路", // 设备名称
@@ -332,6 +332,19 @@ position: fiexd;
 			
 			case "clickDevice": // 点击选择某设备
 				console.log("click device:" + revMsg.msgData);
+								
+				// 开关自动巡游接口  测试接口 点击M情报板开始巡游
+				if(revMsg.msgData.id == "1703006a-9b93-4147-9e78-3"){
+					var msg_auto = {
+						msgType:"setAutoView",
+						msgData:true, // 是否开启巡游 true or false
+					}
+					window.frames[0].postMessage(msg_auto);
+				}
+			break;
+			
+			case "autoViewEvt": // 自动巡游开始或者结束事件 msgData: true or false
+				console.log("autoViewEvt:", revMsg.msgData);
 			break;
 		}
 	});
