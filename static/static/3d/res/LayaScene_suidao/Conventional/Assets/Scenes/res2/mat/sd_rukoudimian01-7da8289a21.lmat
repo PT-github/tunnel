@@ -21,7 +21,7 @@
 		"textures":[
 			{
 				"name":"albedoTexture",
-				"path":"../texture/sd_rukoudimian01.jpg",
+				"path":"../texture/sd_rukoudimian01_nomip.jpg",
 				"constructParams":[
 					256,
 					256,

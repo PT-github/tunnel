@@ -24,6 +24,9 @@ position: fiexd;
 </body>
 
 <script type="text/javascript">
+	
+	
+	// 接收3D模块传递的时间
 	window.addEventListener("message", function(event){
 		var revMsg = event.data;
 		switch(revMsg.msgType){
@@ -36,7 +39,7 @@ position: fiexd;
 						rightHoleLength:507, // 右洞长度（米）
 						endStakeMark:710213,  // 左洞结束桩号（桩号米）
 						endStakeMarkRight:710253, // 右洞结束桩号（桩号米）
-						laneNums:3,  // 车道数（个）  
+						laneNums:2,  // 车道数（个）  
 						startStakeMark:709157,  // 左洞开始桩号（桩号米） 
 						startStakeMarkRight:709146,  // 右洞开始桩号（桩号米）
 						leftHoleDirection: "岳阳方向", // 左洞方向 
@@ -155,7 +158,7 @@ position: fiexd;
 						msgType:"addDevices",
 						msgData:new Array(),
 					}
-				for(var i =0; i < 10; ++i){
+				for(var i =0; i < 2; ++i){
 					var data = {
 							id:"1703006a-9b93-4147-9e78-5" + i, // 设备id
 							deviceTypeCode:"lighting", // 设备类型  照明灯
@@ -178,9 +181,9 @@ position: fiexd;
 						deviceTypeCode:"lightingloop", // 设备类型  照明灯
 						orientationLocation:0, //位置类型 照明灯应该只有0和10两种位置
 						leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
-						pileNumber:709170,// 设备桩号
+						pileNumber:709190,// 设备桩号
 						deviceName:"照明灯回路", // 设备名称
-						deviceCommunicationsState:0, // 设备状态
+						deviceCommunicationsState:1, // 设备状态
 						deviceCommunicationsStateName:"正常",// 设备状态描述
 					}
 				}
@@ -255,11 +258,11 @@ position: fiexd;
 				// 横洞中的灯
 				msg9.msgData.push({
 					id:"1703006a-9b93-4147-9e78-93" + 1, // 设备id
-					deviceTypeCode:"lightingloop", // 设备类型  卷闸门
+					deviceTypeCode:"lighting", // 设备类型  卷闸门
 					orientationLocation:17, //位置类型
 					leftRightFlag:2,// 左右洞标识（1右洞，2左洞）
 					pileNumber:709157 + 90,// 设备桩号 必须和对应的横洞一致
-					deviceName:"6连灯", // 设备名称
+					deviceName:"横洞大灯", // 设备名称
 					deviceCommunicationsState: 1, // 设备状态
 					deviceCommunicationsStateName:"正常",// 设备状态描述
 				});
@@ -307,7 +310,7 @@ position: fiexd;
 				}
 				window.frames[0].postMessage(msg11); // 添加设备
 				
-								////////////////////////////////////////////////////////////////////////
+				////////////////////////////////////////////////////////////////////////
 				// 摄像机
 				var msg12 = {
 						msgType:"addDevices",
@@ -316,7 +319,7 @@ position: fiexd;
 				for(var i =0; i < 3; ++i){
 					var data = {
 							id:"1703006a-9b93-4147-9e78-12" + i, // 设备id
-							deviceTypeCode:"video", // 设备类型  摄像机
+							deviceTypeCode:"camera", // 设备类型  摄像机 camera or eventcamera
 							orientationLocation:10, //位置类型 
 							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709200 + i * 5,// 设备桩号
@@ -328,6 +331,35 @@ position: fiexd;
 				}
 				window.frames[0].postMessage(msg12); // 添加设备
 				
+				////////////////////////////////////////////////////////////////////////
+				// 传感器
+				var msg13 = {
+					msgType:"addDevices",
+					msgData:new Array(),
+				}
+				msg13.msgData.push({
+					id:"1703006a-9b93-4147-9e78-13-1", // 设备id
+					deviceTypeCode:"temperature", // 设备类型  湿温度计
+					orientationLocation:10, //位置类型 
+					leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
+					pileNumber:709150,// 设备桩号
+					deviceName:"湿温度计", // 设备名称
+					deviceCommunicationsState: 0, // 设备状态
+					deviceCommunicationsStateName:"正常",// 设备状态描述
+					contentText:"温度：37℃\n湿度：35%"
+				});
+				msg13.msgData.push({
+					id:"1703006a-9b93-4147-9e78-13-2", // 设备id
+					deviceTypeCode:"winddirection", // 设备类型  风向
+					orientationLocation:10, //位置类型 
+					leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
+					pileNumber:709160,// 设备桩号
+					deviceName:"风向", // 设备名称
+					deviceCommunicationsState: 0, // 设备状态
+					deviceCommunicationsStateName:"正常",// 设备状态描述
+					contentText:"风向：东南风"
+				});
+				window.frames[0].postMessage(msg13); // 添加设备
 			break;
 			
 			case "clickDevice": // 点击选择某设备

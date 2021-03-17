@@ -27,7 +27,7 @@
 			"clearFlag":1,
 			"orthographic":false,
 			"orthographicVerticalSize":10,
-			"fieldOfView":60,
+			"fieldOfView":40,
 			"enableHDR":true,
 			"nearPlane":0.3,
 			"farPlane":1000,
