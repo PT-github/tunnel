@@ -132,7 +132,7 @@ export default class TwoDService extends Service {
     saveInfoBoardTmp(p) {
         return this.post({
             loadingText: '正在执行...请稍后',
-            url: '/tunnel/rest/2d/saveDeviceQbBoard',
+            url: '/tunnel/rest/2d/saveDeviceQbBoardNew',
             data: p
         });
     }
@@ -148,11 +148,13 @@ export default class TwoDService extends Service {
     }
 
     // 获取情报板模板列表
-    getInfoBoardTmpList(tunnelId) {
+    getInfoBoardTmpList(tunnelId,playDetail) {
         return this.get({
             url: '/tunnel/rest/2d/getDeviceQbBoardList',
             data: {
-                tunnelId
+                tunnelId,
+                resolutionPower:playDetail.resolutionPower || '',
+                templetName:playDetail.templetName || '',
             }
         });
     }
@@ -183,6 +185,14 @@ export default class TwoDService extends Service {
             data: {deviceId, tempId}
         });
     }
+    operateInfoBoardByTmpNew(data){
+        return this.post({
+            loadingText: '正在执行...请稍后',
+            url: '/tunnel/rest/2d/oprateDeviceQbBoardNew',
+            data: data
+        });
+    }
+   
 
     // 隧道字典
     // Show3D 显示隧道3d
@@ -194,6 +204,24 @@ export default class TwoDService extends Service {
                 value: 'OneValueDictionary'
             }
         })
+    }
+
+    getDict (code) {
+        return this.get({
+            url: '/tunnel/rest/SystemDictionary/listChildrenByParentValue',
+            contentType: 'form',
+            data: {
+                
+                value:code
+            }
+        }).then(res => {
+            return res.map(v => {
+                return {
+                    name: v.name,
+                    value: v.value || v.DictionaryId
+                };
+            });
+        });
     }
 
 }

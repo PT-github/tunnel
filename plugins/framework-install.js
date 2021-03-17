@@ -11,6 +11,7 @@ export default ({store}) => {
             // baseUrl: 'http://w8.qcxt.com:65036',
             // baseUrl: 'http://cxgs.tunnel.qcxt.com:65036/api',
             baseUrl: 'http://w7.qcxt.com:8060',
+            //baseUrl: 'http://172.16.22.196:18080',
             baseImgUrl: '/upload'
         },
         resolveHttpSuccess: (res, options) => {
