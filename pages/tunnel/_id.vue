@@ -186,19 +186,11 @@ export default {
 
   async mounted() {
     this.tunnelId = this.$route.params.id
-    // console.log(111)
     await this.init()
-    // console.log(222)
     this.$refs.TunnelRef.initEvent()
-
-    // this.$refs.TunnelRef.initInfo()
   },
   methods: {
     async on3DLoad() {
-      console.log(23333333)
-      // await this.init()
-      // console.log(this.tunnelInfoData)
-      // console.log(this.tunnelDevices)
       this.$refs.TunnelRef.initInfo()
     },
 
@@ -221,10 +213,6 @@ export default {
         this.tunnelDeviceTypes = [
           {classifyName: '全部', classifyNumber: 'all'},
         ].concat(deviceTypeis)
-
-        // console.log(res, 'device types')
-        // console.log(deviceTypeis, 'device types filter')
-        // console.log(this.tunnelDeviceTypes)
       })
 
       // 获取是否显示3D
@@ -242,7 +230,6 @@ export default {
           return support // positionFlag为空不显示
         })
 
-        // console.log(this.tunnelDevices)
       })
 
       // 隧道视频
@@ -250,12 +237,10 @@ export default {
         this.tunnelVideos = res
       })
 
-      // console.log(333)
     },
 
     onLoadTunnelData(e) {
       this.tunnelData = e
-      // console.log(e)
     },
 
     doShowModalDevice(device) {

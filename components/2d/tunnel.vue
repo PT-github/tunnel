@@ -397,6 +397,7 @@ export default {
       minStartMapStakeMark: 0,
       tunnelLine: 0,
       iframeUrl: `/static/3d/index.html`,
+      // iframeUrl: `/static/3d/tunnel.html`,
     }
   },
 
@@ -424,12 +425,10 @@ export default {
       let bottom = []
       let a = Math.floor(beginMark)
       let b = Math.floor(endMark)
-      //console.log(endStakeMarkRight/ 1000);
       for (let i = a; i < b; i++) {
         bottom.push(i)
       }
       return bottom
-      //console.log(beginMark, endMark);
     },
     // 隧道2d背景图的样式
     tunnelStyle() {
@@ -459,12 +458,9 @@ export default {
           (laneNums - 1) * config.lineHeight // 一个洞的高度
 
       let mapLength = this.maxEndMapStakeMark - this.minStartMapStakeMark
-      //console.log('mapLength',mapLength);
 
       leftHoleLength = endStakeMark - startStakeMark //左洞长度
       rightHoleLength = endStakeMarkRight - startStakeMarkRight //右洞长度
-      //console.log('leftHoleLength',leftHoleLength);
-      //console.log('rightHoleLength',rightHoleLength);
       let minStartStakeMark = Math.max(startStakeMark, startStakeMarkRight)
 
       //计算方式
@@ -481,7 +477,6 @@ export default {
       let outerWidth = (document.body.clientWidth / 100) * 60
       //分段模式时候的值的比例
       let mapScaleMode1 = outerWidth / 1000
-      // console.log('mapScaleMode1',mapScaleMode1)
 
       //左边间隔 隧道开始桩号 减去 设备开始桩号
       let leftMar =
@@ -492,9 +487,6 @@ export default {
           startStakeMarkRight - this.minStartMapStakeMark > 0
               ? startStakeMarkRight - this.minStartMapStakeMark
               : 0
-      //console.log('rightMar',rightMar)
-      //console.log('minStartStakeMark - this.minStartMapStakeMark',minStartStakeMark - this.minStartMapStakeMark)
-      //console.log('startStakeMarkRight - this.minStartMapStakeMark',startStakeMarkRight - this.minStartMapStakeMark)
 
       //分段模式显示时候 按outerWidth(地图显示区域)等于长度1000米的比例计算得到 PX
       if (this.tunnelInfoData.showMode === 1) {
@@ -585,14 +577,12 @@ export default {
         const {msgType, msgData} = event.data
         switch (msgType) {
           case 'loaded': // 初始化完成，可以添加设备主体和设备
-            console.log(1111)
             this.$emit('on-load')
             // this.initInfo()
             break
           case 'clickDevice': // 点击选择某设备
             // this.$emit('on-chose', msgData)
             this.showDetail(msgData)
-            // console.log('click device:', msgData)
             break
         }
       })
@@ -600,35 +590,44 @@ export default {
 
     // 添加隧道设备
     initInfo() {
-      console.log('tunnel init info')
       const el = this.$el.querySelector('#frame-view')
       const {postMessage} = el.contentWindow
 
+      // 情报板
+      const intelligenceboard = this.tunnelDevices.filter(item => item.deviceTypeCode === 'intelligenceboard')
+      // 信号灯
+      const signallamp = this.tunnelDevices.filter(item => item.deviceTypeCode === 'signallamp')
+      // 风机
+      const draughtfan = this.tunnelDevices.filter(item => item.deviceTypeCode === 'draughtfan')
+
+      console.log('情报板：', intelligenceboard)
+      console.log('信号灯：', signallamp)
+      console.log('风机：', draughtfan)
+
+      // 隧道信息
       postMessage({
         msgType: 'loadTunnel',
-        msgData: {...this.tunnelInfoData},
-        addData: [...this.tunnelInfoData.emptyrecordList]
+        msgData: this.tunnelInfoData,
+        // 空洞
+        addData: this.tunnelInfoData.emptyrecordList || []
       })
 
+      // 设备
       postMessage({
         msgType: 'addDevices',
-        msgData: [...this.tunnelDevices],
+        msgData: this.tunnelDevices,
       })
-      // console.log(postMessage)
     },
 
     //设备状态更新 刷新隧道图
     async deviceStatusChange(id) {
-      //console.log(id)
       if (id === this.tunnelInfoData.id) {
         await this.listDeviceBaseOfTunnelPage()
         await this.findTunnelBaseInfo()
-        console.log('刷新隧道deviceStatusChange')
       }
     },
     //Scroll监听移动
     divLeftRight(i) {
-      //console.log(this.outerWidth)
       switch (i) {
         case 0:
           return {
@@ -723,13 +722,10 @@ export default {
     //获取初始宽度
     outerWidths() {
       let mapLength = this.maxEndMapStakeMark - this.minStartMapStakeMark
-      //console.log('this.tunnelBunntntt',this.tunnelBunntntt)
       let outerWidths = (document.body.clientWidth / 100) * 60
 
       this.outerWidthout = outerWidths
-      //console.log(outerWidths);
       this.outerWidth = outerWidths
-      //console.log(outerWidth)
       if (this.tunnelInfoData.showMode === 1) {
         this.tunnelBunntntt = Math.round(mapLength / 1000)
       } else {
@@ -756,7 +752,6 @@ export default {
       let outerWidth = (document.body.clientWidth / 100) * 60
       //分段模式时候的值的比例
       let mapScaleMode1 = outerWidth / 1000
-      // console.log('mapScaleMode1',mapScaleMode1)
 
       let defaultLeft = 0
       //计算设备位置+10
@@ -771,7 +766,6 @@ export default {
             ((pileNumber - this.minStartMapStakeMark + 10) / mapLength) * 100 +
             '%'
       }
-      //console.log('maxLength',maxLength)
       // emptyType  空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
       // rotateDegree  旋转度数
       // leftRightFlag 1 右洞 2 左洞 3 中间
@@ -779,9 +773,6 @@ export default {
       switch (item.emptyType) {
           // 0 空洞
         case 0:
-          // console.log(singleDoubleType)
-          // console.log(leftRightFlag)
-          // console.log( singleDoubleType === 3 && leftRightFlag == 2)
           return {
             position: 'absolute',
             top:
@@ -875,7 +866,6 @@ export default {
       // 0 左  10 右  1 车道1  2 车道2  3 车道3  4 车道4 ~~~ 9 车道
       // -1 左外面  11 横洞  12 右外面  13 右外面1  14 右外面2  15右外面3
       // 16 横洞左  17 横洞中  18 横洞右
-      // console.log(device)
       const {orientationLocation} = device
       const {laneNums, singleDoubleType} = this.tunnelInfoData
 
@@ -885,7 +875,6 @@ export default {
       let outerWidth = (document.body.clientWidth / 100) * 60
       //分段模式时候的值的比例
       let mapScaleMode1 = outerWidth / 1000
-      // console.log('mapScaleMode1',mapScaleMode1)
 
       const {
         sideHeight,
@@ -923,7 +912,6 @@ export default {
       }`
       //计算设备位置+5
       let defaultLeft = 0
-      //console.log('device.pileNumber-this.minStartMapStakeMark',mapScaleMode1)
       //分段模式显示时候 按outerWidth(地图显示区域)等于长度1000米的比例计算得到 PX
       if (this.tunnelInfoData.showMode === 1) {
         defaultLeft =
@@ -944,7 +932,7 @@ export default {
             ((device.pileNumber - this.minStartMapStakeMark) / mapLength) * 100 +
             '%'
       }
-      //console.log(rightDistance);
+
       switch (orientationLocation) {
         case 0:
           // 左边
@@ -1038,10 +1026,6 @@ export default {
 
     // 隧道基本信息
     findTunnelBaseInfo() {
-      // return this.$service.tunnel.getById(this.tunnelId).then((res) => {
-      // this.tunnelInfoData = res
-      //console.log('res',res)
-      //console.log('this.tunnelInfoData.showMode',this.tunnelInfoData.showMode)
       if (
           !this.tunnelInfoData.showMode ||
           this.tunnelInfoData.showMode == null
