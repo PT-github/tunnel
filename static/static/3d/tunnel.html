@@ -39,7 +39,7 @@ position: fiexd;
 						rightHoleLength:507, // 右洞长度（米）
 						endStakeMark:710213,  // 左洞结束桩号（桩号米）
 						endStakeMarkRight:710253, // 右洞结束桩号（桩号米）
-						laneNums:2,  // 车道数（个）  
+						laneNums:3,  // 车道数（个）  
 						startStakeMark:709157,  // 左洞开始桩号（桩号米） 
 						startStakeMarkRight:709146,  // 右洞开始桩号（桩号米）
 						leftHoleDirection: "岳阳方向", // 左洞方向 
@@ -80,7 +80,7 @@ position: fiexd;
 				
 				////////////////////////////////////////////////////////////////////////
 				// 测试消防器材
-				for(var i =0; i < 10; ++i){
+				for(var i =0; i < 2; ++i){
 					var msg1 = {
 						msgType:"addDevice",
 						msgData:{
@@ -90,7 +90,7 @@ position: fiexd;
 							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709160 + i *50,// 设备桩号
 							deviceName:"火灾消防设备", // 设备名称
-							workMode:0, // 设备状态
+							workMode:i%2, // 设备状态
 							deviceCommunicationsStateName:"正常",// 设备状态描述
 						}
 					}
@@ -216,7 +216,7 @@ position: fiexd;
 						msgData:{
 							id:"1703006a-9b93-4147-9e78-8" + i, // 设备id
 							deviceTypeCode:"signallamp", // 设备类型  信号灯
-							orientationLocation:1, //位置类型 
+							orientationLocation:10, //位置类型 
 							leftRightFlag:1+i,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709137,// 设备桩号
 							deviceName:"信号灯", // 设备名称
@@ -365,13 +365,20 @@ position: fiexd;
 			case "clickDevice": // 点击选择某设备
 				console.log("click device:" + revMsg.msgData);
 								
-				// 开关自动巡游接口  测试接口 点击M情报板开始巡游
+				// 测试接口 点击M情报板开始巡游
 				if(revMsg.msgData.id == "1703006a-9b93-4147-9e78-3"){
+					//开关自动巡游接口
 					var msg_auto = {
 						msgType:"setAutoView",
 						msgData:true, // 是否开启巡游 true or false
 					}
-					window.frames[0].postMessage(msg_auto);
+					//window.frames[0].postMessage(msg_auto);
+					
+					// 重置到默认视角
+					var msg_reset = {
+						msgType:"resetView",
+					}
+					window.frames[0].postMessage(msg_reset);
 				}
 			break;
 			
