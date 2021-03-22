@@ -101,7 +101,8 @@ export default {
         point:this.$refs.live.getAllPoint().point,
         // ...this.otherObj,
         ...this.playObj,
-        templetId:this.id,
+        templetId:this.id || '',  
+        resolutionPower: this.playObj.resolutionPower || "96*32",
       };
     },
     showingDeviceContent() {
@@ -134,6 +135,9 @@ export default {
       // let txt = this.$refs.text.detail;
       // console.log(this.submitparms);
       // 保存模板
+      if (!this.submitparms.text) {
+        return this.$message("请输入内容");
+      }
       if(this.submitparms.bold){
         this.submitparms.bold=1
       }else{
