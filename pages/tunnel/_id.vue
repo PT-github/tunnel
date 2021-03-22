@@ -3,7 +3,7 @@
     <!--    <div class="page">-->
     <div class="left" style="position: relative">
       <!--隧道图-->
-      <div class="block wide map">
+      <div class="block wide map" :class="{'full-2': tunnelStatus === 'TunnelFullView'}">
         <!--控制3d和2d-->
         <div class="switcher-wrapper">
           <el-radio-group v-model="tunnelStatus" size="medium">
@@ -259,6 +259,11 @@ export default {
 </script>
 
 <style scoped lang="less">
+.full-2 {
+  height: calc(100vh - 135px);
+  overflow-y: auto;
+}
+
 .switcher-wrapper {
   position: absolute;
   right: 10px;
@@ -392,7 +397,7 @@ export default {
   }
 
   .videos {
-    margin-top: 20px;
+    margin-top: 15px;
     display: flex;
 
     .spacer {
