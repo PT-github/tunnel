@@ -404,7 +404,7 @@ export default {
     doShowModal(classifyNumber, deviceName) {
       this.showActiveType = classifyNumber
       if (classifyNumber === 'all') return
-      this.showModal = true
+      this.showModal = true 
       this.showModalDeviceName = deviceName
       this.showModalClassify = classifyNumber
     },

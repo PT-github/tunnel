@@ -1097,7 +1097,8 @@ export default {
     },
 
     showDetail(item) {
-      this.$emit('detail', item)
+      //this.$emit('detail', item);
+      this.$emit('details', item)
     },
   },
 }

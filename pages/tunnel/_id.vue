@@ -22,6 +22,7 @@
           <tunnel-component
 
               @detail="doShowModalDevice"
+              @details="doShowModalDevices"
               ref="TunnelRef"
               :show-active-type="showActiveType"
               :tunnel-status="tunnelStatus"
@@ -246,14 +247,25 @@ export default {
     doShowModalDevice(device) {
       this.doShowModal(device.classifyNumber, device.deviceName)
     },
+    doShowModalDevices(device) {
+      this.doShowModals(device.classifyNumber, device.deviceName)
+    },
 
     doShowModal(classifyNumber, deviceName) {
+      //alert(1)
       this.showActiveType = classifyNumber
       if (classifyNumber === 'all') return
       this.showModal = true
       this.showModalDeviceName = deviceName
       this.showModalClassify = classifyNumber
     },
+    doShowModals(classifyNumber, deviceName){
+      //this.showActiveType = classifyNumber
+      if (classifyNumber === 'all') return
+      this.showModal = true
+      this.showModalDeviceName = deviceName
+      this.showModalClassify = classifyNumber
+    }
   },
 }
 </script>

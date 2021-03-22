@@ -181,7 +181,7 @@
           >
             <el-table-column>
               <template slot-scope="scope">
-                <div class="tpl-item" @click="showTpl(scope.row)">
+                <div class="tpl-item" >
                   {{ scope.$index + 1 }}、{{
                     scope.row.templetName || scope.row.text
                   }}
@@ -292,10 +292,16 @@ export default {
     },
     //点击行显示
     rowClick(row) {
-      let obj = JSON.parse(row.templetText);
-      this.resolutionPower = obj.resolutionPower;
-      this.textObj = obj;
-      this.playObj = obj;
+      if(row.templetText){
+        let obj = JSON.parse(row.templetText);
+        this.resolutionPower = obj.resolutionPower;
+        this.textObj = obj;
+        this.playObj = obj;
+      } else{
+        this.textObj = row;
+        this.playObj = row;
+      }
+    
     },
     imgChange(url = "") {
       this.imgUrls = url;
@@ -360,10 +366,11 @@ export default {
         });
       });
     },
-    // showTpl(tpl) {
-    //   // 点击模板填上表单内容
-    //   this.tplForm = JSON.parse(tpl.templetText);
-    // },
+    showTpl(tpl) {
+      // 点击模板填上表单内容
+      console.log(tpl)
+     // this.tplForm = JSON.parse(tpl.templetText);
+    },
     deviceSelectionChange(e) {
       this.selectedDevices = e;
     },
