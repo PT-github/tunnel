@@ -339,7 +339,6 @@
 
 <script>
 import TunnelThreeView from '@/components/3d/index'
-import TunnelClass from '@/utils/tunnel'
 
 export default {
   components: {
@@ -412,8 +411,8 @@ export default {
       immediate: true,
       handler(val, oldVal) {
         // if (val) {
-          this.findTunnelBaseInfo()
-          // this.initEvent()
+        this.findTunnelBaseInfo()
+        // this.initEvent()
         // }
       },
     },
@@ -594,14 +593,15 @@ export default {
       const el = this.$el.querySelector('#frame-view')
       const {postMessage} = el.contentWindow
 
+
       // 情报板
-      const intelligenceboard = this.tunnelDevices.filter(item => item.deviceTypeCode === 'intelligenceboard')
+      // const intelligenceboard = this.tunnelDevices.filter(item => item.deviceTypeCode === 'intelligenceboard')
       // 信号灯
       // const signallamp = this.tunnelDevices.filter(item => item.deviceTypeCode === 'signallamp')
       // 风机
       // const draughtfan = this.tunnelDevices.filter(item => item.deviceTypeCode === 'draughtfan')
 
-      console.log('情报板：', intelligenceboard)
+      // console.log('情报板：', intelligenceboard)
       // console.log('信号灯：', signallamp)
       // console.log('风机：', draughtfan)
 
@@ -618,6 +618,12 @@ export default {
         msgType: 'addDevices',
         msgData: this.tunnelDevices,
       })
+    },
+
+    // 设置3D模型焦点
+    setFocus() {
+      const el = this.$el.querySelector('#frame-view')
+      el.contentWindow.focus()
     },
 
     //设备状态更新 刷新隧道图

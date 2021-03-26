@@ -20,7 +20,6 @@
         <!-- 隧道信息 -->
         <section>
           <tunnel-component
-
               @detail="doShowModalDevice"
               ref="TunnelRef"
               :show-active-type="showActiveType"
@@ -51,17 +50,6 @@
             </div>
           </tunnel-component>
         </section>
-
-        <!-- 3d -->
-        <!-- <section v-show="tunnelStatus === 'TunnelThreeView'">
-          <tunnel-three-view
-            ref="TunnelThreeViewRef"
-            @on-load="on3DLoad"
-            :tunnel-id="tunnelId"
-            :tunnel-info-data="tunnelInfoData"
-            :tunnel-devices="tunnelDevices"
-          />
-        </section> -->
       </div>
 
       <!-- 隧道左右洞视频 -->
@@ -97,9 +85,10 @@
       <modal-control
           :device-name="showModalDeviceName"
           :classify-number="showModalClassify"
+          :tunnel-id.sync="tunnelId"
           v-model="showModal"
           @update="$refs.tunnel.listDeviceBaseOfTunnelPage()"
-          :tunnel-id.sync="tunnelId"
+          @close="onClose"
       />
     </div>
 
@@ -192,6 +181,12 @@ export default {
   methods: {
     async on3DLoad() {
       this.$refs.TunnelRef.initInfo()
+    },
+
+    onClose() {
+      if (this.tunnelStatus === 'TunnelThreeView') {
+        this.$refs.TunnelRef.setFocus()
+      }
     },
 
     async init() {

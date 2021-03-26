@@ -39,7 +39,7 @@ position: fiexd;
 						rightHoleLength:507, // 右洞长度（米）
 						endStakeMark:710213,  // 左洞结束桩号（桩号米）
 						endStakeMarkRight:710253, // 右洞结束桩号（桩号米）
-						laneNums:2,  // 车道数（个）  
+						laneNums:3,  // 车道数（个）  
 						startStakeMark:709157,  // 左洞开始桩号（桩号米） 
 						startStakeMarkRight:709146,  // 右洞开始桩号（桩号米）
 						leftHoleDirection: "岳阳方向", // 左洞方向 
@@ -73,6 +73,22 @@ position: fiexd;
 							leftRightFlag:2, // 左右洞标识1 右洞 2 左洞 3 中间
 							singleDoubleType:2, // 单双洞类型（1单右洞 2单左洞 3双洞）
 						},
+						{
+							id:"8e46993d-1a72-11eb-ab8a-44",
+							emptyType:3, // 空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
+							length:0, // 长度
+							pileNumber:709165, // 桩号 
+							leftRightFlag:1, // 左右洞标识1 右洞 2 左洞 3 中间
+							singleDoubleType:1, // 单双洞类型（1单右洞 2单左洞 3双洞）
+						},
+						{
+							id:"8e46993d-1a72-11eb-ab8a-55",
+							emptyType:4, // 空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
+							length:0, // 长度
+							pileNumber:709130, // 桩号 
+							leftRightFlag:1, // 左右洞标识1 右洞 2 左洞 3 中间
+							singleDoubleType:1, // 单双洞类型（1单右洞 2单左洞 3双洞）
+						},
 					], 
 				}
 				
@@ -104,6 +120,7 @@ position: fiexd;
 						msgData:{
 							id:"1703006a-9b93-4147-9e78-2" + i, // 设备id
 							deviceTypeCode:"draughtfan", // 设备类型  火灾消防
+							deviceConfig:"{\"deviceSubtypeCode\":\"Z\"\n}",  // 设备子类型  Z：轴流风机 S：射流风机
 							orientationLocation:1 + i, //位置类型
 							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709152,// 设备桩号
@@ -111,9 +128,27 @@ position: fiexd;
 							workMode:i, // 设备状态
 							deviceCommunicationsStateName:"正常",// 设备状态描述
 						}
-						}
-						window.frames[0].postMessage(msg2); // 添加设备
 					}
+					window.frames[0].postMessage(msg2); // 添加设备
+				}
+				
+				for(var i =0; i < msg.msgData.laneNums; ++i){
+					var msg22 = {
+						msgType:"addDevice",
+						msgData:{
+							id:"1703006a-9b93-4147-9e78-222" + i, // 设备id
+							deviceTypeCode:"draughtfan", // 设备类型  火灾消防
+							deviceConfig:"{\"deviceSubtypeCode\":\"S\"\n}",  // 设备子类型  Z：轴流风机 S：射流风机
+							orientationLocation:1 + i, //位置类型
+							leftRightFlag:2,// 左右洞标识（1右洞，2左洞）
+							pileNumber:709152,// 设备桩号
+							deviceName:"风机1", // 设备名称
+							workMode:i, // 设备状态
+							deviceCommunicationsStateName:"正常",// 设备状态描述
+						}
+					}
+					window.frames[0].postMessage(msg22); // 添加设备
+				}
 
 				////////////////////////////////////////////////////////////////////////
 				// 测试情报板M
@@ -216,9 +251,9 @@ position: fiexd;
 						msgData:{
 							id:"1703006a-9b93-4147-9e78-8" + i, // 设备id
 							deviceTypeCode:"signallamp", // 设备类型  信号灯
-							orientationLocation:10, //位置类型 
+							orientationLocation:0, //位置类型 
 							leftRightFlag:1+i,// 左右洞标识（1右洞，2左洞）
-							pileNumber:709137,// 设备桩号
+							pileNumber:709118+i*10,// 设备桩号
 							deviceName:"信号灯", // 设备名称
 							workMode:0 +i, // 设备状态
 							deviceCommunicationsStateName:"正常",// 设备状态描述
@@ -266,8 +301,20 @@ position: fiexd;
 					workMode: 1, // 设备状态
 					deviceCommunicationsStateName:"正常",// 设备状态描述
 				});
+
+				// 横洞中的摄像机
+				msg9.msgData.push({
+					id:"1703006a-9b93-4147-9e78-93" + 2, // 设备id
+					deviceTypeCode:"camera", // 设备类型  卷闸门
+					orientationLocation:17, //位置类型
+					leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
+					pileNumber:709157 + 90,// 设备桩号 必须和对应的横洞一致
+					deviceName:"横洞监控", // 设备名称
+					workMode: 1, // 设备状态
+					deviceCommunicationsStateName:"正常",// 设备状态描述
+				});
 				window.frames[0].postMessage(msg9); // 添加设备
-				
+
 				////////////////////////////////////////////////////////////////////////
 				// 紧急电话
 				var msg10 = {
@@ -365,7 +412,7 @@ position: fiexd;
 			case "clickDevice": // 点击选择某设备
 				console.log("click device:" + revMsg.msgData);
 								
-				// 测试接口 点击M情报板开始巡游
+				// 测试接口 点击M情报板触发事件
 				if(revMsg.msgData.id == "1703006a-9b93-4147-9e78-3"){
 					//开关自动巡游接口
 					var msg_auto = {
@@ -379,6 +426,16 @@ position: fiexd;
 						msgType:"resetView",
 					}
 					window.frames[0].postMessage(msg_reset);
+					
+					// 设置窗口焦点
+					window.frames[0].postMessage({msgType:"focus"});
+					
+					// 选中指定设备 测试定位到F板
+					window.frames[0].postMessage({
+						msgType:"selectDevice", 
+						msgData:"1703006a-9b93-4147-9e78-4"
+					});
+						
 				}
 			break;
 			

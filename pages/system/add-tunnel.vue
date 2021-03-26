@@ -271,7 +271,7 @@
 
     <OrganizePopup :showPopup="showOrganizePopup"
                    @handleClose="handleTipClose"
-                   @btnCannal="handleTipClose"
+                   @btnCancel="handleTipClose"
                    @btnConfirm="subSelectedOrgan"
                    showButton
                    width="740px"

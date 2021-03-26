@@ -1,8 +1,8 @@
 <template>
   <div>
     <popup :showPopup="show"
-           @handleClose="show = false"
-           @btnCannal="show = false"
+           @handleClose="onClosePop"
+           @btnCancel="onClosePop"
            @btnConfirm="submit"
            :width="classifyNumber==='intelligenceboard'? $getPx(1088): '50%'"
            class="modal"
@@ -31,21 +31,23 @@
                 <span>右洞</span>
                 <el-checkbox v-model="isCheckAllRight" class="checkboxFilter" @change="changeCheck"></el-checkbox>
               </div>
-              <div class="head-right" v-if="hasOperation && classifyNumber==='laneIndicator' && keyword.length==0 && laneNums===3">
-                  <span>左快</span>
-                  <el-checkbox v-model="isCheckAllLeft1" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
-                  <span>左行</span>
-                  <el-checkbox v-model="isCheckAllLeft2" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
-                  <span>左慢</span>
-                  <el-checkbox v-model="isCheckAllLeft3" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
-                  <span>右快</span>
-                  <el-checkbox v-model="isCheckAllRight1" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
-                  <span>右行</span>
-                  <el-checkbox v-model="isCheckAllRight2" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
-                  <span>右慢</span>
+              <div class="head-right"
+                   v-if="hasOperation && classifyNumber==='laneIndicator' && keyword.length==0 && laneNums===3">
+                <span>左快</span>
+                <el-checkbox v-model="isCheckAllLeft1" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <span>左行</span>
+                <el-checkbox v-model="isCheckAllLeft2" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <span>左慢</span>
+                <el-checkbox v-model="isCheckAllLeft3" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <span>右快</span>
+                <el-checkbox v-model="isCheckAllRight1" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <span>右行</span>
+                <el-checkbox v-model="isCheckAllRight2" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <span>右慢</span>
                 <el-checkbox v-model="isCheckAllRight3" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
               </div>
-              <div class="head-right" v-if="hasOperation && classifyNumber==='laneIndicator' && keyword.length==0 && laneNums===2">
+              <div class="head-right"
+                   v-if="hasOperation && classifyNumber==='laneIndicator' && keyword.length==0 && laneNums===2">
                 <span>左超</span>
                 <el-checkbox v-model="isCheckAllLeft1" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
                 <span>左行</span>
@@ -61,7 +63,7 @@
           </div>
         </div>
         <ul class="scroll">
-          <template v-for="(item,idx) in showingList" >
+          <template v-for="(item,idx) in showingList">
             <li class="device-item">
               <div class="idx">{{ idx + 1 }}</div>
               <div class="content">
@@ -69,11 +71,11 @@
                 </p>
                 <p class="name second" v-if="item.secondLabel">
                   <span
-                    class="label">{{ item.secondLabel }}</span>
-                    <el-progress v-if="item.isProcess"
-                                 style="width: 120px;display: inline-block"
-                                 :percentage="item.waterProcess"
-                                 status="success"/>
+                      class="label">{{ item.secondLabel }}</span>
+                  <el-progress v-if="item.isProcess"
+                               style="width: 120px;display: inline-block"
+                               :percentage="item.waterProcess"
+                               status="success"/>
                   {{ item.secondVal }}
                 </p>
               </div>
@@ -83,7 +85,6 @@
                 <div v-if="item.statusStr">{{ item.statusStr }}</div>
               </div>
               <div v-if="item.operaBtn" class="view-btn" @click="onOperaBtnClick(item)">
-
                 {{ item.operaBtn }}
               </div>
               <el-checkbox v-if="item.checkbox"
@@ -210,8 +211,8 @@ export default {
       return ['controller', 'lighting', 'draughtfan', 'signallamp', 'laneIndicator', 'tunneldoor', 'conflagration', 'environment', 'waterlevel'].includes(this.classifyNumber);
     },
     showingList() {
-      var list= this.listData ? this.listData.filter(v => v.name.indexOf(this.keyword) !== -1) : [];
-      if(list.length==1&&list[0].checkbox){
+      var list = this.listData ? this.listData.filter(v => v.name.indexOf(this.keyword) !== -1) : [];
+      if (list.length == 1 && list[0].checkbox) {
         this.$set(this.checkList, 0, true);
       }
       return list;
@@ -263,19 +264,24 @@ export default {
       checkList: [],
       workMode: 0,
       lightNess: 50,
-      leftRightFlag:'',
-      orientationLocationFilter:'',
-      isCheckAllLeft:false,
-      isCheckAllRight:false,
-      isCheckAllLeft1:false,
-      isCheckAllLeft2:false,
-      isCheckAllLeft3:false,
-      isCheckAllRight1:false,
-      isCheckAllRight2:false,
-      isCheckAllRight3:false
+      leftRightFlag: '',
+      orientationLocationFilter: '',
+      isCheckAllLeft: false,
+      isCheckAllRight: false,
+      isCheckAllLeft1: false,
+      isCheckAllLeft2: false,
+      isCheckAllLeft3: false,
+      isCheckAllRight1: false,
+      isCheckAllRight2: false,
+      isCheckAllRight3: false
     };
   },
   methods: {
+    onClosePop() {
+      this.show = false
+      this.$emit('close')
+    },
+
     submit() { // 点击确定
       // 其他设备
       if (!this.checkDevices.length) {
@@ -283,7 +289,7 @@ export default {
       }
 
       let deviceIds = this.showingList.reduce((arr, item) => {
-        const selectedDevice =this.checkDevices.filter(device => item.origin.id === device.id)
+        const selectedDevice = this.checkDevices.filter(device => item.origin.id === device.id)
         arr = [...arr, ...selectedDevice]
         return arr
       }, []).map(v => v.id).join(',');
@@ -299,7 +305,7 @@ export default {
         p.lightNess = this.lightNess;
       }
       this.$service._2d.operatePlcDevice(p).then((r) => {
-        if(r && r.status && r.status==='-1'){
+        if (r && r.status && r.status === '-1') {
           this.$message(r.message);
         }
         this.$notifySuccess();
@@ -324,7 +330,7 @@ export default {
 
     onCheck(device, idx) {    // 点击选中
       let isChecked = !this.checkList[idx];
-      console.log('isChecked',isChecked)
+      console.log('isChecked', isChecked)
       this.$set(this.checkList, idx, isChecked);
       if (device.chainCheckbox) {     // 联动选择
         this.showingList.forEach((v, i) => {
@@ -374,12 +380,12 @@ export default {
     changeCheck() {
       let res = {};
       this.showingList.forEach((v, idx) => {
-        if(v.leftRightFlag===2){
+        if (v.leftRightFlag === 2) {
           res[idx] = this.isCheckAllLeft;
         }
       });
       this.showingList.forEach((v, idx) => {
-        if(v.leftRightFlag===1){
+        if (v.leftRightFlag === 1) {
           res[idx] = this.isCheckAllRight;
         }
       });
@@ -390,32 +396,32 @@ export default {
       let res = {};
 
       this.showingList.forEach((v, idx) => {
-        if(v.leftRightFlag===2 && v.orientationLocation===1){
+        if (v.leftRightFlag === 2 && v.orientationLocation === 1) {
           res[idx] = this.isCheckAllLeft1;
         }
       });
       this.showingList.forEach((v, idx) => {
-        if(v.leftRightFlag===2 && v.orientationLocation===2){
+        if (v.leftRightFlag === 2 && v.orientationLocation === 2) {
           res[idx] = this.isCheckAllLeft2;
         }
       });
       this.showingList.forEach((v, idx) => {
-        if(v.leftRightFlag===2 && v.orientationLocation===3){
+        if (v.leftRightFlag === 2 && v.orientationLocation === 3) {
           res[idx] = this.isCheckAllLeft3;
         }
       });
       this.showingList.forEach((v, idx) => {
-        if(v.leftRightFlag===1 && v.orientationLocation===1){
+        if (v.leftRightFlag === 1 && v.orientationLocation === 1) {
           res[idx] = this.isCheckAllRight1;
         }
       });
       this.showingList.forEach((v, idx) => {
-        if(v.leftRightFlag===1 && v.orientationLocation===2){
+        if (v.leftRightFlag === 1 && v.orientationLocation === 2) {
           res[idx] = this.isCheckAllRight2;
         }
       });
       this.showingList.forEach((v, idx) => {
-        if(v.leftRightFlag===1 && v.orientationLocation===3){
+        if (v.leftRightFlag === 1 && v.orientationLocation === 3) {
           res[idx] = this.isCheckAllRight3;
         }
       });
@@ -433,7 +439,7 @@ export default {
           });
         }
       }
-      if(this.classifyNumber === 'laneIndicator'){
+      if (this.classifyNumber === 'laneIndicator') {
         //获取隧道信息里的车道数量，生成分组过滤/////
         this.$service.tunnel.getById(this.tunnelId).then(res => {
           this.laneNums = res.laneNums;
@@ -691,11 +697,13 @@ export default {
     background-size: 100% 100%;
     margin-left: 20px;
   }
-  .el-checkbox{
+
+  .el-checkbox {
     margin-left: 20px;
     margin-right: 20px;
   }
-  .checkboxFilter{
+
+  .checkboxFilter {
     margin-left: 5px;
     margin-right: 20px;
   }

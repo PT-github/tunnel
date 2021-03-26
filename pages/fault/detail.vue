@@ -183,7 +183,7 @@
                   :width="$getPx(528)"
                   showButton
                   @handleClose="closeRepair"
-                  @btnCannal="closeRepair"
+                  @btnCancel="closeRepair"
                   @btnConfirm="submitForm('repairForm')"
                   :showPopup="showRepair">
             <el-form :model="repairForm" ref="repairForm"

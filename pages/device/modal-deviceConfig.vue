@@ -1,7 +1,7 @@
 <template>
     <popup :showPopup="show"
            @handleClose="show = false"
-           @btnCannal="show = false"
+           @btnCancel="show = false"
            @btnConfirm="submitForm('deviceForm')"
            :show-button="true"
            class="modal"
