@@ -23,6 +23,7 @@
       <div class="modal-content" v-else>
         <div class="head">
           <el-input v-model="keyword" class="search" placeholder="请输入搜索的设备名"></el-input>
+
           <div class="head-right" v-if="hasOperation && classifyNumber!=='environment'">
             <div>
               <div class="head-right" v-if="hasOperation && classifyNumber==='draughtfan' && keyword.length==0">
@@ -62,12 +63,25 @@
             <el-checkbox :value="isCheckAll" class="checkbox" @change="changeCheckAll"></el-checkbox>
           </div>
         </div>
+
         <ul class="scroll">
           <template v-for="(item,idx) in showingList">
             <li class="device-item">
               <div class="idx">{{ idx + 1 }}</div>
+
               <div class="content">
-                <p class="name" @click="showdetail(item)"><span class="label">设备名称</span>{{ item.name }}
+
+                <p class="name">
+                  <span class="label">设备名称</span>
+
+                  <!-- 3D设备定位 -->
+                  <img class="device-3d"
+                       v-if="isThreeModel"
+                       src="/static/image/tunnel/3d.png"
+                       alt=""
+                       @click="$emit('position', item)">
+
+                  <span @click="showdetail(item)">{{ item.name }}</span>
                 </p>
                 <p class="name second" v-if="item.secondLabel">
                   <span
@@ -84,6 +98,7 @@
                 <img class="icon" v-if="item.statusIcon" :src="item.statusIcon">
                 <div v-if="item.statusStr">{{ item.statusStr }}</div>
               </div>
+
               <div v-if="item.operaBtn" class="view-btn" @click="onOperaBtnClick(item)">
                 {{ item.operaBtn }}
               </div>
@@ -196,7 +211,8 @@ export default {
     deviceName: String,         // 选中的设备对象
     classifyNumber: String,      // 分类名
     showAll: Boolean,        // 是否展示同类型的全部设备
-    tunnelId: String         // 隧道id
+    tunnelId: String,         // 隧道id
+    isThreeModel: true       // 是否为3D视图
   },
   computed: {
     isCheckAll() {
@@ -370,7 +386,6 @@ export default {
         this.checkList = {};
       } else {
         let res = {};
-        console.log(this.showingList);
         this.showingList.forEach((v, idx) => {
           res[idx] = true;
         });
@@ -392,6 +407,7 @@ export default {
 
       this.checkList = res;
     },
+
     changeCheck2() {
       let res = {};
 
@@ -400,26 +416,31 @@ export default {
           res[idx] = this.isCheckAllLeft1;
         }
       });
+
       this.showingList.forEach((v, idx) => {
         if (v.leftRightFlag === 2 && v.orientationLocation === 2) {
           res[idx] = this.isCheckAllLeft2;
         }
       });
+
       this.showingList.forEach((v, idx) => {
         if (v.leftRightFlag === 2 && v.orientationLocation === 3) {
           res[idx] = this.isCheckAllLeft3;
         }
       });
+
       this.showingList.forEach((v, idx) => {
         if (v.leftRightFlag === 1 && v.orientationLocation === 1) {
           res[idx] = this.isCheckAllRight1;
         }
       });
+
       this.showingList.forEach((v, idx) => {
         if (v.leftRightFlag === 1 && v.orientationLocation === 2) {
           res[idx] = this.isCheckAllRight2;
         }
       });
+
       this.showingList.forEach((v, idx) => {
         if (v.leftRightFlag === 1 && v.orientationLocation === 3) {
           res[idx] = this.isCheckAllRight3;
@@ -443,7 +464,7 @@ export default {
         //获取隧道信息里的车道数量，生成分组过滤/////
         this.$service.tunnel.getById(this.tunnelId).then(res => {
           this.laneNums = res.laneNums;
-          console.log(this.laneNums)
+          // console.log(this.laneNums)
         });
       }
     },
@@ -655,6 +676,12 @@ export default {
 </script>
 
 <style scoped lang="less">
+.device-3d {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+}
+
 .modal {
   .ctl-brightness {
     margin: 0 10px 0 30px;
@@ -774,6 +801,9 @@ export default {
           line-height: 15px;
           color: rgba(170, 211, 243, 1);
           cursor: pointer;
+
+          display: flex;
+          align-items: center;
 
           &.second {
             margin-top: 10px;

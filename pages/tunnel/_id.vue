@@ -86,9 +86,11 @@
           :device-name="showModalDeviceName"
           :classify-number="showModalClassify"
           :tunnel-id.sync="tunnelId"
+          :is-three-model="tunnelStatus === 'TunnelThreeView'"
           v-model="showModal"
           @update="$refs.tunnel.listDeviceBaseOfTunnelPage()"
           @close="onClose"
+          @position="on3DPosition"
       />
     </div>
 
@@ -179,10 +181,17 @@ export default {
     this.$refs.TunnelRef.initEvent()
   },
   methods: {
+    // 初始化3D
     async on3DLoad() {
       this.$refs.TunnelRef.initInfo()
     },
 
+    // 跳转3D设备位置
+    on3DPosition(item) {
+      this.$refs.TunnelRef.setPosition(item.origin.id)
+    },
+
+    //
     onClose() {
       if (this.tunnelStatus === 'TunnelThreeView') {
         this.$refs.TunnelRef.setFocus()

@@ -35,8 +35,11 @@ position: fiexd;
 					msgType:"loadTunnel", // 初始化隧道，横洞空洞数据必须一起带上
 					msgData:{
 						tunnelId:"a32932b8-7355-4de5-adf9-034075c89d2c", // 隧道id
-						leftHoleLength:556, // 左洞长度（米）
-						rightHoleLength:507, // 右洞长度（米）
+						lengthScale:1, // 隧道长度比例0-1
+						showDebug:0, // 是否显示调试信息
+						showMode:1,	// 隧道显示分段 0 or 1
+						leftHoleLength:5560, // 左洞长度（米）
+						rightHoleLength:5070, // 右洞长度（米）
 						endStakeMark:710213,  // 左洞结束桩号（桩号米）
 						endStakeMarkRight:710253, // 右洞结束桩号（桩号米）
 						laneNums:3,  // 车道数（个）  
@@ -123,7 +126,7 @@ position: fiexd;
 							deviceConfig:"{\"deviceSubtypeCode\":\"Z\"\n}",  // 设备子类型  Z：轴流风机 S：射流风机
 							orientationLocation:1 + i, //位置类型
 							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
-							pileNumber:709152,// 设备桩号
+							pileNumber:709162,// 设备桩号
 							deviceName:"风机1", // 设备名称
 							workMode:i, // 设备状态
 							deviceCommunicationsStateName:"正常",// 设备状态描述
@@ -141,7 +144,7 @@ position: fiexd;
 							deviceConfig:"{\"deviceSubtypeCode\":\"S\"\n}",  // 设备子类型  Z：轴流风机 S：射流风机
 							orientationLocation:1 + i, //位置类型
 							leftRightFlag:2,// 左右洞标识（1右洞，2左洞）
-							pileNumber:709152,// 设备桩号
+							pileNumber:709162,// 设备桩号
 							deviceName:"风机1", // 设备名称
 							workMode:i, // 设备状态
 							deviceCommunicationsStateName:"正常",// 设备状态描述
@@ -233,10 +236,10 @@ position: fiexd;
 							id:"1703006a-9b93-4147-9e78-7" + i, // 设备id
 							deviceTypeCode:"laneIndicator", // 设备类型  照明灯
 							orientationLocation:1 + i, //位置类型 
-							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
+							leftRightFlag:2,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709138,// 设备桩号
 							deviceName:"指示器", // 设备名称
-							workMode:2, // 设备状态
+							workMode:1, // 设备状态
 							deviceCommunicationsStateName:"正常",// 设备状态描述
 						}
 					}

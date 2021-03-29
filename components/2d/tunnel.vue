@@ -222,9 +222,10 @@
                 </p>
               </div>
 
-              <div style="color: green">
-                设备位置：{{ item.orientationLocation }}
-              </div>
+              <!-- 测试用 -->
+<!--              <div style="color: green">-->
+<!--                设备位置：{{ item.orientationLocation }}-->
+<!--              </div>-->
 
               <img
                   slot="reference"
@@ -363,12 +364,6 @@ export default {
         return {}
       },
     },
-    //  tunnelDeviceTypes: {
-    //   type: Array,
-    //   default: () => {
-    //     return []
-    //   },
-    // },
     tunnelDevices: {
       type: Array,
       default: () => {
@@ -378,7 +373,8 @@ export default {
     showActiveType: {
       type: String | Number,
       default: 'all',
-    }, // 正在展示的type
+    },
+    // 正在展示的type
     wait: Boolean,
     fullScreen: Boolean,
   },
@@ -608,7 +604,11 @@ export default {
       // 隧道信息
       postMessage({
         msgType: 'loadTunnel',
-        msgData: this.tunnelInfoData,
+        msgData: {
+          showDebug: 0,
+          // lengthScale: 0.25,
+          ...this.tunnelInfoData
+        },
         // 空洞
         addData: this.tunnelInfoData.emptyrecordList || []
       })
@@ -620,10 +620,22 @@ export default {
       })
     },
 
+    setPosition(deviceId) {
+      if (!deviceId) return
+      const el = this.$el.querySelector('#frame-view')
+      const {postMessage} = el.contentWindow
+      postMessage({
+        msgType:"selectDevice",
+        msgData: deviceId
+      })
+    },
+
     // 设置3D模型焦点
     setFocus() {
       const el = this.$el.querySelector('#frame-view')
-      el.contentWindow.focus()
+      const {postMessage, focus} = el.contentWindow
+      focus()
+      postMessage({msgType: "focus"})
     },
 
     //设备状态更新 刷新隧道图
