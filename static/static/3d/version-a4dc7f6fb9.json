@@ -1,8 +1,8 @@
 {
   "fileconfig.json": "fileconfig-33b79bb431.json",
-  "index.js": "index-14539751be.js",
-  "js/bundle.js": "js/bundle-a986e70c87.js",
-  "js/bundle.js.map": "js/bundle-3ae25925ba.js.map",
+  "index.js": "index-a1099e9b09.js",
+  "js/bundle.js": "js/bundle-4bb359b203.js",
+  "js/bundle.js.map": "js/bundle-2bfba1f97d.js.map",
   "libs/min/laya.core.min.js": "libs/min/laya-773c42d8ab.core.min.js",
   "libs/min/laya.d3.min.js": "libs/min/laya-c1a4697269.d3.min.js",
   "libs/min/laya.physics3D.min.js": "libs/min/laya-e74f05c8b3.physics3D.min.js",
@@ -289,7 +289,7 @@
   "res/LayaScene_suidao/Conventional/suidaomen01.lh": "res/LayaScene_suidao/Conventional/suidaomen01-f6fabc1c00.lh",
   "res/LayaScene_suidao/Conventional/textdis.lh": "res/LayaScene_suidao/Conventional/textdis-6424e9d4a6.lh",
   "res/atlas/comp.atlas": "res/atlas/comp-62ce5c3cbd.atlas",
-  "res/atlas/comp.png": "res/atlas/comp-c477cab5ad.png",
+  "res/atlas/comp.png": "res/atlas/comp-a10bff693e.png",
   "test/TestScene.json": "test/TestScene-f6cde1e032.json",
   "unpack.json": "unpack-99914b932b.json"
 }
