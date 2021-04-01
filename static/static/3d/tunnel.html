@@ -38,8 +38,8 @@ position: fiexd;
 						lengthScale:1, // 隧道长度比例0-1
 						showDebug:0, // 是否显示调试信息
 						showMode:1,	// 隧道显示分段 0 or 1
-						leftHoleLength:5560, // 左洞长度（米）
-						rightHoleLength:5070, // 右洞长度（米）
+						leftHoleLength:1702, // 左洞长度（米）
+						rightHoleLength:1752, // 右洞长度（米）
 						endStakeMark:710213,  // 左洞结束桩号（桩号米）
 						endStakeMarkRight:710253, // 右洞结束桩号（桩号米）
 						laneNums:3,  // 车道数（个）  
@@ -290,7 +290,7 @@ position: fiexd;
 					leftRightFlag:2,// 左右洞标识（1右洞，2左洞）
 					pileNumber:709157 + 90,// 设备桩号 必须和对应的横洞一致
 					deviceName:"卷闸门", // 设备名称
-					workMode: 1, // 设备状态
+					workMode: 0, // 设备状态
 					deviceCommunicationsStateName:"正常",// 设备状态描述
 				});
 				// 横洞中的灯
@@ -331,8 +331,8 @@ position: fiexd;
 							orientationLocation:10, //位置类型
 							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709220 + i * 5,// 设备桩号
-							deviceName:"照明灯", // 设备名称
-							workMode: 0, // 设备状态
+							deviceName:"电话", // 设备名称
+							workMode: i % 2, // 设备状态
 							deviceCommunicationsStateName:"正常",// 设备状态描述
 						}
 					msg10.msgData.push(data);
@@ -353,7 +353,7 @@ position: fiexd;
 							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709220 + i * 5,// 设备桩号
 							deviceName:"广播", // 设备名称
-							workMode: 0, // 设备状态
+							workMode:  i % 2, // 设备状态
 							deviceCommunicationsStateName:"正常",// 设备状态描述
 						}
 					msg11.msgData.push(data);
@@ -410,6 +410,23 @@ position: fiexd;
 					contentText:"风向：东南风"
 				});
 				window.frames[0].postMessage(msg13); // 添加设备
+				////////////////////////////////////////////////////////////////////////
+				// 出入口路灯
+				var msg14 = {
+					msgType:"addDevice",
+					msgData:{
+						id:"1703006a-9b93-4147-9e78-14", // 设备id
+						deviceTypeCode:"lighting", // 设备类型  照明灯
+						orientationLocation:0, //位置类型 照明灯应该只有0和10两种位置
+						leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
+						pileNumber:709127,// 设备桩号
+						deviceName:"路灯", // 设备名称
+						deviceConfig:"{\"deviceSubtypeCode\":\"R\"\n}",  // 设备子类型  R 路灯 T 隧道顶灯
+						workMode:0, // 设备状态
+						deviceCommunicationsStateName:"正常",// 设备状态描述
+					}
+				}
+				window.frames[0].postMessage(msg14); // 添加设备
 			break;
 			
 			case "clickDevice": // 点击选择某设备

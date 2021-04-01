@@ -27,6 +27,7 @@
               :tunnel-info-data="tunnelInfoData"
               :tunnel-devices="tunnelDevices"
               @on-load="on3DLoad"
+              @on-update="onUpdate"
           >
             <div slot="controls" class="buttons">
               <div
@@ -88,7 +89,7 @@
           :tunnel-id.sync="tunnelId"
           :is-three-model="tunnelStatus === 'TunnelThreeView'"
           v-model="showModal"
-          @update="$refs.tunnel.listDeviceBaseOfTunnelPage()"
+          @update="onUpdate"
           @close="onClose"
           @position="on3DPosition"
       />
@@ -196,6 +197,13 @@ export default {
       if (this.tunnelStatus === 'TunnelThreeView') {
         this.$refs.TunnelRef.setFocus()
       }
+    },
+
+    async onUpdate() {
+      await this.init()
+      this.$refs.TunnelRef.setDevice()
+      this.$refs.TunnelRef.findTunnelBaseInfo()
+      this.$refs.TunnelRef.outerWidths()
     },
 
     async init() {

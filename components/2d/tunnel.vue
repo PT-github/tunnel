@@ -223,9 +223,9 @@
               </div>
 
               <!-- 测试用 -->
-<!--              <div style="color: green">-->
-<!--                设备位置：{{ item.orientationLocation }}-->
-<!--              </div>-->
+              <!--              <div style="color: green">-->
+              <!--                设备位置：{{ item.orientationLocation }}-->
+              <!--              </div>-->
 
               <img
                   slot="reference"
@@ -401,15 +401,12 @@ export default {
   watch: {
     async $route() {
       // await this.findTunnelBaseInfo()
-      // this.listDeviceBaseOfTunnelPage()
     },
     tunnelDevices: {
       immediate: true,
       handler(val, oldVal) {
-        // if (val) {
         this.findTunnelBaseInfo()
-        // this.initEvent()
-        // }
+        this.outerWidths()
       },
     },
   },
@@ -538,24 +535,12 @@ export default {
 
 
   beforeDestroy() {
-    clearInterval(this.tunnelToDTimer)
-    this.tunnelToDTimer = null
     window.removeEventListener('message', () => {
     })
   },
 
   async mounted() {
-    // await this.listDeviceBaseOfTunnelPage()
-    // await this.findTunnelBaseInfo()
-    await this.outerWidths()
-
     document.addEventListener('scroll', this.Scroll)
-
-    this.tunnelToDTimer = setInterval(async () => {
-      // await this.listDeviceBaseOfTunnelPage()
-      await this.findTunnelBaseInfo()
-      await this.outerWidths()
-    }, 5 * 1000)
 
     // 窗口改变的时候 重新计算隧道宽度
     window.onresize = () => {
@@ -587,8 +572,8 @@ export default {
     // 添加隧道设备
     initInfo() {
       const el = this.$el.querySelector('#frame-view')
+      if (!el) return
       const {postMessage} = el.contentWindow
-
 
       // 情报板
       // const intelligenceboard = this.tunnelDevices.filter(item => item.deviceTypeCode === 'intelligenceboard')
@@ -596,22 +581,40 @@ export default {
       // const signallamp = this.tunnelDevices.filter(item => item.deviceTypeCode === 'signallamp')
       // 风机
       // const draughtfan = this.tunnelDevices.filter(item => item.deviceTypeCode === 'draughtfan')
+      // 照明回路
+      // const lightingloop = this.tunnelDevices.filter(item => item.deviceTypeCode === 'lightingloop')
 
       // console.log('情报板：', intelligenceboard)
       // console.log('信号灯：', signallamp)
       // console.log('风机：', draughtfan)
 
+      // lightingloop.forEach(device => {
+      // console.log('照明回路：', device)
+      // console.log('照明回路名称：', device.deviceName)
+      // console.log('照明回路开启状态：', device.deviceEmployStateName)
+      // })
+
+
       // 隧道信息
       postMessage({
         msgType: 'loadTunnel',
         msgData: {
+          ...this.tunnelInfoData,
           showDebug: 0,
-          // lengthScale: 0.25,
-          ...this.tunnelInfoData
+          showMode: 1,
         },
         // 空洞
         addData: this.tunnelInfoData.emptyrecordList || []
       })
+
+      this.setDevice()
+
+    },
+
+    setDevice() {
+      const el = this.$el.querySelector('#frame-view')
+      if (!el) return
+      const {postMessage} = el.contentWindow
 
       // 设备
       postMessage({
@@ -623,9 +626,10 @@ export default {
     setPosition(deviceId) {
       if (!deviceId) return
       const el = this.$el.querySelector('#frame-view')
+      if (!el) return
       const {postMessage} = el.contentWindow
       postMessage({
-        msgType:"selectDevice",
+        msgType: "selectDevice",
         msgData: deviceId
       })
     },
@@ -633,6 +637,7 @@ export default {
     // 设置3D模型焦点
     setFocus() {
       const el = this.$el.querySelector('#frame-view')
+      if (!el) return
       const {postMessage, focus} = el.contentWindow
       focus()
       postMessage({msgType: "focus"})
@@ -641,7 +646,7 @@ export default {
     //设备状态更新 刷新隧道图
     async deviceStatusChange(id) {
       if (id === this.tunnelInfoData.id) {
-        await this.listDeviceBaseOfTunnelPage()
+        // await this.listDeviceBaseOfTunnelPage()
         await this.findTunnelBaseInfo()
       }
     },

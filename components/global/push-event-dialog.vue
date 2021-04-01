@@ -7,6 +7,7 @@
 
 <script>
     import EventAlarm from '../alarm/event-alarm';
+    import { SOCKET_SERVER } from "@/utils/constant";
 
     export default {
         components: {EventAlarm},
@@ -35,8 +36,7 @@
                 this.$service.alarm.voiceAlarmTrigger(eventContent);
             },
             connect () {
-                let ws = new WebSocket(`ws://${top.window.location.host}/api/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
-                //let ws = new WebSocket(`ws://localhost:18080/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
+                let ws = new WebSocket(`ws://${SOCKET_SERVER}/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
                 ws.onopen = e => {
                     console.log('---------ws已连接---------', e);
                 };
