@@ -150,7 +150,7 @@ export default {
       showModalClassify: '', // 弹窗的设备分类
       showModalDeviceName: null, // 弹窗选中的设备名
       showActiveType: 'all',
-      tunnelId: '',
+      tunnelId: this.$route.params.id,
       tunnelData: {},
       tunnelInfo: {},
       threeDStatus: '0',
@@ -177,7 +177,7 @@ export default {
   },
 
   async mounted() {
-    this.tunnelId = this.$route.params.id
+    // this.tunnelId = this.$route.params.id
     await this.init()
     this.$refs.TunnelRef.initEvent()
   },

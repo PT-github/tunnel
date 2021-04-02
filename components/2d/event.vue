@@ -2,7 +2,7 @@
   <div class="block right" style="height: 100%">
     <!-- 隧道事件信息 -->
     <!--      <tunnel-event-info @loaded="onLoadTunnelData" _2d></tunnel-event-info>-->
-    <tunnel-event-info @loaded="onLoadTunnelData" :tunnel-id="tunnelId" _2d/>
+    <tunnel-event-info @loaded="onLoadTunnelData" :tunnel-id.sync="tunnelId" _2d/>
 
     <tips-title title="隧道关键参数" style="margin-top: 30px;"></tips-title>
     <div class="stats">
