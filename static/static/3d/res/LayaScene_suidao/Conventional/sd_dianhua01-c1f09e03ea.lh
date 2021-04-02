@@ -148,7 +148,7 @@
 								1
 							],
 							"main":{
-								"randomSeed":2.90846E+09,
+								"randomSeed":0,
 								"bases":{
 									"isPerformanceMode":true,
 									"prewarm":false,

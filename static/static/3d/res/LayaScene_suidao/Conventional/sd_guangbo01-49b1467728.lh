@@ -111,7 +111,7 @@
 								1
 							],
 							"main":{
-								"randomSeed":1.219729E+09,
+								"randomSeed":0,
 								"bases":{
 									"isPerformanceMode":true,
 									"duration":3,
@@ -329,7 +329,7 @@
 								1
 							],
 							"main":{
-								"randomSeed":2.876189E+09,
+								"randomSeed":0,
 								"bases":{
 									"isPerformanceMode":true,
 									"duration":3,

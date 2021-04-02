@@ -211,43 +211,6 @@
 				},
 				"components":[],
 				"child":[]
-			},
-			{
-				"type":"MeshSprite3D",
-				"instanceID":202,
-				"props":{
-					"name":"sd_rukouqiang02",
-					"active":true,
-					"isStatic":false,
-					"layer":0,
-					"position":[
-						-6.985184,
-						-0.02625275,
-						1.962219
-					],
-					"rotation":[
-						0,
-						0,
-						0,
-						-1
-					],
-					"scale":[
-						1,
-						1,
-						1
-					],
-					"meshPath":"Assets/Scenes/res2/fbx/sd_suidao02_you-sd_rukouqiang02.lm",
-					"enableRender":true,
-					"receiveShadows":true,
-					"castShadow":true,
-					"materials":[
-						{
-							"path":"Assets/Scenes/res2/mat/sd_rukouqiang02.lmat"
-						}
-					]
-				},
-				"components":[],
-				"child":[]
 			}
 		]
 	}

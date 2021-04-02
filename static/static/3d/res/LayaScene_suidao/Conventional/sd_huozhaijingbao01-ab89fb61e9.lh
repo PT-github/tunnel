@@ -213,7 +213,7 @@
 								1.1
 							],
 							"main":{
-								"randomSeed":2.585981E+08,
+								"randomSeed":0,
 								"bases":{
 									"isPerformanceMode":true,
 									"prewarm":false,
@@ -361,7 +361,7 @@
 								1
 							],
 							"main":{
-								"randomSeed":1.465481E+08,
+								"randomSeed":0,
 								"bases":{
 									"isPerformanceMode":true,
 									"prewarm":false,

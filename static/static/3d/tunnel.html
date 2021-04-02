@@ -290,7 +290,7 @@ position: fiexd;
 					leftRightFlag:2,// 左右洞标识（1右洞，2左洞）
 					pileNumber:709157 + 90,// 设备桩号 必须和对应的横洞一致
 					deviceName:"卷闸门", // 设备名称
-					workMode: 0, // 设备状态
+					workMode: 2, // 设备状态
 					deviceCommunicationsStateName:"正常",// 设备状态描述
 				});
 				// 横洞中的灯
@@ -456,6 +456,21 @@ position: fiexd;
 						msgData:"1703006a-9b93-4147-9e78-4"
 					});
 						
+				}else if(revMsg.msgData.id == "1703006a-9b93-4147-9e78-92"){ // 点击门
+					let msg_change = {
+						msgType:"addDevice",
+						msgData:{
+						id:"1703006a-9b93-4147-9e78-92", // 设备id
+						deviceTypeCode:"tunneldoor", // 设备类型  卷闸门
+						orientationLocation:16, //位置类型
+						leftRightFlag:2,// 左右洞标识（1右洞，2左洞）
+						pileNumber:709157 + 90,// 设备桩号 必须和对应的横洞一致
+						deviceName:"卷闸门", // 设备名称
+						workMode: 1, // 设备状态
+						deviceCommunicationsStateName:"正常",// 设备状态描述
+						}
+					}
+					window.frames[0].postMessage(msg_change);
 				}
 			break;
 			
