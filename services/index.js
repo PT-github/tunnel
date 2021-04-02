@@ -26,6 +26,7 @@ export default class IndexService extends Service {
     }
 
     getLoginLogoInfo (data) {
+        console.log(data)
         return this.get({
             url: '/tunnel/listChildrenByParentValue',
             data

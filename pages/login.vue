@@ -2,11 +2,11 @@
   <div class="page">
     <img src="../assets/images/login-bg.png" class="bg">
 
-
     <section class="title">
       <img :src="loginImg" alt="">
       <h3 class="">{{loginTitle}}</h3>
     </section>
+
     <el-form ref="loginForm" :model="form" class="login-form" @submit.native.prevent>
       <el-form-item prop="account" :rules="[{ required: true, message: '请输入用户名', trigger: 'blur' }]">
         <el-input v-model="form.account" placeholder="请输入用户名" autofocus>
@@ -38,16 +38,17 @@ export default {
       loginImg: ''
     };
   },
-  mounted() {
-    let userInfo = localStorage.getItem(CACHE_DATA);
-    if (!userInfo) return;
-    userInfo = JSON.parse(userInfo);
-    this.form = {
-      account: userInfo.u,
-      password: userInfo.p,
-      save: true
-    };
 
+  created() {
+    let userInfo = localStorage.getItem(CACHE_DATA);
+    if (userInfo) {
+      userInfo = JSON.parse(userInfo);
+      this.form = {
+        account: userInfo.u,
+        password: userInfo.p,
+        save: true
+      };
+    }
 
     this.$service.index.getLoginLogoInfo({
       value: 'OneValueDictionary'
@@ -62,6 +63,12 @@ export default {
 
     })
   },
+
+  // mounted() {
+  //
+  //
+  //
+  // },
   methods: {
     Login() {
       this.$refs.loginForm.validate((valid) => {
@@ -139,7 +146,8 @@ export default {
   text-align: center;
 
   img {
-    height: 60px;
+    height: 150px;
+    padding-bottom: 30px;
   }
 
   h3 {
