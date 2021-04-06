@@ -403,8 +403,8 @@ export default {
             }
           }
         }
-        console.log(tempArr);
-        destTextArr[index] = tempArr;
+        // console.log(tempArr);
+        // destTextArr[index] = tempArr;
       });
       // 将二维数组打成一维数组
       let destArrData = [];

@@ -141,6 +141,8 @@ export default {
     //  2d界面的统计数据
     async getTunnelPass() {
       this.countData = await this.$service.home.getTunnelEventStat(this.tunnelId) || {};
+
+      console.log(this.countData)
       this.$emit('loaded', this.countData);
     },
     choseTabs(i) {

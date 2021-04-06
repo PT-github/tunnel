@@ -59,7 +59,7 @@
                  title="故障处理"
                  :width="$getPx(740)"
                  @handleClose="initParam"
-                 @btnCannal="initParam"
+                 @btnCancel="initParam"
                  @btnConfirm="subSolve"
                  :showPopup="solvePopup">
             <el-form ref="form"

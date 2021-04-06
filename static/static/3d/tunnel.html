@@ -35,8 +35,11 @@ position: fiexd;
 					msgType:"loadTunnel", // 初始化隧道，横洞空洞数据必须一起带上
 					msgData:{
 						tunnelId:"a32932b8-7355-4de5-adf9-034075c89d2c", // 隧道id
-						leftHoleLength:556, // 左洞长度（米）
-						rightHoleLength:507, // 右洞长度（米）
+						lengthScale:1, // 隧道长度比例0-1
+						showDebug:0, // 是否显示调试信息
+						showMode:1,	// 隧道显示分段 0 or 1
+						leftHoleLength:1702, // 左洞长度（米）
+						rightHoleLength:1752, // 右洞长度（米）
 						endStakeMark:710213,  // 左洞结束桩号（桩号米）
 						endStakeMarkRight:710253, // 右洞结束桩号（桩号米）
 						laneNums:3,  // 车道数（个）  
@@ -73,6 +76,22 @@ position: fiexd;
 							leftRightFlag:2, // 左右洞标识1 右洞 2 左洞 3 中间
 							singleDoubleType:2, // 单双洞类型（1单右洞 2单左洞 3双洞）
 						},
+						{
+							id:"8e46993d-1a72-11eb-ab8a-44",
+							emptyType:3, // 空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
+							length:0, // 长度
+							pileNumber:709165, // 桩号 
+							leftRightFlag:1, // 左右洞标识1 右洞 2 左洞 3 中间
+							singleDoubleType:1, // 单双洞类型（1单右洞 2单左洞 3双洞）
+						},
+						{
+							id:"8e46993d-1a72-11eb-ab8a-55",
+							emptyType:4, // 空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
+							length:0, // 长度
+							pileNumber:709130, // 桩号 
+							leftRightFlag:1, // 左右洞标识1 右洞 2 左洞 3 中间
+							singleDoubleType:1, // 单双洞类型（1单右洞 2单左洞 3双洞）
+						},
 					], 
 				}
 				
@@ -104,16 +123,35 @@ position: fiexd;
 						msgData:{
 							id:"1703006a-9b93-4147-9e78-2" + i, // 设备id
 							deviceTypeCode:"draughtfan", // 设备类型  火灾消防
+							deviceConfig:"{\"deviceSubtypeCode\":\"Z\"\n}",  // 设备子类型  Z：轴流风机 S：射流风机
 							orientationLocation:1 + i, //位置类型
 							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
-							pileNumber:709152,// 设备桩号
+							pileNumber:709162,// 设备桩号
 							deviceName:"风机1", // 设备名称
 							workMode:i, // 设备状态
 							deviceCommunicationsStateName:"正常",// 设备状态描述
 						}
-						}
-						window.frames[0].postMessage(msg2); // 添加设备
 					}
+					window.frames[0].postMessage(msg2); // 添加设备
+				}
+				
+				for(var i =0; i < msg.msgData.laneNums; ++i){
+					var msg22 = {
+						msgType:"addDevice",
+						msgData:{
+							id:"1703006a-9b93-4147-9e78-222" + i, // 设备id
+							deviceTypeCode:"draughtfan", // 设备类型  火灾消防
+							deviceConfig:"{\"deviceSubtypeCode\":\"S\"\n}",  // 设备子类型  Z：轴流风机 S：射流风机
+							orientationLocation:1 + i, //位置类型
+							leftRightFlag:2,// 左右洞标识（1右洞，2左洞）
+							pileNumber:709162,// 设备桩号
+							deviceName:"风机1", // 设备名称
+							workMode:i, // 设备状态
+							deviceCommunicationsStateName:"正常",// 设备状态描述
+						}
+					}
+					window.frames[0].postMessage(msg22); // 添加设备
+				}
 
 				////////////////////////////////////////////////////////////////////////
 				// 测试情报板M
@@ -198,10 +236,10 @@ position: fiexd;
 							id:"1703006a-9b93-4147-9e78-7" + i, // 设备id
 							deviceTypeCode:"laneIndicator", // 设备类型  照明灯
 							orientationLocation:1 + i, //位置类型 
-							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
+							leftRightFlag:2,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709138,// 设备桩号
 							deviceName:"指示器", // 设备名称
-							workMode:2, // 设备状态
+							workMode:1, // 设备状态
 							deviceCommunicationsStateName:"正常",// 设备状态描述
 						}
 					}
@@ -216,9 +254,9 @@ position: fiexd;
 						msgData:{
 							id:"1703006a-9b93-4147-9e78-8" + i, // 设备id
 							deviceTypeCode:"signallamp", // 设备类型  信号灯
-							orientationLocation:10, //位置类型 
+							orientationLocation:0, //位置类型 
 							leftRightFlag:1+i,// 左右洞标识（1右洞，2左洞）
-							pileNumber:709137,// 设备桩号
+							pileNumber:709118+i*10,// 设备桩号
 							deviceName:"信号灯", // 设备名称
 							workMode:0 +i, // 设备状态
 							deviceCommunicationsStateName:"正常",// 设备状态描述
@@ -252,7 +290,7 @@ position: fiexd;
 					leftRightFlag:2,// 左右洞标识（1右洞，2左洞）
 					pileNumber:709157 + 90,// 设备桩号 必须和对应的横洞一致
 					deviceName:"卷闸门", // 设备名称
-					workMode: 1, // 设备状态
+					workMode: 2, // 设备状态
 					deviceCommunicationsStateName:"正常",// 设备状态描述
 				});
 				// 横洞中的灯
@@ -266,8 +304,20 @@ position: fiexd;
 					workMode: 1, // 设备状态
 					deviceCommunicationsStateName:"正常",// 设备状态描述
 				});
+
+				// 横洞中的摄像机
+				msg9.msgData.push({
+					id:"1703006a-9b93-4147-9e78-93" + 2, // 设备id
+					deviceTypeCode:"camera", // 设备类型  卷闸门
+					orientationLocation:17, //位置类型
+					leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
+					pileNumber:709157 + 90,// 设备桩号 必须和对应的横洞一致
+					deviceName:"横洞监控", // 设备名称
+					workMode: 1, // 设备状态
+					deviceCommunicationsStateName:"正常",// 设备状态描述
+				});
 				window.frames[0].postMessage(msg9); // 添加设备
-				
+
 				////////////////////////////////////////////////////////////////////////
 				// 紧急电话
 				var msg10 = {
@@ -281,8 +331,8 @@ position: fiexd;
 							orientationLocation:10, //位置类型
 							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709220 + i * 5,// 设备桩号
-							deviceName:"照明灯", // 设备名称
-							workMode: 0, // 设备状态
+							deviceName:"电话", // 设备名称
+							workMode: i % 2, // 设备状态
 							deviceCommunicationsStateName:"正常",// 设备状态描述
 						}
 					msg10.msgData.push(data);
@@ -303,7 +353,7 @@ position: fiexd;
 							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709220 + i * 5,// 设备桩号
 							deviceName:"广播", // 设备名称
-							workMode: 0, // 设备状态
+							workMode:  i % 2, // 设备状态
 							deviceCommunicationsStateName:"正常",// 设备状态描述
 						}
 					msg11.msgData.push(data);
@@ -360,12 +410,29 @@ position: fiexd;
 					contentText:"风向：东南风"
 				});
 				window.frames[0].postMessage(msg13); // 添加设备
+				////////////////////////////////////////////////////////////////////////
+				// 出入口路灯
+				var msg14 = {
+					msgType:"addDevice",
+					msgData:{
+						id:"1703006a-9b93-4147-9e78-14", // 设备id
+						deviceTypeCode:"lighting", // 设备类型  照明灯
+						orientationLocation:0, //位置类型 照明灯应该只有0和10两种位置
+						leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
+						pileNumber:709127,// 设备桩号
+						deviceName:"路灯", // 设备名称
+						deviceConfig:"{\"deviceSubtypeCode\":\"R\"\n}",  // 设备子类型  R 路灯 T 隧道顶灯
+						workMode:0, // 设备状态
+						deviceCommunicationsStateName:"正常",// 设备状态描述
+					}
+				}
+				window.frames[0].postMessage(msg14); // 添加设备
 			break;
 			
 			case "clickDevice": // 点击选择某设备
 				console.log("click device:" + revMsg.msgData);
 								
-				// 测试接口 点击M情报板开始巡游
+				// 测试接口 点击M情报板触发事件
 				if(revMsg.msgData.id == "1703006a-9b93-4147-9e78-3"){
 					//开关自动巡游接口
 					var msg_auto = {
@@ -379,6 +446,31 @@ position: fiexd;
 						msgType:"resetView",
 					}
 					window.frames[0].postMessage(msg_reset);
+					
+					// 设置窗口焦点
+					window.frames[0].postMessage({msgType:"focus"});
+					
+					// 选中指定设备 测试定位到F板
+					window.frames[0].postMessage({
+						msgType:"selectDevice", 
+						msgData:"1703006a-9b93-4147-9e78-4"
+					});
+						
+				}else if(revMsg.msgData.id == "1703006a-9b93-4147-9e78-92"){ // 点击门
+					let msg_change = {
+						msgType:"addDevice",
+						msgData:{
+						id:"1703006a-9b93-4147-9e78-92", // 设备id
+						deviceTypeCode:"tunneldoor", // 设备类型  卷闸门
+						orientationLocation:16, //位置类型
+						leftRightFlag:2,// 左右洞标识（1右洞，2左洞）
+						pileNumber:709157 + 90,// 设备桩号 必须和对应的横洞一致
+						deviceName:"卷闸门", // 设备名称
+						workMode: 1, // 设备状态
+						deviceCommunicationsStateName:"正常",// 设备状态描述
+						}
+					}
+					window.frames[0].postMessage(msg_change);
 				}
 			break;
 			

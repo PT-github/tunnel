@@ -1,23 +1,3 @@
-// export default class Tunnel {
-//   constructor(options) {
-//     this.instance = null
-//     this.tunnelInfoData = {} || options.data
-
-//     this.maxEndMapStakeMark = 0
-//     this.minStartMapStakeMark = 0
-
-//     if (!this.instance) {
-//       this.instance = new Tunnel(options)
-//       return this.instance
-//     }
-//   }
-
-//   // 隧道2d背景图的样式
-//   background() {
-
-//   }
-// }
-
 export function backgroundStyle(options) {
   // 如果不是双洞类型，就不用比较距离和长短
   let {

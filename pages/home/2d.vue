@@ -238,11 +238,11 @@ import VideoRtsp from '../../components/video/video-rtsp'
 import TunnelEventInfo from '../../components/home/tunnel-event-info'
 import ModalControl from '../../components/2d/modal-control'
 
-import ThreeDView from './3d'
+// import ThreeDView from './3d'
 
 export default {
   components: {
-    ThreeDView,
+    // ThreeDView,
     TunnelComponent,
     TipsTitle,
     VideoRtsp,

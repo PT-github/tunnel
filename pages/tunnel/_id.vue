@@ -20,7 +20,6 @@
         <!-- 隧道信息 -->
         <section>
           <tunnel-component
-
               @detail="doShowModalDevice"
               @details="doShowModalDevices"
               ref="TunnelRef"
@@ -29,6 +28,7 @@
               :tunnel-info-data="tunnelInfoData"
               :tunnel-devices="tunnelDevices"
               @on-load="on3DLoad"
+              @on-update="onUpdate"
           >
             <div slot="controls" class="buttons">
               <div
@@ -52,17 +52,6 @@
             </div>
           </tunnel-component>
         </section>
-
-        <!-- 3d -->
-        <!-- <section v-show="tunnelStatus === 'TunnelThreeView'">
-          <tunnel-three-view
-            ref="TunnelThreeViewRef"
-            @on-load="on3DLoad"
-            :tunnel-id="tunnelId"
-            :tunnel-info-data="tunnelInfoData"
-            :tunnel-devices="tunnelDevices"
-          />
-        </section> -->
       </div>
 
       <!-- 隧道左右洞视频 -->
@@ -98,9 +87,12 @@
       <modal-control
           :device-name="showModalDeviceName"
           :classify-number="showModalClassify"
-          v-model="showModal"
-          @update="$refs.tunnel.listDeviceBaseOfTunnelPage()"
           :tunnel-id.sync="tunnelId"
+          :is-three-model="tunnelStatus === 'TunnelThreeView'"
+          v-model="showModal"
+          @update="onUpdate"
+          @close="onClose"
+          @position="on3DPosition"
       />
     </div>
 
@@ -159,7 +151,7 @@ export default {
       showModalClassify: '', // 弹窗的设备分类
       showModalDeviceName: null, // 弹窗选中的设备名
       showActiveType: 'all',
-      tunnelId: '',
+      tunnelId: this.$route.params.id,
       tunnelData: {},
       tunnelInfo: {},
       threeDStatus: '0',
@@ -186,13 +178,33 @@ export default {
   },
 
   async mounted() {
-    this.tunnelId = this.$route.params.id
+    // this.tunnelId = this.$route.params.id
     await this.init()
     this.$refs.TunnelRef.initEvent()
   },
   methods: {
+    // 初始化3D
     async on3DLoad() {
       this.$refs.TunnelRef.initInfo()
+    },
+
+    // 跳转3D设备位置
+    on3DPosition(item) {
+      this.$refs.TunnelRef.setPosition(item.origin.id)
+    },
+
+    //
+    onClose() {
+      if (this.tunnelStatus === 'TunnelThreeView') {
+        this.$refs.TunnelRef.setFocus()
+      }
+    },
+
+    async onUpdate() {
+      await this.init()
+      this.$refs.TunnelRef.setDevice()
+      this.$refs.TunnelRef.findTunnelBaseInfo()
+      this.$refs.TunnelRef.outerWidths()
     },
 
     async init() {

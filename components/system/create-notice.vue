@@ -1,7 +1,7 @@
 <template>
     <popup :showPopup="show"
            @handleClose="show = false"
-           @btnCannal="show = false"
+           @btnCancel="show = false"
            @btnConfirm="submit"
            show-button
            title="发布公告">

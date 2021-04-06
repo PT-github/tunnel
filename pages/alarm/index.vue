@@ -41,7 +41,7 @@
 
     <h-popup title="事件配置提醒"
              @handleClose="alarmClassParam = [];popup = false"
-             @btnCannal="alarmClassParam = [];popup = false"
+             @btnCancel="alarmClassParam = [];popup = false"
              @btnConfirm="subAlarmSetter"
              showButton
              :width="$getPx(740)"
