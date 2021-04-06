@@ -21,7 +21,6 @@
         <section>
           <tunnel-component
               @detail="doShowModalDevice"
-              @details="doShowModalDevices"
               ref="TunnelRef"
               :show-active-type="showActiveType"
               :tunnel-status="tunnelStatus"
@@ -179,8 +178,41 @@ export default {
 
   async mounted() {
     // this.tunnelId = this.$route.params.id
-    await this.init()
-    this.$refs.TunnelRef.initEvent()
+    await this.init();
+    this.$refs.TunnelRef.initEvent();
+
+    this.$service._2d.getDict("vertical").then((res) => {
+      localStorage.setItem("vertical", JSON.stringify(res));
+    });
+
+    this.$service._2d.getDict("horizontal").then((res) => {
+      localStorage.setItem("horizontal", JSON.stringify(res));
+    });
+
+    //分辨率
+    this.$service._2d.getDict("resolutionPower").then((res) => {
+      localStorage.setItem("resolutionPower", JSON.stringify(res));
+    });
+
+    this.$service._2d.getDict("fontSize").then((res) => {
+      localStorage.setItem("fontSize", JSON.stringify(res));
+    });
+
+    this.$service._2d.getDict("font").then((res) => {
+      localStorage.setItem("font", JSON.stringify(res));
+    });
+
+    this.$service._2d.getDict("bgColor").then((res) => {
+      localStorage.setItem("bgColor", JSON.stringify(res));
+    });
+
+    this.$service._2d.getDict("fontColor").then((res) => {
+      localStorage.setItem("fontColor", JSON.stringify(res));
+    });
+
+    this.$service._2d.getDict("contentType").then((res) => {
+      localStorage.setItem("contentType", JSON.stringify(res));
+    });
   },
   methods: {
     // 初始化3D
@@ -259,25 +291,14 @@ export default {
     doShowModalDevice(device) {
       this.doShowModal(device.classifyNumber, device.deviceName)
     },
-    doShowModalDevices(device) {
-      this.doShowModals(device.classifyNumber, device.deviceName)
-    },
 
     doShowModal(classifyNumber, deviceName) {
-      //alert(1)
       this.showActiveType = classifyNumber
       if (classifyNumber === 'all') return
       this.showModal = true
       this.showModalDeviceName = deviceName
       this.showModalClassify = classifyNumber
     },
-    doShowModals(classifyNumber, deviceName){
-      //this.showActiveType = classifyNumber
-      if (classifyNumber === 'all') return
-      this.showModal = true
-      this.showModalDeviceName = deviceName
-      this.showModalClassify = classifyNumber
-    }
   },
 }
 </script>

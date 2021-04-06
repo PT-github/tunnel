@@ -301,7 +301,7 @@ export default {
         this.textObj = row;
         this.playObj = row;
       }
-    
+
     },
     imgChange(url = "") {
       this.imgUrls = url;
