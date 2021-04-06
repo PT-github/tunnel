@@ -336,6 +336,7 @@
     <slot name="controls"></slot>
   </div>
 </template>
+
 <script>
 import TunnelThreeView from '@/components/3d/index'
 import TunnelClass from '@/utils/tunnel'
@@ -596,13 +597,13 @@ export default {
       // 情报板
       const intelligenceboard = this.tunnelDevices.filter(item => item.deviceTypeCode === 'intelligenceboard')
       // 信号灯
-      const signallamp = this.tunnelDevices.filter(item => item.deviceTypeCode === 'signallamp')
+      // const signallamp = this.tunnelDevices.filter(item => item.deviceTypeCode === 'signallamp')
       // 风机
-      const draughtfan = this.tunnelDevices.filter(item => item.deviceTypeCode === 'draughtfan')
+      // const draughtfan = this.tunnelDevices.filter(item => item.deviceTypeCode === 'draughtfan')
 
       console.log('情报板：', intelligenceboard)
-      console.log('信号灯：', signallamp)
-      console.log('风机：', draughtfan)
+      // console.log('信号灯：', signallamp)
+      // console.log('风机：', draughtfan)
 
       // 隧道信息
       postMessage({
@@ -1103,11 +1104,12 @@ export default {
   },
 }
 </script>
+
 <style lang="less" scoped>
 /* 3d隧道 */
 #frame-view {
-  width: 100vw;
-  height: 90vh;
+  width: 100%;
+  height: calc(100vh - 390px);
   top: 100px;
   margin-top: 36px;
 }
