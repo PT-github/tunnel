@@ -181,7 +181,7 @@
           >
             <el-table-column>
               <template slot-scope="scope">
-                <div class="tpl-item" @click="showTpl(scope.row)">
+                <div class="tpl-item">
                   {{ scope.$index + 1 }}、{{
                     scope.row.templetName || scope.row.text
                   }}
@@ -286,16 +286,38 @@ export default {
     },
     //确定回写数据
     modalObj(val) {
-      console.log(val);
       this.doOperateFormfalog = false;
       this.tplList.push(...val);
     },
+
+        // showTpl(tpl) {
+    //   console.log(tpl)
+    //   return
+    //         let obj = JSON.parse(row.templetText);
+    //   this.resolutionPower = obj.resolutionPower;
+    //   this.textObj = obj;
+    //   this.playObj = obj;
+    //   // 点击模板填上表单内容
+    //   if(tpl){
+    //      this.tplForm =tpl.templetText
+    //   }else{
+    //     this.tplForm = JSON.parse(tpl.templetText);
+    //   }
+      
+    // },
     //点击行显示
     rowClick(row) {
+      if(!row.templetText){
+         this.textObj = row;
+         this.playObj = row;
+         this.resolutionPower = row.resolutionPower;
+      }else{
       let obj = JSON.parse(row.templetText);
       this.resolutionPower = obj.resolutionPower;
       this.textObj = obj;
       this.playObj = obj;
+      }
+
     },
     imgChange(url = "") {
       this.imgUrls = url;
@@ -360,10 +382,7 @@ export default {
         });
       });
     },
-    // showTpl(tpl) {
-    //   // 点击模板填上表单内容
-    //   this.tplForm = JSON.parse(tpl.templetText);
-    // },
+
     deviceSelectionChange(e) {
       this.selectedDevices = e;
     },
@@ -438,7 +457,7 @@ export default {
       }
       let obj = { ...this.submitparms, id: Math.random() };
       this.tplList.push(obj);
-      console.log(obj);
+      //console.log(obj);
     },
 
     doOperateForm() {
@@ -464,13 +483,11 @@ export default {
       if (!this.tempId) {
         return this.$message("请选择模板");
       }
-      console.log(this.selectedTpls);
       this.$showConfirm("请确认是否删选择的节目信息，删除后不能恢复！").then(
         () => {
           this.tplList = this.tplList.filter(
             (item) => !this.selectedTpls.some((ele) => ele.id === item.id)
           );
-          console.log(this.tplList);
           // this.$service._2d.deleteInfoBoardTmp(this.tempId).then(() => {
           //   //this.updateTpls();
           //   this.$notifySuccess();
@@ -504,7 +521,6 @@ export default {
       return whObj;
     },
     submitparms() {
-      console.log(this.playObj)
       return {
         templateType: this.templateType,
         imgUrls: this.imgUrls,

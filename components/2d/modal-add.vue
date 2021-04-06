@@ -101,7 +101,8 @@ export default {
         point:this.$refs.live.getAllPoint().point,
         // ...this.otherObj,
         ...this.playObj,
-        templetId:this.id,
+        templetId:this.id || '',
+        resolutionPower: this.playObj.resolutionPower || "96*32",
       };
     },
     showingDeviceContent() {
