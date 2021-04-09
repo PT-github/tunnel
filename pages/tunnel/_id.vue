@@ -210,9 +210,9 @@ export default {
       localStorage.setItem("fontColor", JSON.stringify(res));
     });
 
-    this.$service._2d.getDict("contentType").then((res) => {
-      localStorage.setItem("contentType", JSON.stringify(res));
-    });
+    // this.$service._2d.getDict("contentType").then((res) => {
+    //   localStorage.setItem("contentType", JSON.stringify(res));
+    // });
   },
   methods: {
     // 初始化3D
