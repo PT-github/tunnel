@@ -206,9 +206,9 @@
 
           <!--设备列表-->
 
-          <template v-for="item in tunnelDevices">
-<!--            <el-button size="mini"> {{tunnelDevices.length}}</el-button>-->
-            <el-popover placement="top" trigger="hover" :key="item.id">
+          <template v-for="(item, index) in tunnelDevices">
+            <!--            <el-button size="mini"> {{tunnelDevices.length}}</el-button>-->
+            <el-popover placement="top" trigger="hover" :key="index">
               <div class="popover">
                 <p>
                   设备名称：{{ item.deviceName }}({{ item.deviceCommunicationsStateName }})
@@ -345,9 +345,7 @@ export default {
   components: {
     TunnelThreeView,
   },
-  events: {
-    onDeviceStatusChange: 'deviceStatusChange',
-  },
+
   services: ['_2d', 'tunnel'],
   props: {
     tunnelId: {
@@ -643,13 +641,6 @@ export default {
       postMessage({msgType: "focus"})
     },
 
-    //设备状态更新 刷新隧道图
-    async deviceStatusChange(id) {
-      if (id === this.tunnelInfoData.id) {
-        // await this.listDeviceBaseOfTunnelPage()
-        await this.findTunnelBaseInfo()
-      }
-    },
     //Scroll监听移动
     divLeftRight(i) {
       switch (i) {

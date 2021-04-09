@@ -123,6 +123,9 @@ export default {
     ModalControl,
   },
   services: ['_2d', 'tunnel'],
+  events: {
+    onDeviceStatusChange: 'deviceStatusChange',
+  },
   data() {
     return {
       tunnelStatus: 'TunnelTwoView',
@@ -233,10 +236,17 @@ export default {
     },
 
     async onUpdate() {
+      // console.log('on upload')
       await this.init()
       this.$refs.TunnelRef.setDevice()
       this.$refs.TunnelRef.findTunnelBaseInfo()
       this.$refs.TunnelRef.outerWidths()
+    },
+
+    //设备状态更新 刷新隧道图
+    deviceStatusChange(id) {
+      // console.log('deviceStatusChange', id)
+      this.onUpdate()
     },
 
     async init() {
