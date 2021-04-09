@@ -205,13 +205,13 @@
           </template>
 
           <!--设备列表-->
+
           <template v-for="item in tunnelDevices">
+<!--            <el-button size="mini"> {{tunnelDevices.length}}</el-button>-->
             <el-popover placement="top" trigger="hover" :key="item.id">
               <div class="popover">
                 <p>
-                  设备名称：{{ item.deviceName }}({{
-                  item.deviceCommunicationsStateName
-                  }})
+                  设备名称：{{ item.deviceName }}({{ item.deviceCommunicationsStateName }})
                 </p>
                 <p>设备桩号：{{ item.pileNumberStr }}</p>
                 <p v-if="item.workMode != null">
@@ -999,7 +999,7 @@ export default {
       else if (singleDoubleType === 2) {
         // 左洞的话设备位置从上到下应该是10~0，所以这里从上到下计算的高度要用整个洞的高度减掉，就可以调转过来了
         top = tunnelLine - top
-        if (device.leftRightFlag === 2) {
+        if (device.leftRightFlag === 1) {
           top = -1000
         }
       }
@@ -1007,7 +1007,7 @@ export default {
       else if (singleDoubleType === 1) {
         // 右洞要-卷闸门的高度
         top = tunnelLine + top + center
-        if (device.leftRightFlag === 1) {
+        if (device.leftRightFlag === 2) {
           top = -1000
         }
       }

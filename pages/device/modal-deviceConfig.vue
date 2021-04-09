@@ -7,6 +7,29 @@
            class="modal"
            :title="title">
         <el-form :model="deviceForm" >
+          <el-form-item label="桩号:" :style="{color: '#C1D9FF'}" required>
+            <el-row>
+              <el-col :span="1">K</el-col>
+              <el-col :span="4">
+                <el-form-item prop="pileNumber1"
+                              :rules="[{ required: true, message: '请输入',trigger: 'blur' }]">
+                    <el-input v-model="deviceForm.pileNumber1" style="text-align: center;"
+                              type="text" max="3" placeholder="150"></el-input>
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="1" style="text-align: center;">-</el-col>
+              <el-col :span="4">
+                <el-form-item prop="pileNumber2"
+                              :rules="[{ required: true, message: '请输入',trigger: 'blur' }]">
+                    <el-input v-model="deviceForm.pileNumber2" style="text-align: center;"
+                              type="text" maxlength="3" placeholder="220"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+          </el-form-item>
+
             <div class="form-items">
                 <el-form-item label="设备配置:">
                     <el-input type="textarea"
@@ -18,6 +41,8 @@
                               v-model="deviceForm.deviceConfig">
                     </el-input>
                 </el-form-item>
+
+
             </div>
         </el-form>
     </popup>
