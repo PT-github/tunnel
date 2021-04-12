@@ -2,7 +2,7 @@
   <div class="top-nav">
     <div class="left">
 <!--      <img class="logo" :src="loginInImg">-->
-      <img class="logo" src="../../assets/images/top-nav/logoin.png">
+      <img class="logo" src="../../static/static/image/logoin.png">
 <!--      <img class="logo" :src="loginInImg">-->
 <!--      <img class="logo" src="../../assets/images/top-nav/logo.png">&ndash;&gt;-->
 <!--      <section class="nav-logo">-->
