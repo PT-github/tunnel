@@ -380,9 +380,9 @@ export default {
     doOperate() {
       // 执行模板
       //请确认是否删选择的模板信息，删除后不能恢复！
-      if (!this.deviceId) {
-        return this.$message("请选择设备");
-      }
+      // if (!this.deviceId) {
+      //   return this.$message("请选择设备");
+      // }
       if (!this.tempId) {
         return this.$message("请选择模板");
       }
@@ -445,7 +445,6 @@ export default {
       }
       let obj = { ...this.submitparms, id: Math.random() };
       this.tplList.push(obj);
-      console.log(obj);
     },
 
     doOperateForm() {
@@ -515,10 +514,11 @@ export default {
       return {
         templateType: this.templateType,
         imgUrls: this.imgUrls,
-        ...this.textObj,
+      
         point: this.$refs.live.getAllPoint().point,
         // ...this.otherObj,
         ...this.playObj,
+        ...this.textObj,
         templetId: "",
         resolutionPower: this.playObj.resolutionPower || "96*32",
       };

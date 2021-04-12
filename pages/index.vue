@@ -37,7 +37,7 @@
       <energy-line :code="code"/>
     </div>
 
-    <img class="watermark" :src="require('@/assets/images/home-watermark.png')">
+    <!-- <img class="watermark" :src="require('@/assets/images/home-watermark.png')"> -->
   </div>
 </template>
 <script>
