@@ -274,8 +274,8 @@ export default {
     //this.updateTpls();
   },
   methods: {
-    playObjInput(val){
-      this.playObj=val;
+    playObjInput(val) {
+      this.playObj = val;
     },
     //分辨率
     resolutionPowerOptions(val) {
@@ -287,10 +287,15 @@ export default {
     //确定回写数据
     modalObj(val) {
       this.doOperateFormfalog = false;
-      this.tplList.push(...val);
+      for (let i in val) {
+        let templetText = val[i].templetText;
+        let obj = JSON.parse(templetText);
+        this.tplList.push(obj);
+      }
+      //this.tplList.push(...templetText);
     },
 
-        // showTpl(tpl) {
+    // showTpl(tpl) {
     //   console.log(tpl)
     //   return
     //         let obj = JSON.parse(row.templetText);
@@ -303,21 +308,20 @@ export default {
     //   }else{
     //     this.tplForm = JSON.parse(tpl.templetText);
     //   }
-      
+
     // },
     //点击行显示
     rowClick(row) {
-      if(!row.templetText){
-         this.textObj = row;
-         this.playObj = row;
-         this.resolutionPower = row.resolutionPower;
-      }else{
-      let obj = JSON.parse(row.templetText);
-      this.resolutionPower = obj.resolutionPower;
-      this.textObj = obj;
-      this.playObj = obj;
+      if (!row.templetText) {
+        this.textObj = row;
+        this.playObj = row;
+        this.resolutionPower = row.resolutionPower;
+      } else {
+        let obj = JSON.parse(row.templetText);
+        this.resolutionPower = obj.resolutionPower;
+        this.textObj = obj;
+        this.playObj = obj;
       }
-
     },
     imgChange(url = "") {
       this.imgUrls = url;
@@ -395,13 +399,19 @@ export default {
       if (!this.deviceId) {
         return this.$message("请选择设备");
       }
-      if (!this.tempId) {
-        return this.$message("请选择模板");
-      }
+      // if (!this.tempId) {
+      //   return this.$message("请选择模板");
+      // }
       // if(!this.submitparms.text){
       //   return this.$message("请输入内容");
       // }
+
       for (let i in this.selectedTpls) {
+        // if (this.selectedTpls[i].templetText) {
+        //    console.log(1111)
+        //   let obj = JSON.parse(this.selectedTpls[i].templetText);
+        //   selectedTpArr.push(obj);
+        // }
         if (this.selectedTpls[i].bold) {
           this.selectedTpls[i].bold = 1;
         } else {
@@ -412,9 +422,11 @@ export default {
         } else {
           this.selectedTpls[i].italics = 0;
         }
+        this.selectedTpls[i].spacing = Number(this.selectedTpls[i].spacing);
+        this.selectedTpls[i].vertical = Number(this.selectedTpls[i].vertical);
       }
       let boardVo = {
-        data: (this.selectedTpls),
+        data: this.selectedTpls,
         deviceIds: this.deviceId,
       };
       this.$service._2d.operateInfoBoardByTmpNew(boardVo).then(() => {
@@ -430,6 +442,7 @@ export default {
       if (!this.submitparms.text) {
         return this.$message("请输入内容");
       }
+      //数据改写
       if (this.submitparms.bold) {
         this.submitparms.bold = 1;
       } else {
@@ -524,10 +537,9 @@ export default {
       return {
         templateType: this.templateType,
         imgUrls: this.imgUrls,
+        ...this.playObj,
         ...this.textObj,
         point: this.$refs.live.getAllPoint().point,
-        // ...this.otherObj,
-        ...this.playObj,
         templetId: "",
         resolutionPower: this.playObj.resolutionPower || "96*32",
       };
