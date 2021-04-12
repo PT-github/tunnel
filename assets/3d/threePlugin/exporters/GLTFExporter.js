@@ -2052,13 +2052,13 @@ GLTFExporter.prototype = {
 			// Declare extensions.
 			var extensionsUsedList = Object.keys( extensionsUsed );
 			if ( extensionsUsedList.length > 0 ) outputJSON.extensionsUsed = extensionsUsedList;
-			console.log(outputJSON);
+			// console.log(outputJSON);
 			if ( outputJSON.buffers && outputJSON.buffers.length > 0 ) {
 
 				// Update bytelength of the single buffer.
 				outputJSON.buffers[ 0 ].byteLength = blob.size;
 
-				
+
 
 				var reader = new window.FileReader();
 
@@ -2113,10 +2113,10 @@ GLTFExporter.prototype = {
 						var glbReader = new window.FileReader();
 						glbReader.readAsArrayBuffer( glbBlob );
 						glbReader.onloadend = function () {
-							console.log(glbReader.result);
+							// console.log(glbReader.result);
 
 							onDone( glbReader.result );
-						};		
+						};
 
 					};
 

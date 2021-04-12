@@ -82,6 +82,10 @@ export default {
     'onPushEvent': 'refresh'
   },
   props: {
+    tunnelId: {
+      type: String,
+      default: ''
+    },
     _2d: Boolean,
     title: {
       type: String,
@@ -104,7 +108,7 @@ export default {
       tabs: ['事件报警', '设备报警'],
       totalWarn: 0,
       rolling: [],
-      tunnelId: null,
+      // tunnelId: null,
       passPercent: 0,
       passCount: 0,
       countData: {},
@@ -118,14 +122,14 @@ export default {
   },
 
   mounted() {
-    this.tunnelId = this.$route.query.tunnelId || null;
+    // this.tunnelId = this.$route.query.tunnelId || null;
     this.refresh();
     this.choseTabs(0);
 
 
     this.tunnelEventTimer = setInterval(() => {
       this.refresh()
-    }, 10 * 1000)
+    }, 30 * 1000)
   },
   methods: {
     refresh() {    // 收到事件推送的时候刷新数据
@@ -137,6 +141,8 @@ export default {
     //  2d界面的统计数据
     async getTunnelPass() {
       this.countData = await this.$service.home.getTunnelEventStat(this.tunnelId) || {};
+
+      console.log(this.countData)
       this.$emit('loaded', this.countData);
     },
     choseTabs(i) {

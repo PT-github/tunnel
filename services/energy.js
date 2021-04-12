@@ -66,7 +66,7 @@ export default class EnergyService extends Service {
             url: '/tunnel/rest/TTunnelenergyrecord/getElenergyComparisonByMonth',
             data: param
         }).then(res => {
-            console.log(res);
+            // console.log(res);
             if (res && res.length) {
                 res.forEach(item => {
                     item.totalEnergy = item.leftEnergy + item.rightEnergy;  //总能耗

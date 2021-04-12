@@ -26,9 +26,26 @@ export default class IndexService extends Service {
     }
 
     getLoginLogoInfo (data) {
+        console.log(data)
         return this.get({
             url: '/tunnel/listChildrenByParentValue',
             data
         })
     }
+    // 获取字典值
+    getDict (code) {
+        return this.post({
+            url: '/System/Dictionary/FindDictionaryListByParentCode',
+            contentType: 'form',
+            data: {code}
+        }).then(res => {
+            return res.map(v => {
+                return {
+                    name: v.Name,
+                    value: v.Value || v.DictionaryId
+                };
+            });
+        });
+    }
+
 }

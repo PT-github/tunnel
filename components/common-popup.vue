@@ -11,7 +11,7 @@
     <span slot="footer"
           v-if="showButton"
           class="dialog-footer">
-                <el-button @click="btnCannal" v-if="!hideCancel">取 消</el-button>
+                <el-button @click="btnCancel" v-if="!hideCancel">取消</el-button>
                 <el-button type="primary" @click="btnConfirm">{{confirmButtonText}}</el-button>
             </span>
   </el-dialog>
@@ -50,8 +50,8 @@ export default {
       this.$emit('handleClose');
     },
     //取消
-    btnCannal() {
-      this.$emit('btnCannal');
+    btnCancel() {
+      this.$emit('btnCancel');
     },
     //确定
     btnConfirm() {

@@ -1,6 +1,8 @@
 <template>
   <form-page no-back>
     <div slot="left" class="orgs block">
+      <!--弹窗-->
+      <modal-deviceConfig ref="modalDeviceConfig" v-model="showModal" :device-id="deviceId" ></modal-deviceConfig>
       <div class="class-item"
            :class="{'class-item-a':leftState==index}"
            @click="handleOrgClick(item.id,index)"
@@ -20,16 +22,19 @@
              @searchChange="searchParmsChange"
              @search="onSearchChange"
              @row-btn-click="onRowButtonClick"></h-table>
+
   </form-page>
 </template>
 
 <script>
 import HTable from '../../components/h-table';
+import ModalDeviceConfig from './modal-deviceConfig';
 
 export default {
   name: 'index',
   components: {
-    HTable
+    HTable,
+    ModalDeviceConfig
   },
   services: ['device', 'basic'],
   mounted() {
@@ -156,6 +161,7 @@ export default {
                   name: '编辑', icon: 'el-icon-edit', event: 'edit',
                   auth: '/rest/TDevicebookinfo/edit'
                 },
+                {name: '配置', icon: 'el-icon-edit', event: 'config'},
                 {
                   name: '删除',
                   icon: 'el-icon-delete-solid',
@@ -167,7 +173,9 @@ export default {
       },
 
       deviceClass: [], //左侧设备分类
-      leftState: -1
+      leftState: -1,
+      showModal:false,
+      deviceId: ''
     };
   },
   methods: {
@@ -228,6 +236,9 @@ export default {
         case 'delete':
           this.deleteDevice(row.id);
           break;
+        case 'config':
+          this.configDevice(row.id);
+          break;
       }
     },
     deleteMoreDevice(idList) {   //批量删除
@@ -238,6 +249,12 @@ export default {
           this.$notifySuccess();
         });
       });
+    },
+    configDevice(id) {   // 配置设备
+      this.showModal = true;
+      this.deviceId = id;
+      this.$refs.modalDeviceConfig.showDal()
+      //console.log('this.showModal',this.showModal)
     },
     deleteDevice(id) {   // 删除隧道
       this.$showConfirm().then(() => {

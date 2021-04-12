@@ -139,7 +139,7 @@
                class="device-popup"
                :showPopup="showPopup"
                @handleClose="handleClose"
-               @btnCannal="handleClose"
+               @btnCancel="handleClose"
                @btnConfirm="btnConfirm"
                title="添加设备操作">
             <div v-if="operateDevice && operateDevice.id && operateForm">

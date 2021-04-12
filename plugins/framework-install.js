@@ -1,16 +1,14 @@
 import Vue from 'vue';
 import framework from './framework';
 import uploader from 'vue-simple-uploader';
+import {BASE_SERVER} from "@/utils/constant";
 
 Vue.use(uploader);
 
 export default ({store}) => {
     Vue.use(framework, {
         config: {
-           // baseUrl: '/api',
-            // baseUrl: 'http://w8.qcxt.com:65036',
-            // baseUrl: 'http://cxgs.tunnel.qcxt.com:65036/api',
-            baseUrl: 'http://w7.qcxt.com:8060',
+            baseUrl: BASE_SERVER,
             baseImgUrl: '/upload'
         },
         resolveHttpSuccess: (res, options) => {

@@ -69,6 +69,15 @@
                         placeholder="请输入路段名称"></el-input>
             </el-form-item>
 
+            <el-form-item label="2D显示模式:"
+                          :rules="[{ required: true, message: '请选择2D显示模式'}]"
+                          prop="singleDoubleType">
+              <el-radio-group v-model="tunnelForm.showMode">
+                <el-radio :label="0">固定模式</el-radio>
+                <el-radio :label="1">分段模式</el-radio>
+              </el-radio-group>
+            </el-form-item>
+
             <el-form-item label="限速:" prop="speedLimit">
               <div class="qzzh-ctn">
                 <el-input v-model="tunnelForm.speedLimit"
@@ -143,10 +152,10 @@
               <el-col :span="12">
                 K
                 <el-input type="number" v-model.number="tunnelForm.startStakeMarkKm"
-                          placeholder=""></el-input>
+                          placeholder=""/>
                 +
                 <el-input type="number" v-model.number="tunnelForm.startStakeMarkM"
-                          placeholder=""></el-input>
+                          placeholder=""/>
                 <span>~</span>
               </el-col>
               <el-col :span="12">
@@ -224,6 +233,18 @@
           </div>
 
           <div class="form-items">
+            <IndexTipTitle title="3D信息"></IndexTipTitle>
+            <div class="j-w-ctn">
+              <el-col :span="4">缩放比例：</el-col>
+              <el-col :span="8">
+                <el-input v-model="tunnelForm.lengthScale"
+                          type="number"
+                          placeholder=""/>
+              </el-col>
+            </div>
+          </div>
+
+          <div class="form-items">
             <IndexTipTitle title="其他信息"></IndexTipTitle>
             <div class="j-w-ctn">
               <el-col :span="4">排序：</el-col>
@@ -262,7 +283,7 @@
 
     <OrganizePopup :showPopup="showOrganizePopup"
                    @handleClose="handleTipClose"
-                   @btnCannal="handleTipClose"
+                   @btnCancel="handleTipClose"
                    @btnConfirm="subSelectedOrgan"
                    showButton
                    width="740px"
@@ -318,6 +339,7 @@ export default {
         endStakeMark: '',    //结束桩号
         tunnelDescribe: '',  //隧道描述
         singleDoubleType: 3, //单双洞类型
+        singleDoubleTypeName: '',
         leftHoleLength: '',  //左洞长度
         leftStartLatitude: '',   //左洞开始经度
         leftStartLongitude: '',  //左洞开始维度
@@ -330,8 +352,10 @@ export default {
         leftHoleDirection: '',   //左洞方向
         rightHoleLength: '',   //有洞长度
         rightHoleDirection: '',  //右洞方向
+        showMode: 0,     //2D显示模式
         sortInt: '',     //排序
-        enableStatusName: false     //是否启用
+        enableStatusName: false,     //是否启用
+        lengthScale: 0.25 // 3D缩放比例
       },
       showOrganizePopup: false,
       systemOrganization: [],  //组织机构
@@ -342,6 +366,24 @@ export default {
 
     };
   },
+
+  computed: {
+    singleDoubleTypeName() {
+      switch (this.tunnelForm.singleDoubleType) {
+        case 1:
+          return '单右洞'
+        case 2:
+          return '单左洞'
+        case 3:
+          return '双洞'
+      }
+    },
+
+    enableStatus() {
+      return this.enableStatusName ? 1 : 0
+    }
+  },
+
   mounted() {
     //查询组织机构
     this.getSystemOrganization();
@@ -349,11 +391,16 @@ export default {
 
     if (type === 'edit' && id) {
       this.$service.tunnel.getById(id).then(res => {
-        res.tunnelType = String(res.tunnelType);
+        if (res.tunnelType) {
+          res.tunnelType = String(res.tunnelType);
+        }
         res.enableStatusName = res.enableStatus == 1 ? true : false;  //启用状态
         res.organName = res.organizationName || '';                  //组织机构名称
-        this.tunnelForm = res;
+        // this.tunnelForm = res;
 
+        for(const key in this.tunnelForm) {
+          if (res[key] !== undefined && res[key] !== null) this.tunnelForm[key] = res[key]
+        }
       });
       // console.log(this.$refs.hSelect.value)
       // debugger
@@ -425,10 +472,9 @@ export default {
           return;
         }
       }
+
       this.$refs[formName].validate((valid) => {
-        if (!valid) {
-          return false;
-        }
+        if (!valid) return;
         this.$confirm('确定提交？', '提示', {
           confirmButtonText: '确定',
           type: 'warning',
@@ -450,68 +496,38 @@ export default {
       });
     },
 
+    // 提交表单
     handleParams() {
-      let param = this.tunnelForm;
-      //最终参数
-      let realParam = {
-        //必传
-        id: param.id,
-        laneNums: param.laneNums,    // 车道数
-        cityId: param.cityId,    //城市Id
-        cityName: this.$refs.city.getSelectedName(),    //城市名称
-        tunnelPicture: param.tunnelPicture,                         //隧道主图
-        tunnelName: param.tunnelName,
-        organizationId: param.organizationId,                //组织id
-        startStakeMarkKm: param.startStakeMarkKm,
-        startStakeMarkM: param.startStakeMarkM,
-        endStakeMarkKm: param.endStakeMarkKm,
-        endStakeMarkM: param.endStakeMarkM,
-        startStakeMarkKmRight: param.startStakeMarkKmRight,
-        startStakeMarkMRight: param.startStakeMarkMRight,
-        endStakeMarkKmRight: param.endStakeMarkKmRight,
-        endStakeMarkMRight: param.endStakeMarkMRight,
-        belongsStretch: param.belongsStretch,                //所属路段
-        tunnelDescribe: param.tunnelDescribe || null,        //隧道描述
-        tunnelType: param.tunnelType || null,                //隧道类型
-        //非必传
-        singleDoubleTypeName: param.singleDoubleType == 1 ? '单右洞' : param.singleDoubleType == 2 ? '单左洞' : param.singleDoubleType == 3 ? '双洞' : null,
-        singleDoubleType: param.singleDoubleType,        //类型
-        enableStatus: param.enableStatusName === true ? 1 : 0, //是否启动
-        enableStatusName: param.enableStatusName,
-        leftStartLatitude: param.leftStartLatitude || null, //左洞开始经度
-        leftStartLongitude: param.leftStartLongitude || null,//左洞开始维度
-        leftEndLatitude: param.leftEndLatitude || null,    //左洞结束经度
-        leftEndLongitude: param.leftEndLongitude || null,    //左洞结束纬度
-        rightStartLatitude: param.rightStartLatitude || null, // 右洞开始经度
-        rightStartLongitude: param.rightStartLongitude || null,// 右洞开始纬度
-        rightEndLatitude: param.rightEndLatitude || null,//右洞结束经度
-        rightEndLongitude: param.rightEndLongitude || null,  //右洞结束纬度
-        leftHoleLength: param.leftHoleLength || null,        //左洞长度
-        leftHoleDirection: param.leftHoleDirection || null,  //左洞方向
-        rightHoleLength: param.rightHoleLength || null,      //右洞长度
-        rightHoleDirection: param.rightHoleDirection || null,//右洞方向
-        sortInt: param.sortInt || null,                      //排序
-        reamrks: param.reamrks || null,                      //备注
-        speedLimit: param.speedLimit || null                 //限速
-      };
-      let selectedType = this.$refs.hSelect.options;   //隧道类型
-      selectedType && selectedType.length && selectedType.forEach(item => {
-        if (item.value == param.tunnelType) {
-          realParam.tunnelTypeName = item.name;    //隧道类型中文名
-        }
-      });
-      console.log('最终参数：', realParam);
+      this.tunnelForm.cityName = this.$refs.city.getSelectedName();
+      this.tunnelForm.singleDoubleTypeName = this.singleDoubleTypeName
+      this.tunnelForm.enableStatus = this.enableStatus
+
+      //隧道类型
+      let selectedType = this.$refs.hSelect.options;
+      if (Array.isArray(selectedType)) {
+        selectedType.forEach(item => {
+          if (item.value === this.tunnelForm.tunnelType) {
+            //隧道类型中文名
+            this.tunnelForm.tunnelTypeName = item.name;
+          }
+        });
+      }
+
+      // console.log('最终参数：', this.tunnelForm);
+
       let {type, id} = this.$route.query;
+
       if (type === 'edit' && id) {
         //更新隧道信息
-        this.$service.tunnel.upDateTunnelInfo(realParam).then(res => {
+        this.$service.tunnel.upDateTunnelInfo(this.tunnelForm).then(res => {
           this.$notifySuccess();
           this.$router.go(-1);
         });
         return;
       }
+
       //新增隧道信息
-      this.$service.tunnel.addTunnelInfo(realParam).then(res => {
+      this.$service.tunnel.addTunnelInfo(this.tunnelForm).then(res => {
         this.$notifySuccess();
         this.$router.go(-1);
       });
@@ -719,7 +735,7 @@ img {
   color: #C1D9FF;
 
   &.stake {
-    width: 620px;
+    width: 640px;
   }
 }
 

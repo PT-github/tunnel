@@ -293,7 +293,7 @@
             getAllTunnelTree () {
                 this.getRequest(`/system/tunnel/getAllTunnelTree`)
                     .then(res => {
-                        console.log(res);
+                        // console.log(res);
                         if (res.status == 200) {
                             this.model = res.data.data.rows;
                             this.model.map(item => {

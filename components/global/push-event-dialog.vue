@@ -7,13 +7,15 @@
 
 <script>
     import EventAlarm from '../alarm/event-alarm';
+    import { SOCKET_SERVER } from "@/utils/constant";
 
     export default {
         components: {EventAlarm},
         services: [ 'alarm' ],
         data () {
             return {
-                event: null
+                event: null,
+                timer: null
             };
         },
         events: {
@@ -34,8 +36,7 @@
                 this.$service.alarm.voiceAlarmTrigger(eventContent);
             },
             connect () {
-                 let ws = new WebSocket(`ws://${top.window.location.host}/api/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
-                //let ws = new WebSocket(`ws://w8.qcxt.com:65036/api/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
+                let ws = new WebSocket(`ws://${SOCKET_SERVER}/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
                 ws.onopen = e => {
                     console.log('---------ws已连接---------', e);
                 };
@@ -57,6 +58,10 @@
                             this.event = res;
                         });
                     }
+                    if (eventMsg && eventMsg.tunnelId && eventMsg.type === 'deviceStatusChange') { // 设备状态更新，刷新隧道图
+                        //console.log('deviceStatusChange')
+                        this.$em.$fire('onDeviceStatusChange', eventMsg.tunnelId);
+                    }
                 };
                 ws.onerror = error => {
                     if (error) {
@@ -65,7 +70,9 @@
                 };
                 ws.onclose = e => {
                     console.error('---------ws断开连接---------', e);
-                    this.connect();
+                    //10秒钟后重新连接
+                    this.timer = setTimeout(()=> { this.connect();clearTimeout(this.timer); }, 1000*30);
+
                 };
                 this.ws = ws;
             }

@@ -9,16 +9,16 @@ const CONTENT_TYPE_MAP = {
 
 export default class Service {
 
-    constructor ($ctx) {
+    constructor($ctx) {
         this.$ctx = $ctx;
     }
 
     /**
      * 请求之前的处理
      */
-    sendBefore (options) {
-        if (LOCK_PROMISE[ options.lock ]) {
-            return LOCK_PROMISE[ options.lock ];
+    sendBefore(options) {
+        if (LOCK_PROMISE[options.lock]) {
+            return LOCK_PROMISE[options.lock];
         }
         /**
          * 支持内存缓存
@@ -29,7 +29,7 @@ export default class Service {
     }
 
     // 真正的发送请求
-    sendTo (options) {
+    sendTo(options) {
         options.loadingText && this.$ctx.showLoading && this.$ctx.showLoading(options.loadingText);
         options.contentType = options.contentType || 'json';
 
@@ -44,7 +44,7 @@ export default class Service {
             timeout: options.timeout || 30 * 1000,
             headers: {
                 ...options.headers || {},
-                'content-type': CONTENT_TYPE_MAP[ options.contentType || 'json'.toLowerCase() ]
+                'content-type': CONTENT_TYPE_MAP[options.contentType || 'json'.toLowerCase()]
             }
         };
         if (options.downloadFile || options.playAudio) {     // 下载文件
@@ -57,7 +57,7 @@ export default class Service {
                 let form = new FormData();
                 let keys = Object.keys(options.data);
                 keys.forEach(key => {
-                    form.append(key, options.data[ key ]);
+                    form.append(key, options.data[key]);
                 });
                 o.data = form;
             } else {
@@ -70,7 +70,7 @@ export default class Service {
                 form.append(v.name, v.file);
             });
             o.data = form;
-            o.headers[ 'content-type' ] = 'multipart/form-data';
+            o.headers['content-type'] = 'multipart/form-data';
         }
         if (this.$ctx.beforeHttp) {
             o = this.$ctx.beforeHttp(o);
@@ -81,12 +81,15 @@ export default class Service {
         }).catch(err => {
             options.loadingText && this.$ctx.hideLoading && this.$ctx.hideLoading();
             let defaultCatch = e => {
+                //console.log('options',options)
                 if (options.isToastError !== false) {   // 除非明确指出不需要弹toast，否则接口失败默认弹出toast
                     if (e.message && e.message.includes('timeout')) {
                         //e.message = '网络请求超时';
                         console.log('网络请求超时');
                     }
-                    //this.$ctx.toastError(e.message || '网络请求失败');
+                    if (!e.message.includes('timeout')) {
+                        this.$ctx.toastError(e.message || '网络请求失败');
+                    }
                 }
                 return Promise.reject(err);
             };
@@ -103,32 +106,31 @@ export default class Service {
     /**
      * 处理结果
      */
-    handlerRes (res, options) {
+    handlerRes(res, options) {
         if (options.cacheKey && !DATASOURCE_CACHE.has(options.cacheKey)) {
             DATASOURCE_CACHE.set(options.cacheKey, res);
         }
-        options.lock && delete LOCK_PROMISE[ options.lock ];
+        options.lock && delete LOCK_PROMISE[options.lock];
         return res;
     }
 
     /**
      * 处理请求Error
      */
-    handlerError (error, options) {
+    handlerError(error, options) {
         options.cacheKey && DATASOURCE_CACHE.delete(options.cacheKey);
-        options.lock && delete LOCK_PROMISE[ options.lock ];
+        options.lock && delete LOCK_PROMISE[options.lock];
         return Promise.reject(error);
     }
 
     /**
      * 请求之后处理
      */
-    sendAfter (options) {
-
+    sendAfter(options) {
         const _sendTo = options => {
             let promise = this.sendTo(options);
             if (options.lock) {
-                LOCK_PROMISE[ options.lock ] = promise;
+                LOCK_PROMISE[options.lock] = promise;
             }
             return promise;
         };
@@ -136,22 +138,22 @@ export default class Service {
         return _sendTo(options);
     }
 
-    get (options) {
+    get(options) {
         options.method = 'get';
         return this.send(options);
     }
 
-    post (options) {
+    post(options) {
         options.method = 'post';
         return this.send(options);
     }
 
-    put (options) {
+    put(options) {
         options.method = 'put';
         return this.send(options);
     }
 
-    delete (options) {
+    delete(options) {
         options.method = 'delete';
         return this.send(options);
     }
@@ -159,7 +161,7 @@ export default class Service {
     /**
      * 请求
      */
-    send (options) {
+    send(options) {
         let result = this.sendBefore(options);
         if (!result) {
             return this.sendAfter(options).then(res => {
