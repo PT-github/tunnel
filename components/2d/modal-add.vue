@@ -135,9 +135,6 @@ export default {
       // let txt = this.$refs.text.detail;
       // console.log(this.submitparms);
       // 保存模板
-      if (!this.submitparms.text) {
-        return this.$message("请输入内容");
-      }
       if(this.submitparms.bold){
         this.submitparms.bold=1
       }else{

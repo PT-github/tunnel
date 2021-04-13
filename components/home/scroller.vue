@@ -13,7 +13,6 @@
                 <!-- 事件报警未处理 黄色，已处理绿色、 设备报警未处理 红色，已处理绿色 -->
                 <div class="roll-swipe-item-des" 
                      :class="'status-' + (item.warningStatus == 0 ? 'red': (item.eventState==0?'yellow':'green'))"
-                     :title="item.eventContent||item.warningContent"    
                      @click="choseImg(item)">{{item.eventContent||item.warningContent}}</div>
                 <div class="roll-swipe-item-time">{{(item.createdUserDate||item.warningTime)|formate}}</div>
             </div>
