@@ -692,11 +692,13 @@ export default {
           top = tunnelLine - top
         }
       }
+
       //单左洞
       else if (singleDoubleType === 2) {
         // 右洞的话设备位置从上到下应该是10~0，所以这里从上到下计算的高度要用整个洞的高度减掉，就可以调转过来了
         top = tunnelLine - top
       }
+
       //单右洞
       else if (singleDoubleType === 1) {
         // 右洞要-卷闸门的高度
@@ -758,8 +760,8 @@ export default {
 
     // 计算空洞位置
     getEmptyStyle(item) {
-      const {length, pileNumber, leftRightFlag} = item,
-          {singleDoubleType} = this.tunnelInfoData
+      const {length, pileNumber, leftRightFlag} = item
+      const {singleDoubleType} = this.tunnelInfoData
       const {maxLength, tunnelLine, center} = this.tunnelStyle
       let mapLength = this.maxEndMapStakeMark - this.minStartMapStakeMark
 
@@ -784,18 +786,17 @@ export default {
       // emptyType  空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
       // rotateDegree  旋转度数
       // leftRightFlag 1 右洞 2 左洞 3 中间
-
       switch (item.emptyType) {
           // 0 空洞
         case 0:
           return {
             position: 'absolute',
             top:
-                singleDoubleType === 3 && leftRightFlag === '2'
+                singleDoubleType === 3 && leftRightFlag === 1
                     ? tunnelLine + center + 30 + 'px'
                     : '0',
             height: tunnelLine + 30 + 'px',
-            width: (length / maxLength) * 100 + '%',
+            width: (length / mapLength) * 100 + '%',
             left: `${defaultLeft}`,
             background: '#142470',
             zIndex: 9,
