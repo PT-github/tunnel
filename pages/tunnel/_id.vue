@@ -20,7 +20,7 @@
         <!-- 隧道信息 -->
         <section>
           <tunnel-component
-              @details="doShowModalDevice"
+              @detail="doShowModalDevice"
               ref="TunnelRef"
               :show-active-type="showActiveType"
               :tunnel-status="tunnelStatus"
