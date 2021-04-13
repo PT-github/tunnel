@@ -24,7 +24,7 @@
 
                 <!--实时视频-->
                 <div v-if="alarmDetail.deviceList && alarmDetail.deviceList.length">
-                    <title-com title="附近两段路视屏情况"></title-com>
+                    <title-com title="附近两路视频情况"></title-com>
                     <div class="video-ctn">
                         <div class="video-item"
                              v-for="item in alarmDetail.deviceList">

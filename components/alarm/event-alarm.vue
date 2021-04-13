@@ -60,6 +60,7 @@
         <el-table
             ref="multipleTable"
             class="multiple-table"
+            height="100%"
             :data="doneList"
             tooltip-effect="dark"
             @selection-change="handleSelectionChange">
@@ -405,7 +406,7 @@ export default {
       }
 
       .img-video-ctn {
-        height: 200px;
+        height: 225px;
         width: 100%;
 
         img {
@@ -504,7 +505,8 @@ export default {
 //}
 
 .multiple-table {
-  height: 255px;
+  //height: 255px;
   width: 100% !important;
+  overflow-y: auto!important;
 }
 </style>
