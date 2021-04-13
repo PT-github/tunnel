@@ -116,7 +116,7 @@
         >
           <el-option
             v-for="item in verticalOptions"
-            :key="item.value"
+            :key="item.value+'s'"
             :label="item.name"
             :value="item.value"
           >
@@ -132,7 +132,7 @@
         >
           <el-option
             v-for="item in fontNameOptions"
-            :key="item.value"
+            :key="item.value+'s'"
             :label="item.value"
             :value="item.value"
           >
