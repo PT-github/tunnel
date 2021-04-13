@@ -64,20 +64,20 @@ export default {
   },
   components: {RtspPlayer, TipsTitle},
   watch: {
-    canPlay(v) {
-      if (!v) {
-        this.play = false;
-      }
-    }
+    // canPlay(v) {
+    //   if (!v) {
+    //     this.play = false;
+    //   }
+    // }
   },
   methods: {
-    hide() {   // 有弹窗时关闭视频
-      this.play = false;
-    }
+    // hide() {   // 有弹窗时关闭视频
+    //   this.play = false;
+    // }
   },
   data() {
     return {
-      play: false
+      play: true
     };
   }
 };

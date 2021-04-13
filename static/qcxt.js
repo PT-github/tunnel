@@ -1,4 +1,4 @@
-﻿ <reference path="jquery-1.7.1.min.js" />
+﻿ /// <reference path="jquery-1.7.1.min.js" />
 var qcxt = {
     video: {
         checkPluginInstall: function (type) {
