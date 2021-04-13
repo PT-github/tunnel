@@ -181,7 +181,7 @@
           >
             <el-table-column>
               <template slot-scope="scope">
-                <div class="tpl-item" >
+                <div class="tpl-item">
                   {{ scope.$index + 1 }}、{{
                     scope.row.templetName || scope.row.text
                   }}
@@ -274,8 +274,8 @@ export default {
     //this.updateTpls();
   },
   methods: {
-    playObjInput(val){
-      this.playObj=val;
+    playObjInput(val) {
+      this.playObj = val;
     },
     //分辨率
     resolutionPowerOptions(val) {
@@ -286,22 +286,42 @@ export default {
     },
     //确定回写数据
     modalObj(val) {
-      console.log(val);
       this.doOperateFormfalog = false;
-      this.tplList.push(...val);
+      for (let i in val) {
+        let templetText = val[i].templetText;
+        let obj = JSON.parse(templetText);
+        this.tplList.push(obj);
+      }
+      //this.tplList.push(...templetText);
     },
+
+    // showTpl(tpl) {
+    //   console.log(tpl)
+    //   return
+    //         let obj = JSON.parse(row.templetText);
+    //   this.resolutionPower = obj.resolutionPower;
+    //   this.textObj = obj;
+    //   this.playObj = obj;
+    //   // 点击模板填上表单内容
+    //   if(tpl){
+    //      this.tplForm =tpl.templetText
+    //   }else{
+    //     this.tplForm = JSON.parse(tpl.templetText);
+    //   }
+
+    // },
     //点击行显示
     rowClick(row) {
-      if(row.templetText){
+      if (!row.templetText) {
+        this.textObj = row;
+        this.playObj = row;
+        this.resolutionPower = row.resolutionPower;
+      } else {
         let obj = JSON.parse(row.templetText);
         this.resolutionPower = obj.resolutionPower;
         this.textObj = obj;
         this.playObj = obj;
-      } else{
-        this.textObj = row;
-        this.playObj = row;
       }
-    
     },
     imgChange(url = "") {
       this.imgUrls = url;
@@ -366,11 +386,7 @@ export default {
         });
       });
     },
-    showTpl(tpl) {
-      // 点击模板填上表单内容
-      console.log(tpl)
-     // this.tplForm = JSON.parse(tpl.templetText);
-    },
+
     deviceSelectionChange(e) {
       this.selectedDevices = e;
     },
@@ -380,16 +396,22 @@ export default {
     doOperate() {
       // 执行模板
       //请确认是否删选择的模板信息，删除后不能恢复！
-      // if (!this.deviceId) {
-      //   return this.$message("请选择设备");
-      // }
-      if (!this.tempId) {
-        return this.$message("请选择模板");
+      if (!this.deviceId) {
+        return this.$message("请选择设备");
       }
+      // if (!this.tempId) {
+      //   return this.$message("请选择模板");
+      // }
       // if(!this.submitparms.text){
       //   return this.$message("请输入内容");
       // }
+
       for (let i in this.selectedTpls) {
+        // if (this.selectedTpls[i].templetText) {
+        //    console.log(1111)
+        //   let obj = JSON.parse(this.selectedTpls[i].templetText);
+        //   selectedTpArr.push(obj);
+        // }
         if (this.selectedTpls[i].bold) {
           this.selectedTpls[i].bold = 1;
         } else {
@@ -400,9 +422,11 @@ export default {
         } else {
           this.selectedTpls[i].italics = 0;
         }
+        this.selectedTpls[i].spacing = Number(this.selectedTpls[i].spacing);
+        this.selectedTpls[i].vertical = Number(this.selectedTpls[i].vertical);
       }
       let boardVo = {
-        data: (this.selectedTpls),
+        data: this.selectedTpls,
         deviceIds: this.deviceId,
       };
       this.$service._2d.operateInfoBoardByTmpNew(boardVo).then(() => {
@@ -418,6 +442,7 @@ export default {
       if (!this.submitparms.text) {
         return this.$message("请输入内容");
       }
+      //数据改写
       if (this.submitparms.bold) {
         this.submitparms.bold = 1;
       } else {
@@ -445,6 +470,7 @@ export default {
       }
       let obj = { ...this.submitparms, id: Math.random() };
       this.tplList.push(obj);
+      //console.log(obj);
     },
 
     doOperateForm() {
@@ -470,13 +496,11 @@ export default {
       if (!this.tempId) {
         return this.$message("请选择模板");
       }
-      console.log(this.selectedTpls);
       this.$showConfirm("请确认是否删选择的节目信息，删除后不能恢复！").then(
         () => {
           this.tplList = this.tplList.filter(
             (item) => !this.selectedTpls.some((ele) => ele.id === item.id)
           );
-          console.log(this.tplList);
           // this.$service._2d.deleteInfoBoardTmp(this.tempId).then(() => {
           //   //this.updateTpls();
           //   this.$notifySuccess();
@@ -510,15 +534,12 @@ export default {
       return whObj;
     },
     submitparms() {
-      console.log(this.playObj)
       return {
         templateType: this.templateType,
         imgUrls: this.imgUrls,
-      
-        point: this.$refs.live.getAllPoint().point,
-        // ...this.otherObj,
         ...this.playObj,
         ...this.textObj,
+        point: this.$refs.live.getAllPoint().point,
         templetId: "",
         resolutionPower: this.playObj.resolutionPower || "96*32",
       };
