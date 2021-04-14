@@ -9,7 +9,7 @@
 </head>
 
 <style type="text/css">
-body{
+body{ 
 margin:0;
 padding: 0px;
 position: fiexd;
@@ -24,8 +24,8 @@ position: fiexd;
 </body>
 
 <script type="text/javascript">
-
-
+	
+	
 	// 接收3D模块传递的时间
 	window.addEventListener("message", function(event){
 		var revMsg = event.data;
@@ -42,21 +42,21 @@ position: fiexd;
 						rightHoleLength:752, // 右洞长度（米）
 						endStakeMark:710213,  // 左洞结束桩号（桩号米）
 						endStakeMarkRight:710253, // 右洞结束桩号（桩号米）
-						laneNums:3,  // 车道数（个）
-						startStakeMark:709157,  // 左洞开始桩号（桩号米）
+						laneNums:3,  // 车道数（个）  
+						startStakeMark:709157,  // 左洞开始桩号（桩号米） 
 						startStakeMarkRight:709146,  // 右洞开始桩号（桩号米）
-						leftHoleDirection: "岳阳方向", // 左洞方向
-						rightHoleDirection: "湘潭方向", // 右洞方向
+						leftHoleDirection: "岳阳方向", // 左洞方向 
+						rightHoleDirection: "湘潭方向", // 右洞方向 
 						singleDoubleType: 3, // 单双洞类型（1单右洞 2单左洞 3双洞）
 					},
-
+					
 					// 附加的横洞空洞数据
 					addData:[
 						{
 							id:"8e46993d-1a72-11eb-ab8a-11",
 							emptyType:2, // 空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
 							length:30, // 长度
-							pileNumber:709157 + 90, // 桩号
+							pileNumber:709157 + 90, // 桩号 
 							leftRightFlag:3, // 左右洞标识1 右洞 2 左洞 3 中间
 							singleDoubleType:3, // 单双洞类型（1单右洞 2单左洞 3双洞）
 						},
@@ -64,7 +64,7 @@ position: fiexd;
 							id:"8e46993d-1a72-11eb-ab8a-22",
 							emptyType:1, // 空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
 							length:30, // 长度
-							pileNumber:709157 + 40, // 桩号
+							pileNumber:709157 + 40, // 桩号 
 							leftRightFlag:3, // 左右洞标识1 右洞 2 左洞 3 中间
 							singleDoubleType:3, // 单双洞类型（1单右洞 2单左洞 3双洞）
 						},
@@ -72,7 +72,7 @@ position: fiexd;
 							id:"8e46993d-1a72-11eb-ab8a-33",
 							emptyType:0, // 空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
 							length:60, // 长度
-							pileNumber:709157 + 200, // 桩号
+							pileNumber:709157 + 200, // 桩号 
 							leftRightFlag:2, // 左右洞标识1 右洞 2 左洞 3 中间
 							singleDoubleType:2, // 单双洞类型（1单右洞 2单左洞 3双洞）
 						},
@@ -80,7 +80,7 @@ position: fiexd;
 							id:"8e46993d-1a72-11eb-ab8a-44",
 							emptyType:3, // 空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
 							length:0, // 长度
-							pileNumber:709165, // 桩号
+							pileNumber:709165, // 桩号 
 							leftRightFlag:1, // 左右洞标识1 右洞 2 左洞 3 中间
 							singleDoubleType:1, // 单双洞类型（1单右洞 2单左洞 3双洞）
 						},
@@ -88,15 +88,15 @@ position: fiexd;
 							id:"8e46993d-1a72-11eb-ab8a-55",
 							emptyType:4, // 空洞类型（0空洞、1人行横洞、2车行横洞 3水泵房 4洞外配电房 5洞内配电房）
 							length:0, // 长度
-							pileNumber:709130, // 桩号
+							pileNumber:709130, // 桩号 
 							leftRightFlag:1, // 左右洞标识1 右洞 2 左洞 3 中间
 							singleDoubleType:1, // 单双洞类型（1单右洞 2单左洞 3双洞）
 						},
-					],
+					], 
 				}
-
+				
 				window.frames[0].postMessage(msg); // 初始化隧道
-
+				
 				////////////////////////////////////////////////////////////////////////
 				// 测试消防器材
 				for(var i =0; i < 2; ++i){
@@ -134,7 +134,7 @@ position: fiexd;
 					}
 					window.frames[0].postMessage(msg2); // 添加设备
 				}
-
+				
 				for(var i =0; i < msg.msgData.laneNums; ++i){
 					var msg22 = {
 						msgType:"addDevice",
@@ -235,7 +235,7 @@ position: fiexd;
 						msgData:{
 							id:"1703006a-9b93-4147-9e78-7" + i, // 设备id
 							deviceTypeCode:"laneIndicator", // 设备类型  照明灯
-							orientationLocation:1 + i, //位置类型
+							orientationLocation:1 + i, //位置类型 
 							leftRightFlag:2,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709138,// 设备桩号
 							deviceName:"指示器", // 设备名称
@@ -245,7 +245,7 @@ position: fiexd;
 					}
 					window.frames[0].postMessage(msg7); // 添加设备
 				}
-
+				
 				////////////////////////////////////////////////////////////////////////
 				// 信号灯
 				for(var i =0; i < 2; ++i){
@@ -254,7 +254,7 @@ position: fiexd;
 						msgData:{
 							id:"1703006a-9b93-4147-9e78-8" + i, // 设备id
 							deviceTypeCode:"signallamp", // 设备类型  信号灯
-							orientationLocation:0, //位置类型
+							orientationLocation:0, //位置类型 
 							leftRightFlag:1+i,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709118+i*10,// 设备桩号
 							deviceName:"信号灯", // 设备名称
@@ -264,7 +264,7 @@ position: fiexd;
 					}
 					window.frames[0].postMessage(msg8); // 添加设备
 				}
-
+				
 				////////////////////////////////////////////////////////////////////////
 				// 卷闸门
 				var msg9 = {
@@ -338,7 +338,7 @@ position: fiexd;
 					msg10.msgData.push(data);
 				}
 				window.frames[0].postMessage(msg10); // 添加设备
-
+				
 				////////////////////////////////////////////////////////////////////////
 				// 广播
 				var msg11 = {
@@ -348,7 +348,7 @@ position: fiexd;
 				for(var i =0; i < 10; ++i){
 					var data = {
 							id:"1703006a-9b93-4147-9e78-11" + i, // 设备id
-							deviceTypeCode:"broadcast", // 设备类型
+							deviceTypeCode:"broadcast", // 设备类型  
 							orientationLocation:10, //位置类型
 							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709220 + i * 5,// 设备桩号
@@ -359,7 +359,7 @@ position: fiexd;
 					msg11.msgData.push(data);
 				}
 				window.frames[0].postMessage(msg11); // 添加设备
-
+				
 				////////////////////////////////////////////////////////////////////////
 				// 摄像机
 				var msg12 = {
@@ -370,7 +370,7 @@ position: fiexd;
 					var data = {
 							id:"1703006a-9b93-4147-9e78-12" + i, // 设备id
 							deviceTypeCode:"camera", // 设备类型  摄像机 camera or eventcamera
-							orientationLocation:10, //位置类型
+							orientationLocation:10, //位置类型 
 							leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
 							pileNumber:709200 + i * 5,// 设备桩号
 							deviceName:"摄像机", // 设备名称
@@ -380,7 +380,7 @@ position: fiexd;
 					msg12.msgData.push(data);
 				}
 				window.frames[0].postMessage(msg12); // 添加设备
-
+				
 				////////////////////////////////////////////////////////////////////////
 				// 传感器
 				var msg13 = {
@@ -390,7 +390,7 @@ position: fiexd;
 				msg13.msgData.push({
 					id:"1703006a-9b93-4147-9e78-13-1", // 设备id
 					deviceTypeCode:"temperature", // 设备类型  湿温度计
-					orientationLocation:1, //位置类型
+					orientationLocation:1, //位置类型 
 					leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
 					pileNumber:709170,// 设备桩号
 					deviceName:"湿温度计", // 设备名称
@@ -401,7 +401,7 @@ position: fiexd;
 				msg13.msgData.push({
 					id:"1703006a-9b93-4147-9e78-13-2", // 设备id
 					deviceTypeCode:"winddirection", // 设备类型  风向
-					orientationLocation:2, //位置类型
+					orientationLocation:2, //位置类型 
 					leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
 					pileNumber:709170,// 设备桩号
 					deviceName:"风向", // 设备名称
@@ -428,10 +428,10 @@ position: fiexd;
 				}
 				window.frames[0].postMessage(msg14); // 添加设备
 			break;
-
+			
 			case "clickDevice": // 点击选择某设备
 				console.log("click device:" + revMsg.msgData);
-
+								
 				// 测试接口 点击M情报板触发事件
 				if(revMsg.msgData.id == "1703006a-9b93-4147-9e78-3"){
 					//开关自动巡游接口
@@ -440,22 +440,22 @@ position: fiexd;
 						msgData:true, // 是否开启巡游 true or false
 					}
 					//window.frames[0].postMessage(msg_auto);
-
+					
 					// 重置到默认视角
 					var msg_reset = {
 						msgType:"resetView",
 					}
 					window.frames[0].postMessage(msg_reset);
-
+					
 					// 设置窗口焦点
 					window.frames[0].postMessage({msgType:"focus"});
-
+					
 					// 选中指定设备 测试定位到F板
 					window.frames[0].postMessage({
-						msgType:"selectDevice",
+						msgType:"selectDevice", 
 						msgData:"1703006a-9b93-4147-9e78-4"
 					});
-
+						
 				}else if(revMsg.msgData.id == "1703006a-9b93-4147-9e78-92"){ // 点击门
 					let msg_change = {
 						msgType:"addDevice",
@@ -473,13 +473,13 @@ position: fiexd;
 					window.frames[0].postMessage(msg_change);
 				}
 			break;
-
+			
 			case "autoViewEvt": // 自动巡游开始或者结束事件 msgData: true or false
 				console.log("autoViewEvt:", revMsg.msgData);
 			break;
 		}
 	});
-
+	
 </script>
 </html>
 
