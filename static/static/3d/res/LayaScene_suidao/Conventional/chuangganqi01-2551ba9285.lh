@@ -109,6 +109,57 @@
 					}
 				],
 				"child":[]
+			},
+			{
+				"type":"MeshSprite3D",
+				"instanceID":113,
+				"props":{
+					"name":"name",
+					"active":true,
+					"isStatic":false,
+					"layer":0,
+					"position":[
+						0,
+						1.407,
+						0.6119999
+					],
+					"rotation":[
+						-0.7071068,
+						0,
+						0,
+						-0.7071068
+					],
+					"scale":[
+						0.14382,
+						1,
+						0.04
+					],
+					"meshPath":"Library/unity default resources-Plane.lm",
+					"enableRender":true,
+					"receiveShadows":true,
+					"castShadow":true,
+					"materials":[
+						{
+							"path":"Assets/Scenes/fbx/mat/textdis.lmat"
+						}
+					]
+				},
+				"components":[
+					{
+						"type":"PhysicsCollider",
+						"restitution":0,
+						"friction":0.5,
+						"rollingFriction":0,
+						"shapes":[
+							{
+								"type":"MeshColliderShape",
+								"mesh":"Library/unity default resources-Plane.lm"
+							}
+						],
+						"isTrigger":false
+					}
+				],
+				"child":[]
 			}
 		]
 	}
