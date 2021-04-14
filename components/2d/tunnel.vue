@@ -82,7 +82,7 @@
                 <div
                     class="line-road"
                     v-if="i !== 0"
-                    :key="i"
+                    :key="i+'w'"
                     :style="{
                     margin: `${tunnelStyle.contentHeight /
                       tunnelInfoData.laneNums}px 0`,
@@ -116,7 +116,7 @@
                   <div
                       class="line-road"
                       v-if="i !== 0"
-                      :key="i"
+                      :key="i+'m'"
                       :style="{
                       margin: `${tunnelStyle.contentHeight /
                         tunnelInfoData.laneNums}px 0`,
@@ -185,7 +185,7 @@
                 <div
                     class="line-road"
                     v-if="i !== 0"
-                    :key="i"
+                    :key="i+'r'"
                     :style="{
                     margin: `${tunnelStyle.contentHeight /
                       tunnelInfoData.laneNums}px 0`,
@@ -301,7 +301,7 @@
           <span
               class="iconTextRight"
               v-for="(item, i) in tunnelInfoData.laneNums"
-              :key="i"
+              :key="i+'s'"
               :style="backleft(i, 1)"
           >
             {{ tunnelInfoData.rightHoleDirection }}

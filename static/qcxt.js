@@ -1,4 +1,4 @@
-﻿ /// <reference path="jquery-1.7.1.min.js" />
+﻿/// <reference path="jquery-1.7.1.min.js" />
 var qcxt = {
     video: {
         checkPluginInstall: function (type) {
@@ -53,7 +53,6 @@ var qcxt = {
             if (typeof (data) == "string") {
                 data = JSON.parse(data);
             }
-            console.log(JSON.stringify(data))
             var recordType = data.recordType;//dh 大华，hk=海康威视
             var pluginVideoId = "dhVideo" + new Date().getTime();
             switch (recordType) {
@@ -81,7 +80,8 @@ var qcxt = {
                     data.recordPort =parseInt(ddhPort) ;
                     console.log(data)
                     if (qcxt.video.checkPluginInstall(recordType)) {
-                        if ($(elementId).find("[data-channel]").length == 0) {
+                        if ($(elementId).find("[data-channel]").length == 0) 
+                        {
                             if (window.ActiveXObject || "ActiveXObject" in window) {
                                 $(elementId).html('<object classid="CLSID:7F9063B6-E081-49DB-9FEC-D72422F2727F" codebase="webrec.cab"  width="' + width + '" height="' + height + '" data-type="dh" data-channel="' + data.channel + '" id="' + pluginVideoId + '"></object>');
                             } else {
@@ -100,6 +100,7 @@ var qcxt = {
 
                     } else {
                         $(elementId).html('<div class="nop"  style="background-color: #000;position:relative;text-align:color: #FFF;min-height: 50px;center;width:' + width + 'px;height:' + height + 'px;line-height:' + height + 'px;" id="' + pluginVideoId + '"><a type="application/octet-stream" style="color:#FFF;position:absolute;" href="/webplugin.exe">请安装控件包</a></div>');
+
                     }
                     break;
                     case "rtsp":
@@ -109,11 +110,38 @@ var qcxt = {
                                 e = true;
                             }
                         }
+                        var rtsp=data.rtsp||data.rtspUrl||data.rtspurl||"rtsp://"+data.username+":"+data.password+"@"+data.recordIP+":"+(data.iRtspPort||554)+"/ch1/main/av_stream";
                         if(!e){
+                            //<video id="videoElement" class="centeredVideo" controls autoplay width="1024" height="576" muted>Your browser is too old which doesn't support HTML5 video.</video>
+                            $(elementId).html('<video class="centeredVideo" controls autoplay width="' + width + '" height="' + height + '" data-type="dh" data-channel="' + data.channel + '" id="' + pluginVideoId + '" muted>不支持html5 播放器</video></div>');
+                            if (flvjs.isSupported()) {
+                                var flvPlayer = flvjs.createPlayer({
+                                    type: 'flv',
+                                    url: 'ws://'+top.location.hostname+'/rtsp/1/?url='+encodeURIComponent(rtsp),
+                                    "isLive": true,//<====加个这个 
+                                    hasAudio: false,
+                                    hasVideo: true,
+                                    //withCredentials: false,
+                                    //cors: true
+                                }, {
+                                    enableWorker: true,	// 开启多线程
+                                    enableStashBuffer: false,
+                                    lazyLoad: false,
+                                    lazyLoadMaxDuration: 0,
+                                    lazyLoadRecoverDuration: 0,
+                                    deferLoadAfterSourceOpen: false,
+                                    fixAudioTimestampGap: true,
+                                    autoCleanupSourceBuffer: true,
+                                });
+                                flvPlayer.attachMediaElement(document.getElementById(pluginVideoId));
+                                flvPlayer.load(); //加载
+                                document.getElementById(pluginVideoId).play();
+                            }
+                            return;
                             $(elementId).html('<div class="nop"  style="background-color: #000;position:relative;text-align:color: #FFF;min-height: 50px;center;width:' + width + 'px;height:' + height + 'px;line-height:' + height + 'px;" id="' + pluginVideoId + '"><a type="application/octet-stream" style="color:#FFF;position:absolute;" href="/vlc-3.0.11-win32.exe">请安装控件包</a></div>');
                             return;
                         }
-                        var rtsp=data.rtsp||data.rtspUrl||data.rtspurl||"rtsp://"+data.username+":"+data.password+"@"+data.recordIP+":"+(data.iRtspPort||554)+"/ch1/main/av_stream";
+                       
                         //rtsp://admin:abcd1234@10.99.250.151:554/h264/ch1/main/av_stream
                         $(elementId).html('<object type="application/x-vlc-plugin" id="vlc" events="True" width="'+width+'" height="'+height+'" pluginspage="http://www.videolan.org" codebase="npapi-vlc-2.0.6.tar.xz"><param name="mrl" value="'+rtsp+'" /><param name="autoplay" value="true" /><param name="ShowDisplay" value="false" /><param name="fullscreen" value="true" /> </object>');
                         break;

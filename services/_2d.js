@@ -162,7 +162,7 @@ export default class TwoDService extends Service {
     // 根据设备获取情报板信息
     getInfoBoardFromDevice(deviceId) {
         return this.get({
-            url: '/tunnel/rest/2d/getDeviceQbByDeviceId',
+            url: '/tunnel/rest/2d/getDeviceQbByDeviceIdNew',
             data: {deviceId}
         });
     }
