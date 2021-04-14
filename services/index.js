@@ -47,4 +47,9 @@ export default class IndexService extends Service {
         });
     }
 
+    getDefaultCity() {
+        return this.get({
+            url: '/tunnel/rest/home/getDefaultCity',
+        })
+    }
 }
