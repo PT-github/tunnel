@@ -23,16 +23,31 @@
         <!--                <div class="board-show"></div>-->
         <!-- 情报板内容 -->
         <div class="board-show">
-          <span
-            v-for="(item, index) in deviceInfo.textArr"
+          <!-- <span
+            v-for="(item, index) in deviceInfo.data"
             :key="index"
             :style="{
-              fontFamily: `${deviceInfo.fontName}`,
-              fontSize: `${deviceInfo.fontSize * 5}px`,
+              fontFamily: `${item.fontName}`,
+              fontSize: `${item.fontSize * 5}px`,
             }"
           >
-            {{ item }}
-          </span>
+            {{ item.text }}
+          </span> -->
+
+          <el-carousel   indicator-position="outside">
+            <el-carousel-item
+              v-for="(item, index) in deviceInfo.data"
+              :key="index"
+              class="board-show"
+              :style="{
+                fontFamily: `${item.fontName}`,
+                fontSize: `${item.fontSize * 5}px`,
+               
+              }"
+            >
+              {{ item.text }}
+            </el-carousel-item>
+          </el-carousel>
         </div>
 
         <el-table
@@ -337,22 +352,25 @@ export default {
       this.deviceInfo = {};
       this.$service._2d.getInfoBoardFromDevice(id).then((res) => {
         try {
+          console.log(res);
           const boardInfo = JSON.parse(res.content);
+          console.log(boardInfo);
           // boardInfo.text = '安全第一预防为主隧道行车打开大灯'
+          // console.log(res,boardInfo,arrText)
+          // const arr = [];
+          // const arrText = boardInfo.data.split("");
 
-          const arr = [];
-          const arrText = boardInfo.text.split("");
-          for (let i = 0; i < boardInfo.text.length; i++) {
-            if (i % 8 === 0) {
-              arr.push(arrText.splice(0, 8).join(""));
-            }
-          }
+          // for (let i = 0; i < boardInfo.data.length; i++) {
+          //   if (i % 8 === 0) {
+          //     arr.push(arrText.splice(0, 8).join(""));
+          //   }
+          // }
 
-          boardInfo.textArr = arr;
-
+          // boardInfo.textArr = arr;
+          // console.log(boardInfo)
           this.deviceInfo = boardInfo;
         } catch (e) {
-          //console.log(e);
+          console.log(e);
         }
       });
     },

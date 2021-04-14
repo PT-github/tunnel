@@ -114,7 +114,7 @@
                                 <div class="v1">{{item.deviceName}}<span class="s1">{{item.pileNumber}}</span></div>
                                 <div class="v2">{{item.deviceTypeName}}</div>
                                 <div class="v3">
-                                    <div class="remark">{{item.reamrks}}</div>
+                                    <div class="remark">{{item.reamrks}}cccdddddddddddddddffffff</div>
                                     <div class="done-icon" @click="editOperation(item.deviceId)">
                                         <i class="el-icon-edit-outline"></i>
                                     </div>
@@ -565,7 +565,7 @@
                             display: flex;
                             align-items: center;
                             margin-left: 30px;
-                            width: 402px;
+                            width: 302px;
 
                             .s1 {
                                 margin-left: 20px
@@ -575,16 +575,16 @@
                         .v2 {
                             display: flex;
                             align-items: center;
-                            width: 308px;
+                            width: 208px;
                         }
 
                         .v3 {
                             display: flex;
                             align-items: center;
-                            width: calc(100% - 402px - 308px);
+                            width: calc(100% - 402px - 108px);
 
                             .remark {
-                                width: 150px;
+                                width: 450px;
                             }
 
                             .done-icon {
