@@ -51,8 +51,8 @@ export default {
 
         try {
           let data = JSON.parse(msg.data);
-          console.log(msg)
-          console.log(data)
+          // console.log(msg)
+          // console.log(data)
 
           if (data && data.id && data.type === 'eventAccident') { // 事故的话要弹窗
             if (data.isSoundRemind) {
@@ -86,7 +86,7 @@ export default {
         this.timer = setTimeout(() => {
           this.connect();
           clearTimeout(this.timer);
-        }, 1000 * 30);
+        }, 3000);
 
       };
       this.ws = ws;

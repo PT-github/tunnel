@@ -52,7 +52,7 @@ export default {
   events: {
     'onPushEvent': 'queryAllRoadData'
   },
-  services: ['home'],
+  services: ['index', 'home'],
   name: 'Home',
   data() {
     return {
@@ -76,6 +76,7 @@ export default {
 
   async mounted() {
     this.getHomeShowSide()
+    this.getDefaultCity()
     await this.queryAllRoadData();
     this.code = this.$store.state && this.$store.state.myUserInfo && this.$store.state.myUserInfo.cityCode || '';
   },
@@ -158,6 +159,13 @@ export default {
           }
 
         }
+      })
+    },
+
+    getDefaultCity() {
+      console.log(this.$service.index.getDefaultCity)
+      this.$service.index.getDefaultCity().then(res => {
+        console.log(res)
       })
     }
 

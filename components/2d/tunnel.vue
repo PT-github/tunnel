@@ -208,7 +208,7 @@
 
           <template v-for="(item, index) in tunnelDevices">
             <!--            <el-button size="mini"> {{tunnelDevices.length}}</el-button>-->
-            <el-popover placement="top" trigger="hover" :key="index">
+            <el-popover placement="top" trigger="hover" :key="item.id + index">
               <div class="popover">
                 <p>
                   设备名称：{{ item.deviceName }}({{ item.deviceCommunicationsStateName }})
