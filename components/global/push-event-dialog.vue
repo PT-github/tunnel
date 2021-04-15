@@ -30,19 +30,48 @@ export default {
   methods: {
     disconnect() {
       console.log('---------退出登录，关闭ws连接---------');
-      this.ws.close();
+      // this.ws.close();
     },
-    triggerVoice(eventContent) { // 语音播报
+
+    triggerVoice(eventContent) {
+      // 语音播报
       this.$service.alarm.voiceAlarmTrigger(eventContent);
     },
     connect() {
       let ws = new WebSocket(`ws://${SOCKET_SERVER}/tunnel/webSocket/eventNotify/${this.myUserInfo.userId}`);
+
+      this.ws = ws;
+      window._ws = ws
+
       ws.onopen = e => {
-        console.log('---------ws已连接---------', e);
+        console.log(`---------ws connect ${new Date()} ---------`, e)
       };
+
+
+      ws.onerror = error => {
+        // if (error) {
+        console.error('---------ws出现错误---------', error);
+        // }
+      };
+
+      ws.onclose = e => {
+        console.error('---------ws断开连接---------', e);
+      };
+
+      //30秒钟后重新连接
+      this.timer = setTimeout(() => {
+        console.log(`重新连接 ${new Date()}`)
+        this.ws = null;
+        window._ws = null
+        this.connect();
+        clearTimeout(this.timer);
+      }, 1000 * 30);
+
+      console.log('连接时间', new Date())
+
+
       // 事件消息：isSoundRemind  是否语音提醒:0否,1是  eventContent 事件内容 tunnelId 隧道ID id  事件ID deviceId 设备ID
       ws.onmessage = msg => {
-        console.log('---------收到ws消息---------', msg.data);
         if (msg.data === '欢迎加入连接！') return;
         this.$em.$fire('onPushEvent');
         if (this.event) {
@@ -51,8 +80,8 @@ export default {
 
         try {
           let data = JSON.parse(msg.data);
-          // console.log(msg)
-          // console.log(data)
+          console.log(`---------收到ws消息 ${new Date()}---------`);
+          console.log(data)
 
           if (data && data.id && data.type === 'eventAccident') { // 事故的话要弹窗
             if (data.isSoundRemind) {
@@ -74,22 +103,10 @@ export default {
 
       };
 
-      ws.onerror = error => {
-        if (error) {
-          console.error('---------ws出现错误---------', error);
-        }
-      };
 
-      ws.onclose = e => {
-        console.error('---------ws断开连接---------', e);
-        //10秒钟后重新连接
-        this.timer = setTimeout(() => {
-          this.connect();
-          clearTimeout(this.timer);
-        }, 3000);
-
-      };
-      this.ws = ws;
+      // console.log(setInterval(() => {
+      // console.log('连接时间', new Date())
+      // }), 1000)
     }
   }
 };
