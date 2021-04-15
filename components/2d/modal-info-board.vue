@@ -34,7 +34,7 @@
             {{ item.text }}
           </span> -->
 
-          <el-carousel   indicator-position="outside">
+          <el-carousel class="carousel"  indicator-position="outside">
             <el-carousel-item
               v-for="(item, index) in deviceInfo.data"
               :key="index"
@@ -705,5 +705,8 @@ export default {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+.carousel{
+  width: 500px;
 }
 </style>

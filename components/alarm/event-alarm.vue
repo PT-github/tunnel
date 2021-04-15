@@ -172,7 +172,7 @@ export default {
       list: [],        //预案列表
       doneList: [],    //预案执行列表
 
-      alarmText: '',   //事件说明
+      alarmText: '执行预案',   //事件说明
       doneListParm: []
     };
   },
@@ -216,7 +216,7 @@ export default {
       this.value = '';
       this.list = [];       //预案列表
       this.doneList = [];    //预案执行列表
-      this.alarmText = '';  //事件说明
+      this.alarmText = '执行预案';  //事件说明
       this.doneListParm = [];
     },
 
@@ -250,7 +250,7 @@ export default {
           disposeFruit: this.alarmText,
           id: this.detail.id
         }).then(res => {
-          this.alarmText = ''
+          this.alarmText = '执行预案'
           this.$notifySuccess();
           this.initParam();
           this.$emit('uploadList');
@@ -271,7 +271,7 @@ export default {
           disposeFruit: this.alarmText,
           id: this.detail.id
         }).then(res => {
-          this.alarmText = ''
+          this.alarmText = '执行预案'
           this.$notifySuccess();
           this.initParam();
           this.$emit('uploadList');
@@ -299,7 +299,7 @@ export default {
           planId: this.list[this.value - 1].id,
           operateinIds: this.doneListParm.map(item => item.id)
         }).then(() => {
-          this.alarmText = ''
+          this.alarmText = '执行预案'
           this.$notifySuccess();
           this.initParam();
           this.$emit('uploadList');

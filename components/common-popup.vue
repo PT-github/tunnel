@@ -1,7 +1,7 @@
 <template>
   <el-dialog :visible.sync="showPopup"
-             append-to-body
-             :width="width"
+             append-to-body    
+             :width="width"  
              :close-on-click-modal="closeOnClickModal"
              :before-close="handleClose">
     <div slot="title">
