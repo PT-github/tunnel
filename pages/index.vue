@@ -52,7 +52,7 @@ export default {
   events: {
     'onPushEvent': 'queryAllRoadData'
   },
-  services: ['index', 'home'],
+  services: ['home'],
   name: 'Home',
   data() {
     return {
@@ -63,7 +63,7 @@ export default {
       isHideLeft: true,
       isHideRight: true,
       // homeSideStatus: '0',
-      isResize: true
+      isResize: true,
     };
   },
   components: {
@@ -76,7 +76,6 @@ export default {
 
   async mounted() {
     this.getHomeShowSide()
-    this.getDefaultCity()
     await this.queryAllRoadData();
     this.code = this.$store.state && this.$store.state.myUserInfo && this.$store.state.myUserInfo.cityCode || '';
   },
@@ -130,6 +129,7 @@ export default {
       this.code = e;
       this.currentProvince = currentProvince;
     },
+
     async queryAllRoadData() {
       this.TunnelList = await this.$service.home.getListAll({
         page: 1, pageSize: 100
@@ -162,12 +162,7 @@ export default {
       })
     },
 
-    getDefaultCity() {
-      console.log(this.$service.index.getDefaultCity)
-      this.$service.index.getDefaultCity().then(res => {
-        console.log(res)
-      })
-    }
+
 
   }
 };

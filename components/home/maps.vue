@@ -5,7 +5,7 @@
                  :placeholder="placeholderText"
                  @areaLoad="getCurrentPro"
                  class="maps-select"/>
-    <!-- <Select v-model="currentSelect" class="maps-select" @on-change="selectChage">
+    <!-- <Select v-model="currentSelect" class="maps-select" @on-change="selectChange">
         <Option v-for="(i,index) in selectOptions" :value="i.value" :key="index">{{ i.name }}</Option>
     </Select> -->
     <div class="maps-tips">
@@ -23,7 +23,7 @@
     <!-- 地图 -->
     <div class="mychart" ref="mychart" id="mychart"></div>
 
-    <div class="mask-poup" @click="isshow=false" v-if='isshow'>
+    <div class="mask-poup" @click="isShow=false" v-if='isShow'>
       <div class="modal-poup" @click.stop="">
         <tipsTitle :title="tunnelName"></tipsTitle>
         <div class="modal-poup-content">
@@ -149,7 +149,7 @@
           </div>
         </div>
         <div class="modal-poup-footer">
-          <div class="modal-cancel" @click.stop="isshow=false">取消</div>
+          <div class="modal-cancel" @click.stop="isShow=false">取消</div>
           <div class="modal-more" @click="goDetail(tunnelId)">查看详情</div>
         </div>
       </div>
@@ -184,7 +184,7 @@ const DataTrans = (data = []) => {
 
 export default {
   components: {AddressInfo, tipsTitle},
-  services: ['home'],
+  services: ['index','home'],
   props: {
     TunnelList: {
       type: Array,
@@ -205,7 +205,7 @@ export default {
   },
   data() {
     return {
-      isshow: false,
+      isShow: false,
       currentSelect: '',
       tunnelName: '',
       options: { // 图表主标题
@@ -230,8 +230,8 @@ export default {
         // tooltip: {
         //     show: true,
         //     formatter: function(e) {
-        //         console.log(isshow)
-        //         isshow = true;
+        //         console.log(isShow)
+        //         isShow = true;
         //     },
         //     triggerOn: 'click'
         // },
@@ -308,23 +308,24 @@ export default {
         ]
       },
       currentProvince: "",
-      placeholderText: "湖南",
+      placeholderText: "",
       tunnelId: '',
       countData: {},
-      myChartMaps: null
+      myChartMaps: null,
+      defaultCity: {}
     };
   },
 
   watch: {
     currentSelect: {
       handler(e) {
-        this.selectChage(e);
+        this.selectChange(e);
       },
       deep: true
     },
     cityCode: {
       handler(e) {
-        this.selectChage(e);
+        this.selectChange(e);
       }
     },
     TunnelList: {
@@ -347,37 +348,57 @@ export default {
     }
   },
   async mounted() {
-
+    this.getDefaultCity()
   },
+
   methods: {
     getCurrentPro(code) {
-      mapObj.provinceMap[code] && (this.placeholderText = mapObj.provinceMap[code]);
-      this.currentProvince = code
+      // console.log(code)
+      // mapObj.provinceMap[code] && (this.placeholderText = mapObj.provinceMap[code]);
+      // this.currentProvince = code
     },
-    selectChage(e) {
-      this.currentSelect = mapObj.provinceArr.includes(e) ? '' : e;
-      this.myChartMaps.off('mapselectchanged', this.onCityClick);
-      this.myChartMaps.off('click');
-      this.drawCity(e);
+
+    getDefaultCity() {
+      this.$service.index.getDefaultCity().then(res => {
+        this.defaultCity = res
+        this.currentSelect = res.cityCode
+        this.currentProvince = res.currentProvinceId
+        this.placeholderText = res.currentProvinceName
+      })
+    },
+
+    selectChange(e) {
+      // console.log('e', e)
+      // console.log(mapObj.provinceArr.includes(e))
+      // this.currentSelect = mapObj.provinceArr.includes(e) ? '' : e;
+
+      // console.log(this.currentSelect)
+      if (this.myChartMaps) {
+        this.myChartMaps.off('mapselectchanged', this.onCityClick);
+        this.myChartMaps.off('click');
+        this.drawCity(this.currentSelect);
+      }
+
     },
     goDetail(id) {
       this.$router.push({
         path: '/tunnel/detail?tunnelId=' + id
       });
     },
+
     chartInit() {
       this.myChartMaps = echarts.init(this.$refs.mychart);
 
       window.addEventListener('resize', () => {
         this.myChartMaps.resize();
       })
-
-      this.selectChage();
     },
+
     onCityClick(e) {
       let name = e.batch[0].name;
       this.drawCity(mapObj.cityMaps[name]);
     },
+
     //  画图加载
     drawCity(cityCode = '') {
       let isProvince = mapObj.provinceArr.includes(cityCode);
@@ -432,7 +453,7 @@ export default {
       this.tunnelName = row.value;
       this.tunnelId = row.name;
       this.countData = await this.$service.home.getTunnelEventStat(row.name) || {};
-      this.isshow = true;
+      this.isShow = true;
       // console.log(this.countData);
     }
   }

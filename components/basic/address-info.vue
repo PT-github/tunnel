@@ -6,6 +6,7 @@
       :label="item.name"
       :value="item.value">
     </el-option>
+<!--    <el-option :value="choseValue" :label="'value:' + choseValue"></el-option>-->
   </el-select>
 </template>
 
@@ -55,7 +56,7 @@ export default {
     initData(){
         this.$service.basic.getAddress().then((res=[])=>{
           this.options = res;
-          this.$emit("areaLoad",res[0]&&res[0]['parentId'])
+          // this.$emit("areaLoad",res[0]&&res[0]['parentId'])
         })
     }
   }
