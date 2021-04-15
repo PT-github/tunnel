@@ -1,8 +1,8 @@
 {
   "fileconfig.json": "fileconfig-33b79bb431.json",
-  "index.js": "index-17ab1d73e1.js",
-  "js/bundle.js": "js/bundle-7b960fa445.js",
-  "js/bundle.js.map": "js/bundle-463fa94320.js.map",
+  "index.js": "index-ddc8e9d817.js",
+  "js/bundle.js": "js/bundle-8c107aa9d8.js",
+  "js/bundle.js.map": "js/bundle-419d289aa9.js.map",
   "libs/min/laya.core.min.js": "libs/min/laya-773c42d8ab.core.min.js",
   "libs/min/laya.d3.min.js": "libs/min/laya-c1a4697269.d3.min.js",
   "libs/min/laya.physics3D.min.js": "libs/min/laya-e74f05c8b3.physics3D.min.js",

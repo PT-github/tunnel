@@ -434,6 +434,7 @@ position: fiexd;
 								
 				// 测试接口 点击M情报板触发事件
 				if(revMsg.msgData.id == "1703006a-9b93-4147-9e78-3"){
+					/*
 					//开关自动巡游接口
 					var msg_auto = {
 						msgType:"setAutoView",
@@ -455,6 +456,25 @@ position: fiexd;
 						msgType:"selectDevice", 
 						msgData:"1703006a-9b93-4147-9e78-4"
 					});
+					*/
+
+					var msg3 = {
+					msgType:"addDevice",
+					msgData:{
+						id:"1703006a-9b93-4147-9e78-3", // 设备id
+						deviceTypeCode:"intelligenceboard", // 设备类型  情报板
+						deviceConfig:"{\"deviceSubtypeCode\":\"M\"\n}",  // 设备子类型  情报板M
+						orientationLocation:0, //位置类型 情报板M位置固定居中 此参数无效
+						leftRightFlag:1,// 左右洞标识（1右洞，2左洞）
+						pileNumber:709130,// 设备桩号
+						deviceName:"情报板M", // 设备名称
+						workMode:0, // 设备状态
+						deviceCommunicationsStateName:"正常",// 设备状态描述
+						contentText:"情报板实时修改！", // 显示文本
+					}
+				}
+				window.frames[0].postMessage(msg3); // 添加设备
+
 						
 				}else if(revMsg.msgData.id == "1703006a-9b93-4147-9e78-92"){ // 点击门
 					let msg_change = {

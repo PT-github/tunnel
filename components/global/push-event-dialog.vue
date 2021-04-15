@@ -60,14 +60,14 @@ export default {
 
       //30秒钟后重新连接
       this.timer = setTimeout(() => {
-        console.log(`重新连接 ${new Date()}`)
+        // console.log(`重新连接 ${new Date()}`)
         this.ws = null;
         window._ws = null
         this.connect();
         clearTimeout(this.timer);
       }, 1000 * 30);
 
-      console.log('连接时间', new Date())
+      // console.log('连接时间', new Date())
 
 
       // 事件消息：isSoundRemind  是否语音提醒:0否,1是  eventContent 事件内容 tunnelId 隧道ID id  事件ID deviceId 设备ID
