@@ -279,14 +279,14 @@
               v-for="(item, i) in tunnelInfoData.laneNums"
               :style="backleft(i, 2)"
           >
-            <span
-                style="margin-left: -0.15rem"
-                class="el-icon-back iconLeft"
-                v-for="(item, i) in tunnelInfoData.laneNums"
-                :key="i + 'b'"
-            ></span>
-            {{ tunnelInfoData.leftHoleDirection }}</span
-          >
+            {{ tunnelInfoData.leftHoleDirection }}
+             <span
+                 style="margin-left: 0.1rem"
+                 class="el-icon-back iconLeft"
+                 v-for="(item, i) in tunnelInfoData.laneNums"
+                 :key="i + 'b'">
+            </span>
+          </span>
         </div>
 
         <div
@@ -304,13 +304,14 @@
               :key="i+'s'"
               :style="backleft(i, 1)"
           >
+            <span class="el-icon-right iconLeft"
+                  style="margin-left: -0.25rem"
+                  v-for="(item, i) in tunnelInfoData.laneNums"
+                  :key="i + 'd'">
+            </span>
             {{ tunnelInfoData.rightHoleDirection }}
-            <i
-                class="el-icon-right iconLeft"
-                v-for="(item, i) in tunnelInfoData.laneNums"
-                :key="i + 'd'"
-            ></i
-            ></span>
+
+          </span>
         </div>
       </div>
 
@@ -1238,13 +1239,14 @@ export default {
   font-size: 0.1rem;
   line-height: 0.23rem;
   vert-align: middle;
-  margin-left: 0.2rem;
+  margin-left: 0.4rem;
 }
 
 .iconLeft {
   position: absolute;
   color: #9babc5;
   transform: translate(0%, -8%) scale(1);
+  //margin: 0 .2rem;
 }
 
 .el-icon-right:before,
@@ -1252,6 +1254,10 @@ export default {
   line-height: 0rem;
   font-size: 0.14rem;
 }
+
+//.el-icon-right:before {
+//  margin-left: -0.2rem;
+//}
 
 i {
   display: inline-block;
