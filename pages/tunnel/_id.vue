@@ -284,7 +284,7 @@ export default {
           // if (!support) console.warn('不支持显示设备', v)
           return support // positionFlag为空不显示
         })
-
+        // console.log(res, 'res tunnelDevices')
       })
 
       // 隧道视频

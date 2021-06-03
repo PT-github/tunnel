@@ -205,7 +205,6 @@
           </template>
 
           <!--设备列表-->
-
           <template v-for="(item, index) in tunnelDevices">
             <!--            <el-button size="mini"> {{tunnelDevices.length}}</el-button>-->
             <el-popover placement="top" trigger="hover" :key="item.id + index">
@@ -404,6 +403,7 @@ export default {
     tunnelDevices: {
       immediate: true,
       handler(val, oldVal) {
+        // console.log(this.tunnelDevices, 'tunnelDevices')
         this.findTunnelBaseInfo()
         this.outerWidths()
       },
@@ -473,7 +473,7 @@ export default {
       //左边间隔 隧道开始桩号 减去 设备开始桩号
       let leftMar =
           startStakeMark - this.minStartMapStakeMark > 0
-              ? minStartStakeMark - this.minStartMapStakeMark
+              ? startStakeMark - this.minStartMapStakeMark
               : 0
       let rightMar =
           startStakeMarkRight - this.minStartMapStakeMark > 0
