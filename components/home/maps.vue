@@ -1,6 +1,6 @@
 <template>
   <div class="maps-content" ref="MapsContent">
-
+    {{placeholderText}}
     <AddressInfo v-model="currentSelect"
                  :placeholder="placeholderText"
                  @areaLoad="getCurrentPro"
@@ -163,6 +163,9 @@ import 'echarts/map/js/province/hunan.js';
 import tipsTitle from '~/components/index/tips-title';
 import AddressInfo from '@/components/basic/address-info';
 import mapObj from '@/assets/cityMaps/config.js'
+
+import level from 'province-city-china/dist/level.json'
+
 
 const DataTrans = (data = []) => {
   let _temp = [];
@@ -360,6 +363,15 @@ export default {
 
     getDefaultCity() {
       this.$service.index.getDefaultCity().then(res => {
+        // 测试用
+        // res = {
+        //   cityCode: "420100",
+        //   cityName: "武汉",
+        //   currentProvinceId: "420000",
+        //   currentProvinceName: "湖北省",
+        // }
+        // console.log(res)
+
         this.defaultCity = res
         this.currentSelect = res.cityCode
         this.currentProvince = res.currentProvinceId
@@ -380,6 +392,7 @@ export default {
       }
 
     },
+
     goDetail(id) {
       this.$router.push({
         path: '/tunnel/detail?tunnelId=' + id
@@ -395,20 +408,26 @@ export default {
     },
 
     onCityClick(e) {
+      console.log('onCityClick', e)
       let name = e.batch[0].name;
       this.drawCity(mapObj.cityMaps[name]);
     },
 
     //  画图加载
-    drawCity(cityCode = '') {
-      let isProvince = mapObj.provinceArr.includes(cityCode);
+    drawCity(cityCode = this.currentProvince) {
+      // console.log(cityCode)
+      // console.log(level);
+      // return
+      // let isProvince = mapObj.provinceArr.includes(cityCode);
+      let isProvince = [...level].map(item => item.code).includes(cityCode);
       this.$emit('mapChange', cityCode, this.currentProvince);
+
       // 清除下地图
       // this.myChartMaps.clear()
-      this.options.series[0].markPoint.data = DataTrans(this.cleanPonit(cityCode));
+      this.options.series[0].markPoint.data = DataTrans(this.cleanPoint(cityCode));
       this.myChartMaps.showLoading();
 
-      let res = require(`@/assets/cityMaps/${cityCode || this.currentProvince}.json`);
+      let res = require(`@/assets/cityMaps/${cityCode}.json`);
       this.currentSelect = isProvince ? '' : cityCode;
       echarts.registerMap(cityCode, res);
 
@@ -417,38 +436,43 @@ export default {
       // 'scale' 或者 'move' 设置成 true 为都开启
       if (!cityCode || isProvince) {
         this.options.series[0].roam = 'scale';
+        this.myChartMaps.on('mapselectchanged', this.onCityClick);
       } else {
         this.options.series[0].roam = true;
+        this.myChartMaps.off('mapselectchanged', this.onCityClick);
       }
 
       this.myChartMaps.setOption(this.options, true);
 
       //  迁移老逻辑我也不知道为什么
-      if (isProvince || cityCode == '') {
-        this.myChartMaps.on('mapselectchanged', this.onCityClick);
-      } else {
-        this.myChartMaps.off('mapselectchanged', this.onCityClick);
-      }
+      // if (isProvince || cityCode == '') {
+      //   this.myChartMaps.on('mapselectchanged', this.onCityClick);
+      // } else {
+      //   this.myChartMaps.off('mapselectchanged', this.onCityClick);
+      // }
 
       this.myChartMaps.on('click', (row) => {
-        if (row.componentType == 'markPoint') {
+        if (row.componentType === 'markPoint') {
           this.getTunnelEventStat(row.data);
         }
       });
 
       this.myChartMaps.hideLoading();
     },
-    cleanPonit(code) {
+
+
+    cleanPoint(code) {
       let list = [];
       this.TunnelList.forEach(item => {
-        if (mapObj.provinceArr.includes(code) || code == '') {
+        if (mapObj.provinceArr.includes(code) || code === '') {
           list.push(item);
-        } else if (item.cityId == code) {
+        } else if (item.cityId === code) {
           list.push(item);
         }
       });
       return list;
     },
+
     async getTunnelEventStat(row) {
       this.tunnelName = row.value;
       this.tunnelId = row.name;

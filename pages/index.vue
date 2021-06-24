@@ -24,7 +24,7 @@
 <!--              :cityCode="code"-->
 <!--              @mapChange="mapChange"></maps-new>-->
     <maps-new :TunnelList="TunnelList"
-              :cityCode="code"
+              :city-code="code"
               :is-resize.sync="isResize"
               :class="[isResize ? 'w-100' : 'map-width']"
               @mapChange="mapChange"/>

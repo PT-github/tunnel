@@ -4,7 +4,7 @@ export const BASE_SERVER = '/api'
 // export const BASE_SERVER = 'http://58.46.116.25:65036/api'
 // export const BASE_SERVER = 'http://cxgs.tunnel.qcxt.com:65036/api'
 
-// export const BASE_SERVER = 'http://172.16.24.139/api'
+// export const BASE_SERVER = 'http://172.16.22.54:18080'
 // export const BASE_SERVER = 'http://172.16.23.138/api'
 // export const BASE_SERVER = 'http://8.134.64.1/api'
 

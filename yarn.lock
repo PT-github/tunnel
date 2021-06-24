@@ -1248,6 +1248,11 @@
   resolved "https://registry.npmjs.org/@polka/url/-/url-1.0.0-next.12.tgz#431ec342a7195622f86688bbda82e3166ce8cb28"
   integrity sha512-6RglhutqrGFMO1MNUXp95RBuYIuc8wTnMAV5MUhLmjTOy78ncwOw7RgeQ/HeymkKXRhZd0s2DNrM1rL7unk3MQ==
 
+"@province-city-china/types@7.1.3":
+  version "7.1.3"
+  resolved "https://registry.npmjs.org/@province-city-china/types/-/types-7.1.3.tgz#44f3f7cfa508da4751170fd9eadcbd267742b9f3"
+  integrity sha512-dyqk6TszEFhB306ZmAMNzLpe5G0YSFwi76XuVLyLw4m3HVjtWYUemq7Rt3DdC5IQ2UsbtdFbfnQoCvYKIZ3C1g==
+
 "@types/anymatch@*":
   version "1.3.1"
   resolved "https://registry.npmjs.org/@types/anymatch/-/anymatch-1.3.1.tgz#336badc1beecb9dacc38bea2cf32adf627a8421a"
@@ -6448,6 +6453,13 @@ protocols@^1.1.0, protocols@^1.4.0:
   version "1.4.8"
   resolved "https://registry.npmjs.org/protocols/-/protocols-1.4.8.tgz#48eea2d8f58d9644a4a32caae5d5db290a075ce8"
   integrity sha512-IgjKyaUSjsROSO8/D49Ab7hP8mJgTYcqApOqdPhLoPxAplXmkp+zRvsrSQjFn5by0rhm4VH0GAUELIPpx7B1yg==
+
+province-city-china@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.npmjs.org/province-city-china/-/province-city-china-8.0.0.tgz#6c8737be2f723dc1d0f3d96e5313811af5c2f1e8"
+  integrity sha512-2BYuEIRXAzLA/RC9GYrcvgosOT6SolcGA0Ud0rnaYXQjuovK79z9wvJCVYxnFAvfAi17Bn/apZMr4gCjWmXBjQ==
+  dependencies:
+    "@province-city-china/types" "7.1.3"
 
 prr@~1.0.1:
   version "1.0.1"
