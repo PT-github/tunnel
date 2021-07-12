@@ -85,11 +85,12 @@
              drawMaps(code){
                 this.myChartMaps = echarts.init(this.$refs.mapsDetail);
                 this.myChartMaps.showLoading();
-                let provinceMap = {
-                    320000: "jiangsu",
-                    430000: "hunan",
-                }
-                let mapNames = provinceMap[code] || 'hunan';
+                // let provinceMap = {
+                //     320000: "jiangsu",
+                //     430000: "hunan",
+                //     530000:'530000'
+                // }
+                let mapNames = code || 'hunan';
                 let res = require(`@/assets/cityMaps/${mapNames}.json`);
                 echarts.registerMap(mapNames, res);
                 let options = { // 图表主标题

@@ -36,12 +36,12 @@
 
           <el-carousel class="carousel"  indicator-position="outside">
             <el-carousel-item
-              v-for="(item, index) in deviceInfo.data"
+              v-for="(item, index) in deviceInfo"
               :key="index"
               class="board-show"
               :style="{
                 fontFamily: `${item.fontName}`,
-                fontSize: `${item.fontSize * 5}px`,
+                fontSize: `${item.fontSize * 2}px`,
                
               }"
             >
@@ -352,9 +352,9 @@ export default {
       this.deviceInfo = {};
       this.$service._2d.getInfoBoardFromDevice(id).then((res) => {
         try {
-          console.log(res);
-          const boardInfo = JSON.parse(res.content);
-          console.log(boardInfo);
+         // console.log(res);
+          const boardInfo = (res.data);
+        //  console.log(boardInfo);
           // boardInfo.text = '安全第一预防为主隧道行车打开大灯'
           // console.log(res,boardInfo,arrText)
           // const arr = [];
