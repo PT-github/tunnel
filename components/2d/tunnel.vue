@@ -211,6 +211,7 @@
               <div class="popover">
                 <p>
                   设备名称：{{ item.deviceName }}({{ item.deviceCommunicationsStateName }})
+                  {{item.leftRightFlag === 2 && item.workMode === 2}}
                 </p>
                 <p>设备桩号：{{ item.pileNumberStr }}</p>
                 <p v-if="item.workMode != null">
@@ -231,7 +232,10 @@
                   class="icon"
                   :class="{ middle: item.orientationLocation === 11 }"
                   :style="getDeviceStyle(item)"
-                  @click.stop="showDetail(item)"
+                  @click.stop="[
+                    ...showDetail(item),
+
+                  ]"
                   v-show="
                   (!wait || waitShowList[item.id]) &&
                     (showActiveType === 'all' ||
@@ -922,11 +926,26 @@ export default {
           device.classifyNumber === 'signallamp' ? '1' : 2 / laneNums
 
       // const defaultTransform = `translate(-50%, -50%) scale(${2 / laneNums}) ${device.classifyNumber === 'laneIndicator' && device.leftRightFlag === 2 ? 'rotate(180deg)' : ''}`
-      const defaultTransform = `translate(-50%, -50%) scale(${signallampScale}) ${
-          device.classifyNumber === 'laneIndicator' && device.leftRightFlag === 2
-              ? 'rotate(180deg)'
-              : ''
-      }`
+      // let defaultTransform = `translate(-50%, -50%) scale(${signallampScale}) ${
+      //     device.classifyNumber === 'laneIndicator' && device.leftRightFlag === 2
+      //         ? 'rotate(180deg)'
+      //         : ''
+      // }`
+
+      let defaultTransform = `translate(-50%, -50%) scale(${signallampScale})`
+
+      if (device.classifyNumber === 'laneIndicator' && device.leftRightFlag === 2) {
+        defaultTransform = `translate(-50%, -50%) scale(${signallampScale}) rotate(180deg)`
+      }
+
+      if (device.leftRightFlag === 1 && device.workMode === 2) {
+        defaultTransform = `translate(-50%, -50%) scale(${signallampScale}) rotate(180deg)`
+      }
+
+      if (device.leftRightFlag === 2 && device.workMode === 2) {
+        defaultTransform = `translate(-50%, -50%) scale(${signallampScale})`
+      }
+
       //计算设备位置+5
       let defaultLeft = 0
       //分段模式显示时候 按outerWidth(地图显示区域)等于长度1000米的比例计算得到 PX
