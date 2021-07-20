@@ -19,6 +19,7 @@
           :key="index"
         >
           <span>{{ item.templetName }}</span>
+          <img src="../../static/static/image/guangbo1.png" class="guangbo" width="44px" height="44px" @click="openAuodo(item)" title="试听" alt="广播">
           <div>
             <span
               :class="['checkbox', item.ischose ? 'chosebg2' : 'chosebg1']"
@@ -83,6 +84,7 @@
         </div>
       </div>
     </div>
+      <audio :src="src" autoplay="false"></audio>
   </div>
 </template>
 <script>
@@ -101,6 +103,7 @@ export default {
       listSource: [], //文件列表
       files: null,
       checkbox: false,
+      src:"",
       loop: [{ ischose: false }],
       chosebg1: "chosebg1",
       chosebg2: "chosebg1",
@@ -122,6 +125,12 @@ export default {
           this.$notifySuccess("上传成功！");
           this.getListSourceMaterial();
         });
+    },
+    openAuodo(item){
+      //console.log(item)//
+      this.src="http://175.11.228.100:65036/upload"+item.templetText
+       console.log(top.location.origin +"/upload"+ item.templetText)
+
     },
     //播放
     confirm() {
@@ -374,7 +383,10 @@ i {
   align-items: center;
   width: 80px;
 }
-
+.guangbo{
+  cursor:pointer;
+  margin-right: 10px;
+}
 .checkbox {
   display: inline-block;
   border-radius: 5px;
