@@ -1,4 +1,6 @@
 ﻿/// <reference path="jquery-1.7.1.min.js" />
+var rtspws=false;
+$.getScript("/rtsp/js");
 var qcxt = {
     video: {
         checkPluginInstall: function (type) {
@@ -50,6 +52,7 @@ var qcxt = {
          * @param {any} data  deviceConfig 字段的值
          */
         show: function (elementId, width, height, data) {
+           
             if (typeof (data) == "string") {
                 data = JSON.parse(data);
             }
@@ -110,14 +113,17 @@ var qcxt = {
                                 e = true;
                             }
                         }
+                        
                         var rtsp=data.rtsp||data.rtspUrl||data.rtspurl||"rtsp://"+data.username+":"+data.password+"@"+data.recordIP+":"+(data.iRtspPort||554)+"/ch1/main/av_stream";
-                        if(!e){
+                         if(!e)
+                         {
+                             if(rtspws){
                             //<video id="videoElement" class="centeredVideo" controls autoplay width="1024" height="576" muted>Your browser is too old which doesn't support HTML5 video.</video>
                             $(elementId).html('<video class="centeredVideo" controls autoplay width="' + width + '" height="' + height + '" data-type="dh" data-channel="' + data.channel + '" id="' + pluginVideoId + '" muted>不支持html5 播放器</video></div>');
                             if (flvjs.isSupported()) {
                                 var flvPlayer = flvjs.createPlayer({
                                     type: 'flv',
-                                    url: 'ws://'+top.location.hostname+'/rtsp/1/?url='+encodeURIComponent(rtsp),
+                                    url: 'ws://'+top.location.host+'/rtsp/1/?url='+encodeURIComponent(rtsp),
                                     "isLive": true,//<====加个这个 
                                     hasAudio: false,
                                     hasVideo: true,
@@ -136,13 +142,12 @@ var qcxt = {
                                 flvPlayer.attachMediaElement(document.getElementById(pluginVideoId));
                                 flvPlayer.load(); //加载
                                 document.getElementById(pluginVideoId).play();
+				                return;
                             }
-                            return;
-                            $(elementId).html('<div class="nop"  style="background-color: #000;position:relative;text-align:color: #FFF;min-height: 50px;center;width:' + width + 'px;height:' + height + 'px;line-height:' + height + 'px;" id="' + pluginVideoId + '"><a type="application/octet-stream" style="color:#FFF;position:absolute;" href="/vlc-3.0.11-win32.exe">请安装控件包</a></div>');
-                            return;
                         }
-                       
-                        //rtsp://admin:abcd1234@10.99.250.151:554/h264/ch1/main/av_stream
+                        $(elementId).html('<div class="nop"  style="background-color: #000;position:relative;text-align:color: #FFF;min-height: 50px;center;width:' + width + 'px;height:' + height + 'px;line-height:' + height + 'px;" id="' + pluginVideoId + '"><a type="application/octet-stream" style="color:#FFF;position:absolute;" href="/vlc-3.0.11-win32.exe">请安装控件包</a></div>');
+                        return;
+                    }
                         $(elementId).html('<object type="application/x-vlc-plugin" id="vlc" events="True" width="'+width+'" height="'+height+'" pluginspage="http://www.videolan.org" codebase="npapi-vlc-2.0.6.tar.xz"><param name="mrl" value="'+rtsp+'" /><param name="autoplay" value="true" /><param name="ShowDisplay" value="false" /><param name="fullscreen" value="true" /> </object>');
                         break;
                 case "hk"://海康
