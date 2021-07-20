@@ -204,8 +204,8 @@ var qcxt = {
          * @param {any} data  deviceConfig 字段的值
          */
         show: function (elementId, width, height, data) {
-
             $.getScript("/rtsp/js");
+            qcxt.video.load();
             if (typeof (data) == "string") {
                 data = JSON.parse(data);
             }
