@@ -211,7 +211,7 @@
               <div class="popover">
                 <p>
                   设备名称：{{ item.deviceName }}({{ item.deviceCommunicationsStateName }})
-                  {{item.leftRightFlag === 2 && item.workMode === 2}}
+<!--                  {{item.leftRightFlag === 2 && item.workMode === 2}}-->
                 </p>
                 <p>设备桩号：{{ item.pileNumberStr }}</p>
                 <p v-if="item.workMode != null">
