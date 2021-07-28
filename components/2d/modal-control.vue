@@ -1,120 +1,226 @@
 <template>
   <div>
-    <popup :showPopup="show"
-           @handleClose="onClosePop"
-           @btnCancel="onClosePop"
-           @btnConfirm="submit"
-           :width="classifyNumber==='intelligenceboard'? $getPx(1088): '50%'"
-           class="modal"
-           :show-button="hasOperation && classifyNumber!=='broadcast' && classifyNumber!=='intelligenceboard'"
-           :confirm-button-text="classifyNumber==='conflagration'?'复位':'确定操作'"
-           :title="title">
+    <popup
+      :showPopup="show"
+      @handleClose="onClosePop"
+      @btnCancel="onClosePop"
+      @btnConfirm="submit"
+      :width="classifyNumber === 'intelligenceboard' ? $getPx(1088) : '50%'"
+      class="modal"
+      :show-button="
+        hasOperation &&
+        classifyNumber !== 'broadcast' &&
+        classifyNumber !== 'intelligenceboard'
+      "
+      :confirm-button-text="
+        classifyNumber === 'conflagration' ? '复位' : '确定操作'
+      "
+      :title="title"
+    >
       <!--情报板-->
-      <template v-if="classifyNumber==='intelligenceboard'">
-        <modal-info-board :tunnelId="tunnelId" @close="show=false"></modal-info-board>
+      <template v-if="classifyNumber === 'intelligenceboard'">
+        <modal-info-board
+          :tunnelId="tunnelId"
+          @close="show = false"
+        ></modal-info-board>
       </template>
 
       <!--广播-->
-      <template v-else-if="classifyNumber==='broadcast'">
+      <template v-else-if="classifyNumber === 'broadcast'">
         <modal-broadcast :tunnelId="tunnelId"></modal-broadcast>
       </template>
 
       <!--其他设备-->
       <div class="modal-content" v-else>
         <div class="head">
-          <el-input v-model="keyword" class="search" placeholder="请输入搜索的设备名"></el-input>
+          <el-input
+            v-model="keyword"
+            class="search"
+            placeholder="请输入搜索的设备名"
+          ></el-input>
 
-          <div class="head-right" v-if="hasOperation && classifyNumber!=='environment'">
+          <div
+            class="head-right"
+            v-if="hasOperation && classifyNumber !== 'environment'"
+          >
             <div>
-              <div class="head-right" v-if="hasOperation && classifyNumber==='draughtfan' && keyword.length==0">
+              <div
+                class="head-right"
+                v-if="
+                  hasOperation &&
+                  classifyNumber === 'draughtfan' &&
+                  keyword.length == 0
+                "
+              >
                 <span>左洞</span>
-                <el-checkbox v-model="isCheckAllLeft" class="checkboxFilter" @change="changeCheck"></el-checkbox>
+                <el-checkbox
+                  v-model="isCheckAllLeft"
+                  class="checkboxFilter"
+                  @change="changeCheck"
+                ></el-checkbox>
                 <span>右洞</span>
-                <el-checkbox v-model="isCheckAllRight" class="checkboxFilter" @change="changeCheck"></el-checkbox>
+                <el-checkbox
+                  v-model="isCheckAllRight"
+                  class="checkboxFilter"
+                  @change="changeCheck"
+                ></el-checkbox>
               </div>
-              <div class="head-right"
-                   v-if="hasOperation && classifyNumber==='laneIndicator' && keyword.length==0 && laneNums===3">
+              <div
+                class="head-right"
+                v-if="
+                  hasOperation &&
+                  classifyNumber === 'laneIndicator' &&
+                  keyword.length == 0 &&
+                  laneNums === 3
+                "
+              >
                 <span>左快</span>
-                <el-checkbox v-model="isCheckAllLeft1" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <el-checkbox
+                  v-model="isCheckAllLeft1"
+                  class="checkboxFilter"
+                  @change="changeCheck2"
+                ></el-checkbox>
                 <span>左行</span>
-                <el-checkbox v-model="isCheckAllLeft2" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <el-checkbox
+                  v-model="isCheckAllLeft2"
+                  class="checkboxFilter"
+                  @change="changeCheck2"
+                ></el-checkbox>
                 <span>左慢</span>
-                <el-checkbox v-model="isCheckAllLeft3" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <el-checkbox
+                  v-model="isCheckAllLeft3"
+                  class="checkboxFilter"
+                  @change="changeCheck2"
+                ></el-checkbox>
                 <span>右快</span>
-                <el-checkbox v-model="isCheckAllRight1" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <el-checkbox
+                  v-model="isCheckAllRight1"
+                  class="checkboxFilter"
+                  @change="changeCheck2"
+                ></el-checkbox>
                 <span>右行</span>
-                <el-checkbox v-model="isCheckAllRight2" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <el-checkbox
+                  v-model="isCheckAllRight2"
+                  class="checkboxFilter"
+                  @change="changeCheck2"
+                ></el-checkbox>
                 <span>右慢</span>
-                <el-checkbox v-model="isCheckAllRight3" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <el-checkbox
+                  v-model="isCheckAllRight3"
+                  class="checkboxFilter"
+                  @change="changeCheck2"
+                ></el-checkbox>
               </div>
-              <div class="head-right"
-                   v-if="hasOperation && classifyNumber==='laneIndicator' && keyword.length==0 && laneNums===2">
+              <div
+                class="head-right"
+                v-if="
+                  hasOperation &&
+                  classifyNumber === 'laneIndicator' &&
+                  keyword.length == 0 &&
+                  laneNums === 2
+                "
+              >
                 <span>左超</span>
-                <el-checkbox v-model="isCheckAllLeft1" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <el-checkbox
+                  v-model="isCheckAllLeft1"
+                  class="checkboxFilter"
+                  @change="changeCheck2"
+                ></el-checkbox>
                 <span>左行</span>
-                <el-checkbox v-model="isCheckAllLeft2" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <el-checkbox
+                  v-model="isCheckAllLeft2"
+                  class="checkboxFilter"
+                  @change="changeCheck2"
+                ></el-checkbox>
                 <span>右超</span>
-                <el-checkbox v-model="isCheckAllRight1" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <el-checkbox
+                  v-model="isCheckAllRight1"
+                  class="checkboxFilter"
+                  @change="changeCheck2"
+                ></el-checkbox>
                 <span>右行</span>
-                <el-checkbox v-model="isCheckAllRight2" class="checkboxFilter" @change="changeCheck2"></el-checkbox>
+                <el-checkbox
+                  v-model="isCheckAllRight2"
+                  class="checkboxFilter"
+                  @change="changeCheck2"
+                ></el-checkbox>
               </div>
             </div>
             <span>全选</span>
-            <el-checkbox :value="isCheckAll" class="checkbox" @change="changeCheckAll"></el-checkbox>
+            <el-checkbox
+              :value="isCheckAll"
+              class="checkbox"
+              @change="changeCheckAll"
+            ></el-checkbox>
           </div>
         </div>
 
         <ul class="scroll">
-          <template v-for="(item,idx) in showingList">
+          <template v-for="(item, idx) in showingList">
             <li class="device-item">
               <div class="idx">{{ idx + 1 }}</div>
 
               <div class="content">
-
                 <p class="name">
                   <span class="label">设备名称</span>
 
                   <!-- 3D设备定位 -->
-                  <img class="device-3d"
-                       v-if="isThreeModel"
-                       src="/static/image/tunnel/3d.png"
-                       alt=""
-                       @click="$emit('position', item)">
+                  <img
+                    class="device-3d"
+                    v-if="isThreeModel"
+                    src="/static/image/tunnel/3d.png"
+                    alt=""
+                    @click="$emit('position', item)"
+                  />
 
                   <span @click="showdetail(item)">{{ item.name }}</span>
                 </p>
                 <p class="name second" v-if="item.secondLabel">
-                  <span
-                      class="label">{{ item.secondLabel }}</span>
-                  <el-progress v-if="item.isProcess"
-                               style="width: 120px;display: inline-block"
-                               :percentage="item.waterProcess"
-                               status="success"/>
+                  <span class="label">{{ item.secondLabel }}</span>
+                  <el-progress
+                    v-if="item.isProcess"
+                    style="width: 120px; display: inline-block"
+                    :percentage="item.waterProcess"
+                    status="success"
+                  />
                   {{ item.secondVal }}
                 </p>
               </div>
 
               <div class="icon-wrap">
-                <img class="icon" v-if="item.statusIcon" :src="item.statusIcon">
+                <img
+                  class="icon"
+                  v-if="item.statusIcon"
+                  :src="item.statusIcon"
+                />
                 <div v-if="item.statusStr">{{ item.statusStr }}</div>
               </div>
 
-              <div v-if="item.operaBtn" class="view-btn" @click="onOperaBtnClick(item)">
+              <div
+                v-if="item.operaBtn"
+                class="view-btn"
+                @click="onOperaBtnClick(item)"
+              >
                 {{ item.operaBtn }}
               </div>
-              <el-checkbox v-if="item.checkbox"
-                           :value="checkList[idx]"
-                           class="checkbox"
-                           @change="onCheck(item,idx)"/>
+              <el-checkbox
+                v-if="item.checkbox"
+                :value="checkList[idx]"
+                class="checkbox"
+                @change="onCheck(item, idx)"
+              />
             </li>
           </template>
         </ul>
       </div>
 
-      <div class="modal-more" v-if="hasOperation && classifyNumber!=='conflagration'">
+      <div
+        class="modal-more"
+        v-if="hasOperation && classifyNumber !== 'conflagration'"
+      >
         <div class="label">设备操作选项：</div>
         <!--控制器-->
-        <template v-if="classifyNumber==='controller'">
+        <template v-if="classifyNumber === 'controller'">
           <el-radio-group v-model="workMode">
             <el-radio :label="0">智能控制</el-radio>
             <el-radio :label="1">时序模式</el-radio>
@@ -124,18 +230,18 @@
         </template>
 
         <!--照明灯-->
-        <template v-else-if="classifyNumber==='lighting'">
-          <el-radio-group v-model="workMode">
+        <template v-else-if="classifyNumber === 'lighting'">
+          <el-radio-group v-model="showingList.workMode">
             <el-radio :label="0">关闭</el-radio>
             <el-radio :label="1">打开</el-radio>
           </el-radio-group>
-          <span v-show="workMode===1" class="ctl-brightness">亮度：</span>
-          <el-slider v-model="lightNess" v-show="workMode===1"></el-slider>
+          <span v-show="showingList.workMode === 1" class="ctl-brightness">亮度：</span>
+          <el-slider v-model="lightNess" v-show="workMode === 1"></el-slider>
         </template>
 
         <!--风机-->
-        <template v-else-if="classifyNumber==='draughtfan'">
-          <el-radio-group v-model="workMode">
+        <template v-else-if="classifyNumber === 'draughtfan'">
+          <el-radio-group v-model="showingList.workMode">
             <el-radio :label="0">关闭</el-radio>
             <el-radio :label="1">正转</el-radio>
             <el-radio :label="2">反转</el-radio>
@@ -143,38 +249,49 @@
         </template>
 
         <!--信号灯-->
-        <template v-else-if="classifyNumber==='signallamp'">
-          <el-radio-group v-model="workMode" v-if="showingList.length>1">
+        <template v-else-if="classifyNumber === 'signallamp'">
+          <el-radio-group
+            v-model="showingList.workMode"
+            v-if="showingList.workModes"
+          >
+            <el-radio
+              v-for="(itme, index) in this.showingList.workModes"
+              :key="index"
+              :label="itme.value"
+              >{{ itme.text }}</el-radio
+            >
+          </el-radio-group>
+          <el-radio-group v-model="showingList.workMode" v-else>
             <el-radio :label="0">绿灯</el-radio>
             <el-radio :label="1">红灯</el-radio>
             <el-radio :label="2">黄灯</el-radio>
-          
-          </el-radio-group> 
-          <!-- {{}} -->
-          <el-radio-group v-model="this.showingList[0].workMode" v-else-if="showingList.length==1&&this.showingList[0].deviceCon.WorkModes">
-            <el-radio  v-for="(itme,index) in this.showingList[0].deviceCon.WorkModes" :key="index" :label="itme.value">{{itme.text}}</el-radio>
-          </el-radio-group> 
-             <el-radio-group v-model="workMode" v-else>
-            <el-radio :label="0">绿灯</el-radio>
-            <el-radio :label="1">红灯</el-radio>
-            <el-radio :label="2">黄灯</el-radio>
-            <el-radio :label="3">左转</el-radio>
-          </el-radio-group> 
+          </el-radio-group>
         </template>
 
         <!--车道指示器-->
-        <template v-else-if="classifyNumber==='laneIndicator'">
-          <el-radio-group v-model="workMode">
+        <template v-else-if="classifyNumber === 'laneIndicator'">
+          <el-radio-group
+            v-model="showingList.workMode"
+            v-if="showingList.workModes"
+          >
+            <el-radio
+              v-for="(itme, index) in this.showingList.workModes"
+              :key="index"
+              :label="itme.value"
+              >{{ itme.text }}</el-radio
+            >
+          </el-radio-group>
+          <el-radio-group v-model="showingList.workMode" v-else>
             <el-radio :label="1">正向通行</el-radio>
             <el-radio :label="2">反向通行</el-radio>
             <el-radio :label="0">道路封闭</el-radio>
-            <el-radio :label="3">左转通行</el-radio>
+            
           </el-radio-group>
         </template>
 
         <!--卷闸门-->
-        <template v-else-if="classifyNumber==='tunneldoor'">
-          <el-radio-group v-model="workMode">
+        <template v-else-if="classifyNumber === 'tunneldoor'">
+          <el-radio-group v-model="showingList.workMode">
             <el-radio :label="0">暂停</el-radio>
             <el-radio :label="1">上升</el-radio>
             <el-radio :label="2">下降</el-radio>
@@ -182,16 +299,16 @@
         </template>
 
         <!--机房环境，只有发动机有操作-->
-        <template v-else-if="classifyNumber==='environment'">
-          <el-radio-group v-model="workMode">
+        <template v-else-if="classifyNumber === 'environment'">
+          <el-radio-group v-model="showingList.workMode">
             <el-radio :label="0">停止</el-radio>
             <el-radio :label="1">启动</el-radio>
           </el-radio-group>
         </template>
 
         <!--水位监测-->
-        <template v-else-if="classifyNumber==='waterlevel'">
-          <el-radio-group v-model="workMode">
+        <template v-else-if="classifyNumber === 'waterlevel'">
+          <el-radio-group v-model="showingList.workMode">
             <el-radio :label="0">停止</el-radio>
             <el-radio :label="1">启动</el-radio>
           </el-radio-group>
@@ -199,30 +316,30 @@
       </div>
     </popup>
 
-    <popup-media v-model="showMediaPopup" :medias="showMedias"/>
+    <popup-media v-model="showMediaPopup" :medias="showMedias" />
   </div>
 </template>
 
 <script>
-import ModalBroadcast from './modal-broadcast';
-import ModalInfoBoard from './modal-info-board';
-import PopupMedia from './popup-media';
+import ModalBroadcast from "./modal-broadcast";
+import ModalInfoBoard from "./modal-info-board";
+import PopupMedia from "./popup-media";
 
 export default {
   components: {
     ModalBroadcast,
     ModalInfoBoard,
-    PopupMedia
+    PopupMedia,
   },
-  services: ['tunnel', '_2d'],
+  services: ["tunnel", "_2d"],
   props: {
     value: Boolean,
-    deviceObj: Object,       // 直接传设备对象过来
-    deviceName: String,         // 选中的设备对象
-    classifyNumber: String,      // 分类名
-    showAll: Boolean,        // 是否展示同类型的全部设备
-    tunnelId: String,         // 隧道id
-    isThreeModel: true       // 是否为3D视图
+    deviceObj: Object, // 直接传设备对象过来
+    deviceName: String, // 选中的设备对象
+    classifyNumber: String, // 分类名
+    showAll: Boolean, // 是否展示同类型的全部设备
+    tunnelId: String, // 隧道id
+    isThreeModel: true, // 是否为3D视图
   },
   computed: {
     isCheckAll() {
@@ -234,16 +351,55 @@ export default {
       return res;
     },
     hasOperation() {
-      return ['controller', 'lighting', 'draughtfan', 'signallamp', 'laneIndicator', 'tunneldoor', 'conflagration', 'environment', 'waterlevel'].includes(this.classifyNumber);
+      return [
+        "controller",
+        "lighting",
+        "draughtfan",
+        "signallamp",
+        "laneIndicator",
+        "tunneldoor",
+        "conflagration",
+        "environment",
+        "waterlevel",
+      ].includes(this.classifyNumber);
     },
-    showingList() { 
-      
-      var list = this.listData ? this.listData.filter(v => v.name.indexOf(this.keyword) !== -1) : [];
+    showingList() {
+      var WorkModes = [];
+      var list = this.listData
+        ? this.listData.filter((v) => {
+            if (v.name.indexOf(this.keyword) !== -1) {
+              if (v.deviceCon && v.deviceCon.WorkModes) {
+                if (WorkModes.length == 0) {
+                  WorkModes = v.deviceCon.WorkModes;
+                  console.log(WorkModes);
+                } else {
+                  if (v.deviceCon.WorkModes.length < WorkModes.length) {
+                    WorkModes = v.deviceCon.WorkModes.filter((t) =>
+                      WorkModes.filter((s) => s.value == t.value)
+                    );
+                  } else {
+                    WorkModes = WorkModes.filter((t) =>
+                      v.deviceCon.WorkModes.filter((s) => s.value == t.value)
+                    );
+                  }
+                }
+              }
+            }
+            return v.name.indexOf(this.keyword) !== -1;
+          })
+        : [];
       if (list.length == 1 && list[0].checkbox) {
         this.$set(this.checkList, 0, true);
       }
+      console.log(WorkModes);
+      if (WorkModes.length > 0) {
+        list.workModes = WorkModes;
+      }
+      list.workMode = this.workMode;
+      if (list.length == 1) {
+        list.workMode = list[0].origin.workMode;
+      }
       console.log(list);
-      
       return list;
     },
     // suduList() {
@@ -251,19 +407,21 @@ export default {
     //    console.log
     // },
     checkDevices() {
-      return Object.keys(this.checkList).filter(v => !!this.checkList[v]).map(v => this.showingList[v].origin);
-    }
+      return Object.keys(this.checkList)
+        .filter((v) => !!this.checkList[v])
+        .map((v) => this.showingList[v].origin);
+    },
   },
   watch: {
     value(v) {
       this.show = v;
       if (v) {
-        this.$service._2d.getDeviceTypeName(this.classifyNumber).then(res => {
+        this.$service._2d.getDeviceTypeName(this.classifyNumber).then((res) => {
           this.title = res;
         });
         this.getDevices();
       } else {
-        this.title = '';
+        this.title = "";
         this.listData = [];
         this.checkList = [];
         this.workMode = 0;
@@ -279,11 +437,11 @@ export default {
       }
     },
     deviceName(v) {
-      this.keyword = v || '';
+      this.keyword = v || "";
     },
     show(v) {
-      this.$emit('input', v);
-    }
+      this.$emit("input", v);
+    },
   },
   data() {
     return {
@@ -292,13 +450,13 @@ export default {
       showMedias: [],
       show: false,
       listData: [],
-      keyword: '',
-      title: '',
+      keyword: "",
+      title: "",
       checkList: [],
       workMode: 0,
       lightNess: 50,
-      leftRightFlag: '',
-      orientationLocationFilter: '',
+      leftRightFlag: "",
+      orientationLocationFilter: "",
       isCheckAllLeft: false,
       isCheckAllRight: false,
       isCheckAllLeft1: false,
@@ -306,44 +464,49 @@ export default {
       isCheckAllLeft3: false,
       isCheckAllRight1: false,
       isCheckAllRight2: false,
-      isCheckAllRight3: false
+      isCheckAllRight3: false,
     };
   },
   methods: {
     onClosePop() {
-      this.show = false
-      this.$emit('close')
+      this.show = false;
+      this.$emit("close");
     },
 
-    submit() { // 点击确定
+    submit() {
+      // 点击确定
       // 其他设备
       if (!this.checkDevices.length) {
-        return this.$message.warning('请选择设备');
+        return this.$message.warning("请选择设备");
       }
 
-      let deviceIds = this.showingList.reduce((arr, item) => {
-        const selectedDevice = this.checkDevices.filter(device => item.origin.id === device.id)
-        arr = [...arr, ...selectedDevice]
-        return arr
-      }, []).map(v => v.id).join(',');
-
+      let deviceIds = this.showingList
+        .reduce((arr, item) => {
+          const selectedDevice = this.checkDevices.filter(
+            (device) => item.origin.id === device.id
+          );
+          arr = [...arr, ...selectedDevice];
+          return arr;
+        }, [])
+        .map((v) => v.id)
+        .join(",");
 
       let p = {
         deviceIds,
         classifyNumber: this.classifyNumber,
-        workMode: this.workMode
+        workMode: this.workMode,
       };
 
-      if (this.classifyNumber === 'lighting') {
+      if (this.classifyNumber === "lighting") {
         p.lightNess = this.lightNess;
       }
       this.$service._2d.operatePlcDevice(p).then((r) => {
-        if (r && r.status && r.status === '-1') {
+        if (r && r.status && r.status === "-1") {
           this.$message(r.message);
         }
         this.$notifySuccess();
         this.getDevices();
-        this.$emit('update');
+        this.$emit("update");
         this.show = false;
       });
     },
@@ -352,20 +515,21 @@ export default {
     showdetail(item) {
       // console.log(item);
       let routeUrl = this.$router.resolve({
-        path: '/device/detail',
+        path: "/device/detail",
         query: {
-          id: item.origin.id
-        }
+          id: item.origin.id,
+        },
       });
-      window.open(routeUrl.href, '_blank');
-
+      window.open(routeUrl.href, "_blank");
     },
 
-    onCheck(device, idx) {    // 点击选中
+    onCheck(device, idx) {
+      // 点击选中
       let isChecked = !this.checkList[idx];
-      console.log('isChecked', isChecked)
+      console.log("isChecked", isChecked);
       this.$set(this.checkList, idx, isChecked);
-      if (device.chainCheckbox) {     // 联动选择
+      if (device.chainCheckbox) {
+        // 联动选择
         this.showingList.forEach((v, i) => {
           if (v[v.chainCheckboxField] === device[device.chainCheckboxField]) {
             this.$set(this.checkList, i, isChecked);
@@ -374,24 +538,25 @@ export default {
       }
     },
 
-    async onOperaBtnClick(device) {  // 操作按钮点击事件
+    async onOperaBtnClick(device) {
+      // 操作按钮点击事件
       let medias = [];
-      let {deviceConfig, imgOrVedioUrl} = device.origin;
+      let { deviceConfig, imgOrVedioUrl } = device.origin;
       switch (this.classifyNumber) {
-        case 'video':   // 视频
-          medias = [{type: 'video', deviceConfig: deviceConfig}];
+        case "video": // 视频
+          medias = [{ type: "video", deviceConfig: deviceConfig }];
           break;
-        case 'waterlevel':  // 水位监测
-          medias = [{type: 'image', src: imgOrVedioUrl}];
+        case "waterlevel": // 水位监测
+          medias = [{ type: "image", src: imgOrVedioUrl }];
           break;
-        case 'electronicfence':     // 电子围栏
+        case "electronicfence": // 电子围栏
           let res = await this.$service._2d.getTunnel2Videos(this.tunnelId);
-          medias = res.map(v => {
-            return {type: 'video', deviceConfig: v.deviceConfig};
+          medias = res.map((v) => {
+            return { type: "video", deviceConfig: v.deviceConfig };
           });
           break;
-        case 'tunneldoor':      // 卷闸门
-          medias.push({type: 'video', deviceConfig: deviceConfig});
+        case "tunneldoor": // 卷闸门
+          medias.push({ type: "video", deviceConfig: deviceConfig });
           break;
       }
       this.showMediaPopup = true;
@@ -468,20 +633,24 @@ export default {
     },
     // 获取设备列表
     getDevices() {
-      if (this.classifyNumber !== 'intelligenceboard' && this.classifyNumber !== 'broadcast') {
+      if (
+        this.classifyNumber !== "intelligenceboard" &&
+        this.classifyNumber !== "broadcast"
+      ) {
         if (this.deviceObj) {
           this.listData = this.resolveDeviceList([this.deviceObj]);
         } else {
-          this.$service._2d.getTunnelDeviceTypeList(this.tunnelId, this.classifyNumber).then(res => {
-            this.listData = this.resolveDeviceList(res);
-            //console.log(this.listData) 
-          });
+          this.$service._2d
+            .getTunnelDeviceTypeList(this.tunnelId, this.classifyNumber)
+            .then((res) => {
+              this.listData = this.resolveDeviceList(res);
+              //console.log(this.listData)
+            });
         }
-        
       }
-      if (this.classifyNumber === 'laneIndicator') {
+      if (this.classifyNumber === "laneIndicator") {
         //获取隧道信息里的车道数量，生成分组过滤/////
-        this.$service.tunnel.getById(this.tunnelId).then(res => {
+        this.$service.tunnel.getById(this.tunnelId).then((res) => {
           this.laneNums = res.laneNums;
           // console.log(this.laneNums)
         });
@@ -490,212 +659,234 @@ export default {
 
     // 处理设备列表数据
     resolveDeviceList(res) {
-      return res.map(v => {
+      return res.map((v) => {
         let isError = v.deviceCommunicationsState === 1;
-        let stateName = isError ? '异常' : '正常';
-        let errorImg = v.classifyNumber !== 'controller' && isError && `/static/image/tunnel/${v.classifyNumber}_1.png`;
+        let stateName = isError ? "异常" : "正常";
+        let errorImg =
+          v.classifyNumber !== "controller" &&
+          isError &&
+          `/static/image/tunnel/${v.classifyNumber}_1.png`;
         switch (v.classifyNumber) {
-            // 控制器
-          case 'controller':
-            const ms = v.workMode ? {
-              '1': {name: '手动模式', icon: 'u640'},
-              '2': {name: '时序模式', icon: 'u523'},
-              '3': {name: '智能模式', icon: 'u605'},
-              '4': {name: '应急模式', icon: 'u623'}
-            }[v.workMode] : null;
+          // 控制器
+          case "controller":
+            const ms = v.workMode
+              ? {
+                  1: { name: "手动模式", icon: "u640" },
+                  2: { name: "时序模式", icon: "u523" },
+                  3: { name: "智能模式", icon: "u605" },
+                  4: { name: "应急模式", icon: "u623" },
+                }[v.workMode]
+              : null;
             return {
-              origin: v,  // 保留原来的数据，用来调接口
+              origin: v, // 保留原来的数据，用来调接口
               name: v.deviceName,
-              secondLabel: '设备桩号',
+              secondLabel: "设备桩号",
               secondVal: v.pileNumberStr,
               statusStr: isError ? stateName : ms && ms.name,
               // statusIcon: isError ? errorImg : ms && require(`../../assets/images/warning/${ms[ v.workMode ].icon}.png`),
-              checkbox: true
+              checkbox: true,
             };
 
-            // 照明灯
-          case 'lighting':
+          // 照明灯
+          case "lighting":
             return {
               origin: v,
-              name: v.deviceName + ' ' + (v.otherDes || ''),
-              secondLabel: '',
-              secondVal: '',
+              name: v.deviceName + " " + (v.otherDes || ""),
+              secondLabel: "",
+              secondVal: "",
               statusStr: isError ? stateName : v.workModeName,
-              statusIcon: isError ? errorImg : v.workMode && `/static/image/tunnel/${v.classifyNumber}_0_${v.workMode}.png`,
+              statusIcon: isError
+                ? errorImg
+                : v.workMode &&
+                  `/static/image/tunnel/${v.classifyNumber}_0_${v.workMode}.png`,
               chainCheckbox: false,
               deviceName: v.deviceName,
-              chainCheckboxField: 'deviceName',
-              checkbox: true
+              chainCheckboxField: "deviceName",
+              checkbox: true,
             };
 
-            // 风机
-          case 'draughtfan':
+          // 风机
+          case "draughtfan":
             return {
               origin: v,
               deviceCode: v.deviceCode,
               name: v.deviceName,
-              secondLabel: '',
-              secondVal: '',
+              secondLabel: "",
+              secondVal: "",
               statusStr: isError ? stateName : v.workModeName,
-              statusIcon: isError ? errorImg : v.workMode && `/static/image/tunnel/${v.classifyNumber}_0_${v.workMode}.png`,
+              statusIcon: isError
+                ? errorImg
+                : v.workMode &&
+                  `/static/image/tunnel/${v.classifyNumber}_0_${v.workMode}.png`,
               checkbox: true,
               chainCheckbox: false,
-              chainCheckboxField: 'deviceCode',
+              chainCheckboxField: "deviceCode",
               leftRightFlag: v.leftRightFlag,
-              orientationLocation: v.orientationLocation
+              orientationLocation: v.orientationLocation,
             };
 
-            // 视频监控
-          case 'video':
+          // 视频监控
+          case "video":
             return {
               origin: v,
               name: v.deviceName,
-              secondLabel: '设备桩号',
+              secondLabel: "设备桩号",
               secondVal: v.pileNumberStr,
               statusStr: stateName,
               statusIcon: `/static/image/tunnel/${v.classifyNumber}_${v.deviceCommunicationsState}.png`,
               checkbox: false,
-              operaBtn: '查看'
+              operaBtn: "查看",
             };
 
-            // 信号灯
-          case 'signallamp':
-            // let obj = 
-             // console.log(v.deviceConfig)
+          // 信号灯
+          case "signallamp":
+            // let obj =
+            // console.log(v.deviceConfig)
             return {
-              deviceCon:JSON.parse(v.deviceConfig),
+              deviceCon: JSON.parse(v.deviceConfig),
               origin: v,
-              workMode:v.workMode,
+              workMode: v.workMode,
               name: v.deviceName,
-              secondLabel: '设备桩号',
+              secondLabel: "设备桩号",
               secondVal: v.pileNumberStr,
-              statusStr: isError ? stateName : (v.workModeName || ''),
-              statusIcon: isError ? errorImg : v.workMode != null && `/static/image/tunnel/${v.classifyNumber}_0_${v.workMode}.png`,
-              checkbox: true
+              statusStr: isError ? stateName : v.workModeName || "",
+              statusIcon: isError
+                ? errorImg
+                : v.workMode != null &&
+                  `/static/image/tunnel/${v.classifyNumber}_0_${v.workMode}.png`,
+              checkbox: true,
             };
-        
-            // 车道指示灯
-          case 'laneIndicator':
-            const ENUM = {'1': '正向通行', '2': '反向通行', '0': '道路封闭'};
+
+          // 车道指示灯
+          case "laneIndicator":
+            const ENUM = { 1: "正向通行", 2: "反向通行", 0: "道路封闭" };
 
             return {
               origin: v,
               name: v.deviceName,
-              secondLabel: '设备桩号',
+              secondLabel: "设备桩号",
               secondVal: v.pileNumberStr,
-              statusStr: isError ? stateName : (ENUM[v.workMode] || ''),
-              statusIcon: isError ? errorImg : v.workMode != null && `/static/image/tunnel/${v.classifyNumber}_0_${v.workMode}.png`,
+              statusStr: isError ? stateName : ENUM[v.workMode] || "",
+              statusIcon: isError
+                ? errorImg
+                : v.workMode != null &&
+                  `/static/image/tunnel/${v.classifyNumber}_0_${v.workMode}.png`,
               checkbox: true,
               leftRightFlag: v.leftRightFlag,
-              orientationLocation: v.orientationLocation
+              orientationLocation: v.orientationLocation,
             };
 
-            // 紧急电话
-          case 'urgentphone':
+          // 紧急电话
+          case "urgentphone":
             return {
               origin: v,
               name: v.deviceName,
-              secondLabel: '设备桩号',
+              secondLabel: "设备桩号",
               secondVal: v.pileNumberStr,
               statusStr: stateName,
               statusIcon: `/static/image/tunnel/${v.classifyNumber}_${v.deviceCommunicationsState}.png`,
-              checkbox: false
+              checkbox: false,
             };
 
-            // 火警消防
-          case 'conflagration':
+          // 火警消防
+          case "conflagration":
             return {
               origin: v,
               name: v.deviceName,
-              secondLabel: '设备桩号',
+              secondLabel: "设备桩号",
               secondVal: v.pileNumberStr,
               statusStr: stateName,
               statusIcon: `/static/image/tunnel/${v.classifyNumber}_${v.deviceCommunicationsState}.png`,
-              checkbox: true
+              checkbox: true,
             };
 
-            // 诱导灯
-          case 'guidelight':
+          // 诱导灯
+          case "guidelight":
             return {
               origin: v,
               name: v.deviceName,
-              secondLabel: '设备桩号',
+              secondLabel: "设备桩号",
               secondVal: v.pileNumberStr,
               statusStr: stateName,
               statusIcon: `/static/image/tunnel/${v.classifyNumber}_${v.deviceCommunicationsState}.png`,
-              checkbox: false
+              checkbox: false,
             };
 
-            // 水位
-          case 'waterlevel':
-            const otherDes = parseFloat(v.otherDes ? v.otherDes : '0')
-            const process = Number((otherDes / 500 * 100).toFixed(0))
+          // 水位
+          case "waterlevel":
+            const otherDes = parseFloat(v.otherDes ? v.otherDes : "0");
+            const process = Number(((otherDes / 500) * 100).toFixed(0));
             return {
               origin: v,
               name: v.deviceName,
-              secondLabel: '当前水位',
+              secondLabel: "当前水位",
               secondVal: v.otherDes,
               statusStr: stateName,
               statusIcon: `/static/image/tunnel/${v.classifyNumber}_${v.deviceCommunicationsState}.png`,
-              checkbox: v.deviceTypeCode === 'waterpump',
-              operaBtn: '查看',
+              checkbox: v.deviceTypeCode === "waterpump",
+              operaBtn: "查看",
               isProcess: true,
-              waterProcess: process
+              waterProcess: process,
             };
 
-            // 电子围栏
-          case 'electronicfence':
+          // 电子围栏
+          case "electronicfence":
             return {
               origin: v,
               name: v.deviceName,
-              secondLabel: '设备桩号',
+              secondLabel: "设备桩号",
               secondVal: v.pileNumberStr,
               statusStr: stateName,
               statusIcon: `/static/image/tunnel/${v.classifyNumber}_${v.deviceCommunicationsState}.png`,
               checkbox: false,
-              operaBtn: '查看'
+              operaBtn: "查看",
             };
 
-            // 机房环境
-          case 'environment':
+          // 机房环境
+          case "environment":
             return {
               origin: v,
-              name: v.deviceName + ' ' + (v.sensorValText || ''),
+              name: v.deviceName + " " + (v.sensorValText || ""),
               statusStr: stateName,
               statusIcon: `/static/image/tunnel/${v.deviceTypeCode}_${v.deviceCommunicationsState}.png`,
-              checkbox: v.deviceTypeCode === 'alternator'
+              checkbox: v.deviceTypeCode === "alternator",
             };
 
-            // 机房环境里面的柴油发动机
-          case 'alternator':
+          // 机房环境里面的柴油发动机
+          case "alternator":
             return {
               origin: v,
-              name: v.deviceName + ' ' + (v.sensorValText || ''),
+              name: v.deviceName + " " + (v.sensorValText || ""),
               statusStr: stateName,
               statusIcon: `/static/image/tunnel/${v.deviceTypeCode}_${v.deviceCommunicationsState}.png`,
-              checkbox: true
+              checkbox: true,
             };
 
-            // 横洞卷闸门
-          case 'tunneldoor':
-            const wm = v.workMode ? {
-              '0': {text: '暂停', icon: '0'},
-              '1': {text: '开启', icon: '1'},
-              '2': {text: '关闭', icon: '0'}
-            }[v.workMode] : null;
+          // 横洞卷闸门
+          case "tunneldoor":
+            const wm = v.workMode
+              ? {
+                  0: { text: "暂停", icon: "0" },
+                  1: { text: "开启", icon: "1" },
+                  2: { text: "关闭", icon: "0" },
+                }[v.workMode]
+              : null;
             return {
               origin: v,
               name: v.deviceName,
-              statusStr: isError ? stateName : (wm ? wm.text : ''),
-              statusIcon: isError ? errorImg : v.workMode && `/static/image/tunnel/${v.classifyNumber}_0_${wm.icon}.png`,
+              statusStr: isError ? stateName : wm ? wm.text : "",
+              statusIcon: isError
+                ? errorImg
+                : v.workMode &&
+                  `/static/image/tunnel/${v.classifyNumber}_0_${wm.icon}.png`,
               checkbox: true,
-              operaBtn: v.deviceCommunicationsState === 0 ? '查看' : false
+              operaBtn: v.deviceCommunicationsState === 0 ? "查看" : false,
             };
         }
         //this.workMode=v.workMode;
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -709,7 +900,7 @@ export default {
 .modal {
   .ctl-brightness {
     margin: 0 10px 0 30px;
-    color: #C1D9FF;
+    color: #c1d9ff;
   }
 
   .modal-more {
