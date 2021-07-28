@@ -144,12 +144,22 @@
 
         <!--信号灯-->
         <template v-else-if="classifyNumber==='signallamp'">
-          <el-radio-group v-model="workMode">
+          <el-radio-group v-model="workMode" v-if="showingList.length>1">
+            <el-radio :label="0">绿灯</el-radio>
+            <el-radio :label="1">红灯</el-radio>
+            <el-radio :label="2">黄灯</el-radio>
+          
+          </el-radio-group> 
+          <!-- {{}} -->
+          <el-radio-group v-model="this.showingList[0].workMode" v-else-if="showingList.length==1&&this.showingList[0].deviceCon.WorkModes">
+            <el-radio  v-for="(itme,index) in this.showingList[0].deviceCon.WorkModes" :key="index" :label="itme.value">{{itme.text}}</el-radio>
+          </el-radio-group> 
+             <el-radio-group v-model="workMode" v-else>
             <el-radio :label="0">绿灯</el-radio>
             <el-radio :label="1">红灯</el-radio>
             <el-radio :label="2">黄灯</el-radio>
             <el-radio :label="3">左转</el-radio>
-          </el-radio-group>
+          </el-radio-group> 
         </template>
 
         <!--车道指示器-->
@@ -226,13 +236,20 @@ export default {
     hasOperation() {
       return ['controller', 'lighting', 'draughtfan', 'signallamp', 'laneIndicator', 'tunneldoor', 'conflagration', 'environment', 'waterlevel'].includes(this.classifyNumber);
     },
-    showingList() {
+    showingList() { 
+      
       var list = this.listData ? this.listData.filter(v => v.name.indexOf(this.keyword) !== -1) : [];
       if (list.length == 1 && list[0].checkbox) {
         this.$set(this.checkList, 0, true);
       }
+      console.log(list);
+      
       return list;
     },
+    // suduList() {
+    //    let data = this.listData;
+    //    console.log
+    // },
     checkDevices() {
       return Object.keys(this.checkList).filter(v => !!this.checkList[v]).map(v => this.showingList[v].origin);
     }
@@ -457,8 +474,10 @@ export default {
         } else {
           this.$service._2d.getTunnelDeviceTypeList(this.tunnelId, this.classifyNumber).then(res => {
             this.listData = this.resolveDeviceList(res);
+            //console.log(this.listData) 
           });
         }
+        
       }
       if (this.classifyNumber === 'laneIndicator') {
         //获取隧道信息里的车道数量，生成分组过滤/////
@@ -541,8 +560,12 @@ export default {
 
             // 信号灯
           case 'signallamp':
+            // let obj = 
+             // console.log(v.deviceConfig)
             return {
+              deviceCon:JSON.parse(v.deviceConfig),
               origin: v,
+              workMode:v.workMode,
               name: v.deviceName,
               secondLabel: '设备桩号',
               secondVal: v.pileNumberStr,
@@ -550,7 +573,7 @@ export default {
               statusIcon: isError ? errorImg : v.workMode != null && `/static/image/tunnel/${v.classifyNumber}_0_${v.workMode}.png`,
               checkbox: true
             };
-
+        
             // 车道指示灯
           case 'laneIndicator':
             const ENUM = {'1': '正向通行', '2': '反向通行', '0': '道路封闭'};
@@ -669,6 +692,7 @@ export default {
               operaBtn: v.deviceCommunicationsState === 0 ? '查看' : false
             };
         }
+        //this.workMode=v.workMode;
       });
     }
   }
