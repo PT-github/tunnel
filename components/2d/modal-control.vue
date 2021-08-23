@@ -231,7 +231,7 @@
 
         <!--照明灯-->
         <template v-else-if="classifyNumber === 'lighting'">
-          <el-radio-group v-model="showingList.workMode">
+          <el-radio-group v-model="workMode">
             <el-radio :label="0">关闭</el-radio>
             <el-radio :label="1">打开</el-radio>
           </el-radio-group>
@@ -241,7 +241,7 @@
 
         <!--风机-->
         <template v-else-if="classifyNumber === 'draughtfan'">
-          <el-radio-group v-model="showingList.workMode">
+          <el-radio-group v-model="workMode">
             <el-radio :label="0">关闭</el-radio>
             <el-radio :label="1">正转</el-radio>
             <el-radio :label="2">反转</el-radio>
@@ -251,7 +251,7 @@
         <!--信号灯-->
         <template v-else-if="classifyNumber === 'signallamp'">
           <el-radio-group
-            v-model="showingList.workMode"
+            v-model="workMode"
             v-if="showingList.workModes"
           >
             <el-radio
@@ -261,7 +261,7 @@
               >{{ itme.text }}</el-radio
             >
           </el-radio-group>
-          <el-radio-group v-model="showingList.workMode" v-else>
+          <el-radio-group  v-model="workMode" v-else>
             <el-radio :label="0">绿灯</el-radio>
             <el-radio :label="1">红灯</el-radio>
             <el-radio :label="2">黄灯</el-radio>
@@ -271,7 +271,7 @@
         <!--车道指示器-->
         <template v-else-if="classifyNumber === 'laneIndicator'">
           <el-radio-group
-            v-model="showingList.workMode"
+            v-model="workMode"
             v-if="showingList.workModes"
           >
             <el-radio
@@ -281,17 +281,16 @@
               >{{ itme.text }}</el-radio
             >
           </el-radio-group>
-          <el-radio-group v-model="showingList.workMode" v-else>
+          <el-radio-group  v-model ="workMode" v-else>
             <el-radio :label="1">正向通行</el-radio>
             <el-radio :label="2">反向通行</el-radio>
             <el-radio :label="0">道路封闭</el-radio>
-            
           </el-radio-group>
         </template>
 
         <!--卷闸门-->
         <template v-else-if="classifyNumber === 'tunneldoor'">
-          <el-radio-group v-model="showingList.workMode">
+          <el-radio-group v-model="workMode">
             <el-radio :label="0">暂停</el-radio>
             <el-radio :label="1">上升</el-radio>
             <el-radio :label="2">下降</el-radio>
@@ -300,7 +299,7 @@
 
         <!--机房环境，只有发动机有操作-->
         <template v-else-if="classifyNumber === 'environment'">
-          <el-radio-group v-model="showingList.workMode">
+          <el-radio-group v-model="workMode">
             <el-radio :label="0">停止</el-radio>
             <el-radio :label="1">启动</el-radio>
           </el-radio-group>
@@ -308,7 +307,7 @@
 
         <!--水位监测-->
         <template v-else-if="classifyNumber === 'waterlevel'">
-          <el-radio-group v-model="showingList.workMode">
+          <el-radio-group v-model="workMode">
             <el-radio :label="0">停止</el-radio>
             <el-radio :label="1">启动</el-radio>
           </el-radio-group>
@@ -342,6 +341,7 @@ export default {
     isThreeModel: true, // 是否为3D视图
   },
   computed: {
+
     isCheckAll() {
       if (!this.showingList.length) return false;
       let res = true;
@@ -368,6 +368,7 @@ export default {
       var list = this.listData
         ? this.listData.filter((v) => {
             if (v.name.indexOf(this.keyword) !== -1) {
+             
               if (v.deviceCon && v.deviceCon.WorkModes) {
                 if (WorkModes.length == 0) {
                   WorkModes = v.deviceCon.WorkModes;
@@ -391,15 +392,23 @@ export default {
       if (list.length == 1 && list[0].checkbox) {
         this.$set(this.checkList, 0, true);
       }
+
       console.log(WorkModes);
+      
       if (WorkModes.length > 0) {
         list.workModes = WorkModes;
       }
       list.workMode = this.workMode;
-      if (list.length == 1) {
-        list.workMode = list[0].origin.workMode;
+       if (list.length == 1) {
+         if( this.workMode==-1){
+           this.workMode=list[0].origin.workMode;
+          }
+         //this.$set(this.workMode,list[0].origin.workMode);
       }
-      console.log(list);
+       if( this.workMode==-1){
+          this.workMode==0;
+       }
+      console.log(this.workMode);
       return list;
     },
     // suduList() {
@@ -414,6 +423,7 @@ export default {
   },
   watch: {
     value(v) {
+       this.workMode = -1;
       this.show = v;
       if (v) {
         this.$service._2d.getDeviceTypeName(this.classifyNumber).then((res) => {
@@ -424,7 +434,7 @@ export default {
         this.title = "";
         this.listData = [];
         this.checkList = [];
-        this.workMode = 0;
+        this.workMode = -1;
         this.lightNess = 50;
         this.isCheckAllLeft = false;
         this.isCheckAllRight = false;
@@ -468,6 +478,10 @@ export default {
     };
   },
   methods: {
+    onWorkMode(val) {
+console.log(val, 'val');
+    },
+
     onClosePop() {
       this.show = false;
       this.$emit("close");
@@ -666,6 +680,21 @@ export default {
           v.classifyNumber !== "controller" &&
           isError &&
           `/static/image/tunnel/${v.classifyNumber}_1.png`;
+
+
+      var deviceConfig=null;
+      if(v.deviceConfig){
+
+          try{
+
+ deviceConfig=JSON.parse(v.deviceConfig);
+
+          }catch(e){
+            
+          }
+         
+      }
+
         switch (v.classifyNumber) {
           // 控制器
           case "controller":
@@ -690,6 +719,7 @@ export default {
           // 照明灯
           case "lighting":
             return {
+              deviceCon:deviceConfig,
               origin: v,
               name: v.deviceName + " " + (v.otherDes || ""),
               secondLabel: "",
@@ -708,6 +738,7 @@ export default {
           // 风机
           case "draughtfan":
             return {
+              deviceCon:deviceConfig,
               origin: v,
               deviceCode: v.deviceCode,
               name: v.deviceName,
@@ -728,6 +759,7 @@ export default {
           // 视频监控
           case "video":
             return {
+              deviceCon:deviceConfig,
               origin: v,
               name: v.deviceName,
               secondLabel: "设备桩号",
@@ -743,7 +775,7 @@ export default {
             // let obj =
             // console.log(v.deviceConfig)
             return {
-              deviceCon: JSON.parse(v.deviceConfig),
+              deviceCon:deviceConfig,
               origin: v,
               workMode: v.workMode,
               name: v.deviceName,
@@ -762,6 +794,7 @@ export default {
             const ENUM = { 1: "正向通行", 2: "反向通行", 0: "道路封闭" };
 
             return {
+               deviceCon:deviceConfig,
               origin: v,
               name: v.deviceName,
               secondLabel: "设备桩号",
@@ -779,6 +812,7 @@ export default {
           // 紧急电话
           case "urgentphone":
             return {
+               deviceCon:deviceConfig,
               origin: v,
               name: v.deviceName,
               secondLabel: "设备桩号",
@@ -791,6 +825,7 @@ export default {
           // 火警消防
           case "conflagration":
             return {
+               deviceCon:deviceConfig,
               origin: v,
               name: v.deviceName,
               secondLabel: "设备桩号",
@@ -803,6 +838,7 @@ export default {
           // 诱导灯
           case "guidelight":
             return {
+               deviceCon:deviceConfig,
               origin: v,
               name: v.deviceName,
               secondLabel: "设备桩号",
@@ -817,6 +853,7 @@ export default {
             const otherDes = parseFloat(v.otherDes ? v.otherDes : "0");
             const process = Number(((otherDes / 500) * 100).toFixed(0));
             return {
+               deviceCon:deviceConfig,
               origin: v,
               name: v.deviceName,
               secondLabel: "当前水位",
@@ -832,6 +869,7 @@ export default {
           // 电子围栏
           case "electronicfence":
             return {
+               deviceCon:deviceConfig,
               origin: v,
               name: v.deviceName,
               secondLabel: "设备桩号",
@@ -855,6 +893,7 @@ export default {
           // 机房环境里面的柴油发动机
           case "alternator":
             return {
+               deviceCon:deviceConfig,
               origin: v,
               name: v.deviceName + " " + (v.sensorValText || ""),
               statusStr: stateName,
@@ -872,6 +911,7 @@ export default {
                 }[v.workMode]
               : null;
             return {
+               deviceCon:deviceConfig,
               origin: v,
               name: v.deviceName,
               statusStr: isError ? stateName : wm ? wm.text : "",
