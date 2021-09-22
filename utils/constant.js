@@ -1,8 +1,8 @@
 //export const BASE_SERVER = '/api'
-// export const BASE_SERVER = 'http://w7.qcxt.com:8080'
+export const BASE_SERVER = 'http://w7.qcxt.com:8080'
 //export const BASE_SERVER = 'http://58.46.116.25:65036/api'
 // export const BASE_SERVER = 'http://w8.qcxt.com:65036/api'
- export const BASE_SERVER = 'http://tunnel.gs.qcxt.com:8080/api'
+//  export const BASE_SERVER = 'http://tunnel.gs.qcxt.com:8080/api'
 // export const BASE_SERVER = 'http://cxgs.tunnel.qcxt.com:65036/api'
 
 // export const BASE_SERVER = 'http://172.16.22.54:18080'
@@ -13,4 +13,9 @@
 // export const SOCKET_SERVER = 'w7.qcxt.com:8060/api'
 // export const SOCKET_SERVER = '8.134.64.1/api'
 // export const SOCKET_SERVER = '172.16.23.138/api'
-export const SOCKET_SERVER = `${top.window.location.host}/api`
+// export const SOCKET_SERVER = `${top.window.location.host}/api`
+export const SOCKET_SERVER = `ws://w7.qcxt.com:8080/tunnel`
+
+
+
+export const imagePrefix = 'http://w7.qcxt.com:8090/upload/tunnelicon'

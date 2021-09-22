@@ -31,7 +31,8 @@
         },
         methods: {
             checkRoute () {
-                this.showTop = !(this.$route.name === 'login' || this.$route.name === 'forget');
+                console.log(this.$route.name, '===')
+                this.showTop = !(this.$route.name === 'login' || this.$route.name === 'forget' || this.$route.name === 'tunnel-id');
             }
         }
     };
