@@ -33,6 +33,9 @@ export default ({store}) => {
                 return Promise.resolve();
             } else {
                 if (res.status === 1) {
+                    if (options.retAll) {
+                        return res
+                    }
                     return res.data;
                 } else if (res.status === 304) {
                     Vue.prototype.$confirm('登录已过期，请重新登录', '提示', {

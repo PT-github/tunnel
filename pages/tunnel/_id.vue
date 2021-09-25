@@ -234,6 +234,89 @@
         </div>
       </div>
       
+      <!-- 时序模式 -->
+      <t-modal-control v-model="showSeriesModal">
+        <t-modal-series title="时序模式" :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['lighting']" @close="showSeriesModal = false"/>
+      </t-modal-control>
+      
+      <!-- 智能模式 -->
+      <t-modal-control v-model="showSmartModal">
+        <t-modal-smart title="智能模式" :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['lighting']" @close="showSmartModal = false"/>
+      </t-modal-control>
+      
+      <!-- 应急模式 -->
+      <t-modal-control v-model="showEmergencyModal">
+        <t-modal-emergency title="应急模式" :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['lighting']" @close="showEmergencyModal = false"/>
+      </t-modal-control>
+
+
+      <t-modal-control v-model="showModal">
+        <!--照明-->
+        <template v-if="showModalClassify==='lighting'">
+          <t-modal-lighting :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['lighting']" @close="handleClose" @update-devices="handleUpdateDevices"></t-modal-lighting>
+        </template>
+        
+        <!-- 车道指示器 -->
+        <template v-else-if="showModalClassify==='laneIndicator'">
+          <t-modal-laneIndicator :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['laneIndicator']" @close="handleClose" @update-devices="handleUpdateDevices"></t-modal-laneIndicator>
+        </template>
+        
+        <!--信号灯-->
+        <template v-else-if="showModalClassify==='signallamp'">
+          <t-modal-signallamp :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['signallamp']" @close="handleClose" @update-devices="handleUpdateDevices"></t-modal-signallamp>
+        </template>
+        
+        <!--电话-->
+        <template v-else-if="showModalClassify==='urgentphone'">
+          <t-modal-urgentphone :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['urgentphone']" @close="handleClose" @update-devices="handleUpdateDevices"></t-modal-urgentphone>
+        </template>
+        
+        <!--火灾-->
+        <template v-else-if="showModalClassify==='conflagration'">
+          <t-modal-conflagration :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['conflagration']" @close="handleClose" @update-devices="handleUpdateDevices"></t-modal-conflagration>
+        </template>
+        
+        <!--水位-->
+        <template v-else-if="showModalClassify==='waterlevel'">
+          <t-modal-waterlevel :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['waterlevel']" @close="handleClose" @update-devices="handleUpdateDevices"></t-modal-waterlevel>
+        </template>
+        
+        <!--风机-->
+        <template v-else-if="showModalClassify==='draughtfan'">
+          <t-modal-draughtfan :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['draughtfan']" @close="handleClose" @update-devices="handleUpdateDevices"></t-modal-draughtfan>
+        </template>
+        
+        <!--广播-->
+        <template v-else-if="showModalClassify==='broadcast'">
+          <t-modal-broadcast :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['broadcast']" @close="handleClose" @update-device="handleUpdateDevice" @update-devices="handleUpdateDevices"></t-modal-broadcast>
+        </template>
+        
+        <!--横洞卷闸门-->
+        <template v-else-if="showModalClassify==='tunneldoor'">
+          <t-modal-tunneldoor :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['tunneldoor']" @close="handleClose" @update-devices="handleUpdateDevices"></t-modal-tunneldoor>
+        </template>
+        
+        <!--发电机-->
+        <template v-else-if="showModalClassify==='dynamotor'">
+          <t-modal-dynamotor :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['dynamotor']" @close="handleClose" @update-devices="handleUpdateDevices"></t-modal-dynamotor>
+        </template>
+        
+        <!--环境-->
+        <template v-else-if="showModalClassify==='environment'">
+          <t-modal-environment :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['environment']" @close="handleClose" @update-devices="handleUpdateDevices"></t-modal-environment>
+        </template>
+        
+        <!--视频-->
+        <template v-else-if="showModalClassify==='video'">
+          <t-modal-video :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['video']" @close="handleClose"></t-modal-video>
+        </template>
+        
+        <!--情报板-->
+        <template v-if="showModalClassify==='intelligenceboard'">
+          <t-modal-intelligenceboard :tunnelId="tunnelInfoData.id" :tunnelInfoData="tunnelInfoData" :classifyId="classifyFormat['intelligenceboard']" @close="handleClose" @update-device="handleUpdateDevice" @update-devices="handleUpdateDevices"></t-modal-intelligenceboard>
+        </template>
+      </t-modal-control>
+
     </div>
   </div>
 </template>
@@ -248,14 +331,43 @@
 // import TunnelEvent from "@/components/2d/event";
 import * as config from "@/utils/constant";
 import TTunnel from "../../components/t-tunnel/t-tunnel";
+import tModalControl from "../../components/tunnel-new/t-modal-control/t-modal-control";
+import tModalSeries from "../../components/tunnel-new/t-modal-series/t-modal-series";
+import tModalSmart from "../../components/tunnel-new/t-modal-smart/t-modal-smart";
+import tModalEmergency from "../../components/tunnel-new/t-modal-emergency/t-modal-emergency";
+import tModalLighting from "../../components/tunnel-new/t-modal-lighting/t-modal-lighting";
+// import tModalLaneIndicator from "../../components/tunnel-new/t-modal-laneIndicator/t-modal-laneIndicator";
+// import tModalSignallamp from "../../components/tunnel-new/t-modal-signallamp/t-modal-signallamp";
+// import tModalUrgentphone from "../../components/tunnel-new/t-modal-urgentphone/t-modal-urgentphone";
+// import tModalConflagration from "../../components/tunnel-new/t-modal-conflagration/t-modal-conflagration";
+// import tModalWaterlevel from "../../components/tunnel-new/t-modal-waterlevel/t-modal-waterlevel";
+// import tModalDraughtfan from "../../components/tunnel-new/t-modal-draughtfan/t-modal-draughtfan";
+// import tModalBroadcast from "../../components/tunnel-new/t-modal-broadcast/t-modal-broadcast";
+// import tModalTunneldoor from "../../components/tunnel-new/t-modal-tunneldoor/t-modal-tunneldoor";
+// import tModalDynamotor from "../../components/tunnel-new/t-modal-dynamotor/t-modal-dynamotor";
+// import tModalEnvironment from "../../components/tunnel-new/t-modal-environment/t-modal-environment";
+// import tModalVideo from "../../components/tunnel-new/t-modal-video/t-modal-video";
+// import tModalIntelligenceboard from "../../components/tunnel-new/t-modal-intelligenceboar/t-modal-intelligenceboar";
 export default {
   components: {
     TTunnel,
-    // TunnelComponent,
-    // TipsTitle,
-    // VideoRtsp,
-    // TunnelEventInfo,
-    // ModalControl
+    tModalControl,
+    tModalSeries,
+    tModalSmart,
+    tModalEmergency,
+    tModalLighting,
+    // tModalLaneIndicator,
+    // tModalSignallamp,
+    // tModalUrgentphone,
+    // tModalConflagration,
+    // tModalWaterlevel,
+    // tModalDraughtfan,
+    // tModalBroadcast,
+    // tModalTunneldoor,
+    // tModalDynamotor,
+    // tModalEnvironment,
+    // tModalVideo,
+    // tModalIntelligenceboard,
   },
   services: ["_2d", "tunnel", "tunnel_2d"],
   events: {
@@ -401,9 +513,6 @@ export default {
   },
   onLoad() {},
   async created() {
-    // uni.showLoading({
-    //   title: "加载中"
-    // });
     await this.getTunnelList();
     await this.getTunnelInfo(this.tunnelInfoData.id);
     await Promise.all([
@@ -412,7 +521,6 @@ export default {
       this.getTunnelDevice(),
       this.initCircleData()
     ]);
-    // uni.hideLoading();
   },
   async mounted() {
     let self = this;
@@ -530,17 +638,13 @@ export default {
     },
     getAppointListAll() {
       return this.$service.tunnel_2d.getAppointListAll().then(res => {
-        this.list = res;
+        this.list = res.data;
       });
     },
     handleClose() {
       this.showModal = false;
     },
     handleSingleClose() {
-      // uni.showToast({
-      //   icon: 'none',
-      //   title: '点击了关闭按钮'
-      // })
       this.showSingleDeviceModal = false;
     },
     handleChange(idx) {
@@ -569,7 +673,7 @@ export default {
           tunnelId: this.tunnelInfoData.id
         })
         .then(res => {
-          let data = res;
+          let data = res.data;
           this.trafficVolume.leftRightFlag = data.leftRightFlag;
           this.trafficVolume.statLeftValue = data.statLeftValue;
           this.trafficVolume.statRightValue = data.statRightValue;
@@ -582,7 +686,7 @@ export default {
           tunnelId: this.tunnelInfoData.id
         })
         .then(res => {
-          let data = res;
+          let data = res.data;
           this.sensorList = data.map(v => {
             let pileNumber = v.pileNumber;
             let name =
@@ -601,7 +705,7 @@ export default {
           tunnelId: this.tunnelInfoData.id
         })
         .then(res => {
-          let data = res;
+          let data = res.data;
           this.luminometerData = data.map(v => {
             let pileNumber = v.pileNumber;
             let name =
@@ -620,7 +724,7 @@ export default {
           tunnelId: this.tunnelInfoData.id
         })
         .then(res => {
-          let data = res;
+          let data = res.data;
           this.coViData = data.map(v => {
             let pileNumber = v.pileNumber;
             let name =
@@ -639,7 +743,7 @@ export default {
           tunnelId: this.tunnelInfoData.id
         })
         .then(res => {
-          let data = res;
+          let data = res.data;
           this.energyConsum.tunnelId = data.tunnelId;
           this.energyConsum.leftRightFlag = data.leftRightFlag;
           this.energyConsum.bmLeftValue = data.bmLeftValue;
@@ -661,7 +765,7 @@ export default {
           tunnelId: this.tunnelInfoData.id
         })
         .then(res => {
-          let data = res;
+          let data = res.data;
           this.waterlevelData = data.map(v => {
             let pileNumber = v.pileNumber;
             let name =
@@ -680,7 +784,7 @@ export default {
           tunnelId: this.tunnelInfoData.id
         })
         .then(res => {
-          let data = res;
+          let data = res.data;
           this.humidityTemperatureData = data.map(v => {
             let pileNumber = v.pileNumber;
             let name =
@@ -749,8 +853,8 @@ export default {
           tunnelId: this.tunnelInfoData.id
         })
       ]).then(list => {
-        let deviceList = list[0];
-        let intelligenceboardList = list[1] || [],
+        let deviceList = list[0].data;
+        let intelligenceboardList = list[1] ? list[1].data || [] : [],
           intelligenceboardKeyMap = {};
         for (let i = 0; i < intelligenceboardList.length; i++) {
           if (
@@ -825,7 +929,7 @@ export default {
           tunnelId: this.tunnelInfoData.id
         })
         .then(res => {
-          const deviceTypeis = res.filter(
+          const deviceTypeis = res.data.filter(
             item =>
               item.classifyName !== "控制器" &&
               item.classifyName !== "诱导灯" &&
@@ -850,23 +954,13 @@ export default {
         });
     },
 
-    // showSelect () {
-    //   uni.showModal({
-    //     showTunnel = true
-    //   })
-    // },
-
     async handleSwitchTunnel(index) {
       this.currentTunnelIndex = index;
       this.showTunnel = false;
-      // uni.showLoading({
-      //   title: "加载中"
-      // });
       await this.getTunnelInfo(this.tunnelList[this.currentTunnelIndex].id);
       await this.getTunnelDeviceTypes();
       await this.getTunnelDevice();
       await this.initCircleData();
-      // uni.hideLoading();
     },
 
     async switchTunnel(v) {
@@ -882,14 +976,10 @@ export default {
           break;
       }
       this.currentTunnelIndex = index;
-      // uni.showLoading({
-      //   title: "加载中"
-      // });
       await this.getTunnelInfo(this.tunnelList[this.currentTunnelIndex].id);
       await this.getTunnelDeviceTypes();
       await this.getTunnelDevice();
       await this.initCircleData();
-      // uni.hideLoading();
     },
     // 获取隧道详情
     getTunnelInfo(id) {
@@ -898,7 +988,7 @@ export default {
           id
         })
         .then(res => {
-          this.$set(this, "tunnelInfoData", res);
+          this.$set(this, "tunnelInfoData", res.data);
         });
     },
     // 获取隧道列表 并设置默认隧道信息
@@ -909,7 +999,7 @@ export default {
           pageSize: 100
         })
         .then(res => {
-          this.tunnelList = res.records;
+          this.tunnelList = res.data.records;
           this.$set(this, "tunnelInfoData", this.tunnelList[3]);
           this.currentTunnelIndex = 3;
           // this.$set(this, 'tunnelInfoData', this.tunnelList[0])
@@ -1468,5 +1558,10 @@ export default {
       }
     }
   }
+}
+</style>
+<style lang="scss">
+.el-message, .el-notification, .el-message-box__wrapper {
+  z-index: 1100000 !important;
 }
 </style>
