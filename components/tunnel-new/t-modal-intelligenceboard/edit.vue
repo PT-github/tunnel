@@ -1,158 +1,157 @@
 <template>
-  <view class="edit">
-    <view class="add-area">
-      <view class="title">
-        <text>信息编辑区域</text>
-      </view>
-      <view class="button" style="flex: 1;margin-left: ">
-        <text :class="{active: type === 1}" @click="handleAddPlayList(1)">新增模板</text>
-        <text @click="saveDeviceQbBoardNew">保存模板</text>
-      </view>
-      <view class="button">
-        <text :class="{active: type === 2}" @click="handleAddPlayList(2)">新增节目单</text>
-        <text @click="saveBoard">保存节目单</text>
-      </view>
-    </view>
+  <div class="edit">
+    <div class="add-area">
+      <div class="title">
+        <span>信息编辑区域</span>
+      </div>
+      <div class="button" style="flex: 1;margin-left: ">
+        <span :class="{active: type === 1}" @click="handleAddPlayList(1)">新增模板</span>
+        <span @click="saveDeviceQbBoardNew">保存模板</span>
+      </div>
+      <div class="button">
+        <span :class="{active: type === 2}" @click="handleAddPlayList(2)">新增节目单</span>
+        <span @click="saveBoard">保存节目单</span>
+      </div>
+    </div>
 
-    <view class="select-options">
-      <view class="bold">
-        <text :class="{active: detail.bold}" @click="detail.bold = detail.bold === 0 ? 1 : 0">B</text>
-      </view>
-      <view class="italics">
-        <text :class="{active: detail.italics}" @click="detail.italics = detail.italics === 0 ? 1 : 0">I</text>
-      </view>
+    <div class="select-options">
+      <div class="bold">
+        <span :class="{active: detail.bold}" @click="detail.bold = detail.bold === 0 ? 1 : 0">B</span>
+      </div>
+      <div class="italics">
+        <span :class="{active: detail.italics}" @click="detail.italics = detail.italics === 0 ? 1 : 0">I</span>
+      </div>
 
-      <view class="color" :class="{active: detail.color}" :style="{borderColor: detail.color}">
-        <view>
-          <text @click="showColor = !showColor">A</text>
-        </view>
-        <view class="modal" v-show="showColor" @click="showColor = false"></view>
-        <view class="color-options" v-show="showColor">
-          <view v-for="(item,index) in colors" :key="'colors_' + index" :style="{backgroundColor: item.value}"
+      <div class="color" :class="{active: detail.color}" :style="{borderColor: detail.color}">
+        <div>
+          <span @click="showColor = !showColor">A</span>
+        </div>
+        <div class="modal" v-show="showColor" @click="showColor = false"></div>
+        <div class="color-options" v-show="showColor">
+          <div v-for="(item,index) in colors" :key="'colors_' + index" :style="{backgroundColor: item.value}"
             @click="hideColor(item)">
-          </view>
-        </view>
-      </view>
+          </div>
+        </div>
+      </div>
 
-      <view class="backcolor" :class="{active: detail.backgroundColor}"
+      <div class="backcolor" :class="{active: detail.backgroundColor}"
         :style="{backgroundColor: detail.backgroundColor}">
-        <view><text @click="showBgColor = !showBgColor">背景</text></view>
-        <view class="modal" v-show="showBgColor" @click="showBgColor = false"></view>
-        <view class="color-options" v-show="showBgColor">
-          <view v-for="(item,index) in backgroundColors" :key="'backgroundColors_' + index" @click="hideBgColor(item)"
-            :style="{backgroundColor: item.value}"></view>
-        </view>
-      </view>
+        <div><span @click="showBgColor = !showBgColor">背景</span></div>
+        <div class="modal" v-show="showBgColor" @click="showBgColor = false"></div>
+        <div class="color-options" v-show="showBgColor">
+          <div v-for="(item,index) in backgroundColors" :key="'backgroundColors_' + index" @click="hideBgColor(item)"
+            :style="{backgroundColor: item.value}"></div>
+        </div>
+      </div>
 
-      <view class="horizontal">
-        <view><text>水平</text></view>
-      </view>
-      <view class="horizontal-select">
-        <view><text><input :disabled="true" type="text" :value="horizontalFormat[detail.horizontal]"
-              @click="showHorizontal = true" @focus="showHorizontal=true" /></text></view>
-        <view class="modal" v-show="showHorizontal" @click="showHorizontal = false"></view>
-        <view class="horizontal-select-options" v-show="showHorizontal">
-          <view v-for="(item,index) in horizontal" :key="'horizontal' + index" @click="hideHorizontal(item)">
-            <text>{{ item.name }}</text>
-          </view>
-        </view>
-      </view>
+      <div class="horizontal">
+        <div><span>水平</span></div>
+      </div>
+      <div class="horizontal-select">
+        <div><span @click="showHorizontal = true"><input :disabled="true" type="text" :value="horizontalFormat[detail.horizontal]"
+               /></span></div>
+        <div class="modal" v-show="showHorizontal" @click="showHorizontal = false"></div>
+        <div class="horizontal-select-options" v-show="showHorizontal">
+          <div v-for="(item,index) in horizontal" :key="'horizontal' + index" @click="hideHorizontal(item)">
+            <span>{{ item.name }}</span>
+          </div>
+        </div>
+      </div>
 
 
-      <view class="vertical">
-        <view><text>垂直</text></view>
-      </view>
-      <view class="vertical-select">
-        <view><text><input :disabled="true" type="text" :value="verticalFormat[detail.vertical]"
-              @click="showVertical = true" @focus="showVertical=true" /></text></view>
-        <view class="modal" v-show="showVertical" @click="showVertical = false"></view>
-        <view class="horizontal-select-options" v-show="showVertical">
-          <view v-for="(item,index) in vertical" :key="'vertical' + index" @click="hideVertical(item)">{{ item.name }}
-          </view>
-        </view>
-      </view>
+      <div class="vertical">
+        <div><span>垂直</span></div>
+      </div>
+      <div class="vertical-select">
+        <div><span @click="showVertical = true"><input :disabled="true" type="text" :value="verticalFormat[detail.vertical]"
+              /></span></div>
+        <div class="modal" v-show="showVertical" @click="showVertical = false"></div>
+        <div class="horizontal-select-options" v-show="showVertical">
+          <div v-for="(item,index) in vertical" :key="'vertical' + index" @click="hideVertical(item)">{{ item.name }}
+          </div>
+        </div>
+      </div>
 
-      <view class="font-select">
-        <view><text><input :disabled="true" type="text" :value="detail.fontName" @click="showFont = true"
-              @focus="showFont=true" /></text></view>
-        <view class="modal" v-show="showFont" @click="showFont = false"></view>
-        <view class="horizontal-select-options" v-show="showFont">
-          <view v-for="(item,index) in font" :key="'font' + index" @click="hideFont(item)">{{ item.name }}</view>
-        </view>
-      </view>
+      <div class="font-select">
+        <div><span @click="showFont = true"><input :disabled="true" type="text" :value="detail.fontName"/></span></div>
+        <div class="modal" v-show="showFont" @click="showFont = false"></div>
+        <div class="horizontal-select-options" v-show="showFont">
+          <div v-for="(item,index) in font" :key="'font' + index" @click="hideFont(item)">{{ item.name }}</div>
+        </div>
+      </div>
 
-      <view class="fontsize">
-        <text>字号</text>
-      </view>
-      <view class="fontsize-select">
-        <view><text><input :disabled="true" type="text" :value="detail.fontSize" @click="showFontSize = true"
-              @focus="showFontSize=true" /></text></view>
-        <view class="modal" v-show="showFontSize" @click="showFontSize = false"></view>
-        <view class="horizontal-select-options" v-show="showFontSize">
-          <view v-for="(item,index) in fontSize" :key="'fontSize' + index" @click="hideFontSize(item)">{{ item.name }}
-          </view>
-        </view>
-      </view>
+      <div class="fontsize">
+        <span>字号</span>
+      </div>
+      <div class="fontsize-select">
+        <div><span @click="showFontSize = true"><input :disabled="true" type="text" :value="detail.fontSize" /></span></div>
+        <div class="modal" v-show="showFontSize" @click="showFontSize = false"></div>
+        <div class="horizontal-select-options" v-show="showFontSize">
+          <div v-for="(item,index) in fontSize" :key="'fontSize' + index" @click="hideFontSize(item)">{{ item.name }}
+          </div>
+        </div>
+      </div>
 
-      <view class="space">
-        <text>字间距</text>
-      </view>
-      <view class="space-input">
-        <text>
+      <div class="space">
+        <span>字间距</span>
+      </div>
+      <div class="space-input">
+        <span>
           <input type="number" v-model="detail.spacing" />
-        </text>
-      </view>
-      <view class="rowHeight">
-        <text>行高</text>
-      </view>
-      <view class="rowHeight-input">
-        <text><input type="number" v-model="detail.rowHeight" /></text>
-      </view>
-    </view>
+        </span>
+      </div>
+      <div class="rowHeight">
+        <span>行高</span>
+      </div>
+      <div class="rowHeight-input">
+        <span><input type="number" v-model="detail.rowHeight" /></span>
+      </div>
+    </div>
 
-    <view class="input-area">
+    <div class="input-area">
       <textarea placeholder-class="textarea-placeholder" v-model="detail.text" />
-    </view>
+    </div>
 
-    <view class="select-options" style="margin-top: 3.9062rpx">
+    <div class="select-options" style="margin-top: 3.9062rpx">
 
-      <view class="space">
-        <text>停留时间</text>
-      </view>
-      <view class="space-input">
-        <text>
+      <div class="space">
+        <span>停留时间</span>
+      </div>
+      <div class="space-input">
+        <span>
           <input type="number" v-model="detail.intervalShow" />
-        </text>
-      </view>
+        </span>
+      </div>
 
-      <view class="space">
-        <text>间隔时间</text>
-      </view>
-      <view class="space-input">
-        <text>
+      <div class="space">
+        <span>间隔时间</span>
+      </div>
+      <div class="space-input">
+        <span>
           <input type="number" v-model="detail.interval" />
-        </text>
-      </view>
+        </span>
+      </div>
 
-      <view class="resolutionPower">
-        <text>分辨率</text>
-      </view>
-      <view class="font-select">
-        <view><text><input :disabled="true" type="text" :value="detail.resolutionPower"
-              @click="showResolutionPower = true" @focus="showResolutionPower=true" /></text></view>
-        <view class="modal" v-show="showResolutionPower" @click="showResolutionPower = false"></view>
-        <view class="horizontal-select-options" v-show="showResolutionPower">
-          <view v-for="(item,index) in resolutionPowers" :key="'resolutionPowers' + index"
-            @click="hideResolutionPowers(item)">{{ item.name }}</view>
-        </view>
-      </view>
+      <div class="resolutionPower">
+        <span>分辨率</span>
+      </div>
+      <div class="font-select">
+        <div><span @click="showResolutionPower = true"><input :disabled="true" type="text" :value="detail.resolutionPower"
+               /></span></div>
+        <div class="modal" v-show="showResolutionPower" @click="showResolutionPower = false"></div>
+        <div class="horizontal-select-options top" v-show="showResolutionPower">
+          <div v-for="(item,index) in resolutionPowers" :key="'resolutionPowers' + index"
+            @click="hideResolutionPowers(item)">{{ item.name }}</div>
+        </div>
+      </div>
 
-    </view>
-  </view>
+    </div>
+  </div>
 </template>
 
 <script>
   export default {
+    services: ["_2d", "tunnel", "tunnel_2d"],
     name: 'Edit',
     props: {
       currentDevice: {
@@ -411,15 +410,9 @@
             "templateType": 0,
             "templetId": ""
           }
-          uni.showLoading({
-            title: '加载中'
-          })
-          this.$request.saveDeviceQbBoardNew(Object.assign({}, obj, this.detail)).then(res => {
+          this.$service.tunnel_2d.saveDeviceQbBoardNew(Object.assign({}, obj, this.detail)).then(res => {
             if (res.status === 1) {
-              uni.showToast({
-                icon: 'success',
-                title: '新增播放成功'
-              })
+              this.$notifySuccess()
               if (this.currentDevice.resolutionPower === this.detail.resolutionPower) {
                 this.$emit('update-list')
               }
@@ -467,199 +460,207 @@
 
 <style lang="scss" scoped>
   .edit {
-    .modal {
-      width: 100vw;
-      height: 100vh;
-      position: fixed;
-      z-index: 100;
-      top: 0;
-      left: 0;
-    }
+  .modal {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 1100001;
+    top: 0;
+    left: 0;
+  }
 
-    .select-options {
-      display: flex;
-      height: 11.7187rpx;
-      align-items: center;
-      line-height: 11.7187rpx;
-      margin-bottom: 3.9062rpx;
+  .select-options {
+    display: flex;
+    height: 30px;
+    align-items: center;
+    line-height: 30px;
+    margin-bottom: 10px;
 
-      >view {
-        color: #5DA0FE;
-        font-size: 5.4687rpx;
-        margin-right: 1.9531rpx;
-        position: relative;
+    >div {
+      color: #5DA0FE;
+      font-size: 14px;
+      margin-right: 5px;
+      position: relative;
 
-        text {
-          display: block;
-          padding: 0 1.9531rpx;
+      span {
+        display: block;
+        padding: 0 5px;
+        white-space: nowrap;
+        .color {}
+      }
 
-          .color {}
+      &.bold,
+      &.italics {
+        .active {
+          background: #3B46E2;
+          color: #FFFFFF;
         }
+      }
 
-        &.bold,
-        &.italics {
-          .active {
-            background: #3B46E2;
-            color: #FFFFFF;
+      &.italics {
+        font-style: italic;
+      }
+
+      &.color {
+        &.active {
+          border-style: solid;
+          border-width: 0 0 4px;
+          // line-height: 26px;
+          // box-sizing: border-box;
+        }
+      }
+
+      .color-options {
+        position: absolute;
+        top: 35px;
+        left: 0;
+        background: #120F41;
+        z-index: 1100002;
+        display: flex;
+        border-radius: 2px;
+        padding: 10px;
+        border: 1px solid #4E58ED;
+
+        >div {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+
+          &:not(:last-child) {
+            margin-right: 10px;
           }
         }
+      }
 
-        &.italics {
-          font-style: italic;
+      .horizontal-select-options {
+        position: absolute;
+        top: 35px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #120F41;
+        z-index: 1100002;
+        border-radius: 2px;
+        padding: 5px 16px;
+        border: 1px solid #4E58ED;
+        // width: 50px;
+        text-align: center;
+        &.top {
+          top: initial;
+          bottom: 32px;
         }
 
-        &.color {
-          &.active {
-            border-style: solid;
-            border-width: 0 0 1.5625rpx;
-            // line-height: 10.1562rpx;
-            // box-sizing: border-box;
-          }
-        }
-
-        .color-options {
-          position: absolute;
-          top: 13.6718rpx;
-          left: 0;
-          background: #120F41;
-          z-index: 101;
-          display: flex;
-          border-radius: 3.9062rpx;
-          padding: 3.9062rpx;
-          border: 0.3906rpx solid #4E58ED;
-
-          >view {
-            display: inline-block;
-            width: 7.8125rpx;
-            height: 7.8125rpx;
-
-            &:not(:last-child) {
-              margin-right: 3.9062rpx;
-            }
-          }
-        }
-
-        .horizontal-select-options {
-          position: absolute;
-          top: 13.6718rpx;
-          left: 50%;
-          transform: translateX(-50%);
-          background: #120F41;
-          z-index: 101;
-          border-radius: 3.9062rpx;
-          padding: 3.9062rpx;
-          border: 0.3906rpx solid #4E58ED;
-          width: 19.5312rpx;
+        >div {
+          height: 30px;
+          line-height: 30px;
+          color: #5DA0FE;
+          font-size: 14px;
+          white-space: nowrap;
+          min-width: 40px;
           text-align: center;
 
-          >view {
-            height: 11.7187rpx;
-            height: line-11.7187rpx;
-            color: #5DA0FE;
-            font-size: 5.4687rpx;
-
-            &:not(:last-child) {
-              border-bottom: 0.7812rpx dotted #4E58ED;
-            }
-          }
-        }
-
-        &.backcolor {
-          &.active {
-            color: #FFFFFF;
-          }
-        }
-
-        &.horizontal-select,
-        &.vertical-select,
-        &.font-select,
-        &.fontsize-select,
-        &.space-input,
-        &.rowHeight-input {
-          input {
-            font-size: 5.4687rpx;
-            background: #0B0A30;
-            border: 0.7812rpx solid #4E58ED;
-            width: 19.5312rpx;
-            text-align: center;
-            box-sizing: border-box;
-            border-radius: 1.5625rpx;
-            height: 11.7187rpx;
-            line-height: 10.9375rpx;
+          &:not(:last-child) {
+            border-bottom: 2px dotted #4E58ED;
           }
         }
       }
-    }
 
-    .input-area {
-      textarea {
-        width: 100%;
-        height: 48.8281rpx;
-        background: #120F41;
-        border: 0.3906rpx solid #4E58ED;
-        padding: 3.9062rpx;
-        box-sizing: border-box;
-        font-size: 5.4687rpx;
-        font-family: Microsoft YaHei;
-        color: #5DA0FE;
-      }
-    }
-
-    .add-area {
-      height: 19.5312rpx;
-      display: flex;
-      align-items: center;
-
-      .title {
-        font-size: 5.4687rpx;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        color: #5DA0FE;
-        padding-left: 7.0312rpx;
-        height: 19.5312rpx;
-        ;
-        line-height: 19.5312rpx;
-        ;
-        position: relative;
-        margin-right: 5.0781rpx;
-
-        &::before {
-          content: '';
-          width: 1.1718rpx;
-          height: 3.9062rpx;
-          position: absolute;
-          top: 8.2031rpx;
-          left: 2.7343rpx;
-          background: #4E58ED;
-        }
-      }
-
-      .button {
-        display: flex;
-
-        text {
-          height: 9.375rpx;
-          line-height: 8.5937rpx; //9.375rpx;
-          box-sizing: border-box;
-          padding: 0 1.9531rpx;
-          background: #0B0A30;
-          border: 0.3906rpx solid #4E58ED;
-          border-radius: 12px;
-          font-size: 4.6875rpx;
-          font-family: Microsoft YaHei;
-          font-weight: 400;
+      &.backcolor {
+        &.active {
           color: #5DA0FE;
+        }
+      }
 
-          &.active {
-            background: #3B46E2;
-            color: #FFFFFF;
-          }
-
-          &+text {
-            margin-left: 2.7343rpx;
-          }
+      &.horizontal-select,
+      &.vertical-select,
+      &.font-select,
+      &.fontsize-select,
+      &.space-input,
+      &.rowHeight-input {
+        input {
+          font-size: 14px;
+          background: #0B0A30;
+          border: 2px solid #4E58ED;
+          width: 50px;
+          color: #5DA0FE;
+          text-align: center;
+          box-sizing: border-box;
+          border-radius: 4px;
+          height: 30px;
+          line-height: 28px;
         }
       }
     }
   }
+
+  .input-area {
+    textarea {
+      width: 100%;
+      height: 125px;
+      background: #120F41;
+      border: 1px solid #4E58ED;
+      padding: 10px;
+      box-sizing: border-box;
+      font-size: 14px;
+      font-family: Microsoft YaHei;
+      color: #5DA0FE;
+    }
+  }
+
+  .add-area {
+    height: 50px;
+    display: flex;
+    align-items: center;
+
+    .title {
+      font-size: 14px;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      color: #5DA0FE;
+      padding-left: 18px;
+      height: 50px;
+      ;
+      line-height: 50px;
+      ;
+      position: relative;
+      margin-right: 13px;
+
+      &::before {
+        content: '';
+        width: 3px;
+        height: 10px;
+        position: absolute;
+        top: 21px;
+        left: 7px;
+        background: #4E58ED;
+      }
+    }
+
+    .button {
+      display: flex;
+
+      span {
+        height: 24px;
+        line-height: 22px; //24px;
+        box-sizing: border-box;
+        padding: 0 5px;
+        background: #0B0A30;
+        border: 1px solid #4E58ED;
+        border-radius: 12px;
+        font-size: 12px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #5DA0FE;
+
+        &.active {
+          background: #3B46E2;
+          color: #FFFFFF;
+        }
+
+        &+span {
+          margin-left: 7px;
+        }
+      }
+    }
+  }
+}
 </style>

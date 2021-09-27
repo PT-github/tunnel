@@ -1,20 +1,21 @@
 <!-- 节目单预览 -->
 <template>
-  <swiper class="swiper" indicator-color="#FFFFFF" indicator-active-color="#5DA0FE" :indicator-dots="true" :autoplay="true" :circular="true" :interval="3000" :duration="500">
-    <swiper-item v-for="(item, index) in previewList" :key="'list_' + index + '_' + item.id">
-      <view class="swiper-item">
-        <view class="preview-view" :style="[getWH, getContainerStyle(item)]">
-          <view v-for="(t, k) in item.textList" :key="index + '_' + k" :style="getTextStyle(item)">
-            <text v-for="(i,j) in t" :key="index + '_' + k + '_' + j" :style="getSpanStyle(item)">{{ i === ' ' ? '&nbsp;' : i }}</text>
-            <!-- <text :style="getSpanStyle(item)">{{ t }}</text> -->
-          </view>
-        </view>
-      </view>
-    </swiper-item>
-  </swiper>
+  <el-carousel class="swiper" :autoplay="false">
+    <el-carousel-item v-for="(item, index) in previewList" :key="'list_' + index + '_' + item.id">
+      <div class="swiper-item">
+        <div class="preview-view" :style="[getWH, getContainerStyle(item)]">
+          <div v-for="(t, k) in item.textList" :key="index + '_' + k" :style="getTextStyle(item)">
+            <span v-for="(i,j) in t" :key="index + '_' + k + '_' + j" :style="getSpanStyle(item)">{{ i === ' ' ? '&nbsp;' : i }}</span>
+            <!-- <span :style="getSpanStyle(item)">{{ t }}</span> -->
+          </div>
+        </div>
+      </div>
+    </el-carousel-item>
+  </el-carousel>
 </template>
 <script>
   export default {
+    services: ["_2d", "tunnel", "tunnel_2d"],
     name: 'Preview',
     props: {
       list: {
@@ -52,9 +53,6 @@
       },
     },
     created() {
-      uni.showModal({
-        title: this.windowWidth
-      })
       this.init()
     },
     watch: {
@@ -67,7 +65,7 @@
     },
     methods: {
       getCanvasCtx() {
-        let context = uni.createCanvasContext('canvas-id')
+        let context = document.createElement('canvas').getContext('2d')
         this.ctx = context
         return context
       },
@@ -184,10 +182,6 @@
         // this.detail.text = destArrData.join("\n");
         //  判断是否是高度超出了限制
         if (destArrData.length > maxLines) {
-          // uni.showToast({
-          //   icon: 'none',
-          //   title: '文字超出长度'
-          // })
           return this.reduceOther(obj);
         }
         return {
@@ -262,19 +256,19 @@
 </script>
 
 <style lang="scss" scoped>
-  .swiper {
-    height: 35.1562rpx;
-    color: #FFFFFF;
-    .swiper-item {
-      height:35.1562rpx;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .preview-view {
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
+.swiper {
+  height: 90px;
+  color: #FFFFFF;
+  .swiper-item {
+    height:90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+  .preview-view {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+}
 </style>

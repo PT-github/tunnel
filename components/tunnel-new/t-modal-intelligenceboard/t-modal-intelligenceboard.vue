@@ -1,143 +1,133 @@
 <!-- 情报板 -->
 <template>
-  <view class="t-modal-intelligenceboard">
-    <view class="header">
-      <text>可变情报板设置</text>
-      <text class="close" @tap="handleCancel">x</text>
-    </view>
+  <div class="t-modal-intelligenceboard">
+    <div class="header">
+      <span>可变情报板设置</span>
+      <span class="close" @click="handleCancel">x</span>
+    </div>
 
-    <view class="flex-box">
-      <view class="left" v-if="!type">
-        <view class="title">
-          <text>可变情报板列表</text>
-        </view>
+    <div class="flex-box">
+      <div class="left" v-if="!type">
+        <div class="title">
+          <span>可变情报板列表</span>
+        </div>
 
-        <view class="operation">
+        <div class="operation">
 
-          <text :class="{active: leftRightFlag === 2}" @click="switchLeftRight(2)"
-            v-if="singleDoubleType === 3 || singleDoubleType === 2">左洞</text>
-          <text :class="{active: leftRightFlag === 1}" @click="switchLeftRight(1)"
-            v-if="singleDoubleType === 3 || singleDoubleType === 1">右洞</text>
-          <view class="sel-btn" :class="{ active: checkedAll === 1 }" style="margin-left: 3.9062rpx;"
+          <span :class="{active: leftRightFlag === 2}" @click="switchLeftRight(2)"
+            v-if="singleDoubleType === 3 || singleDoubleType === 2">左洞</span>
+          <span :class="{active: leftRightFlag === 1}" @click="switchLeftRight(1)"
+            v-if="singleDoubleType === 3 || singleDoubleType === 1">右洞</span>
+          <div class="sel-btn" :class="{ active: checkedAll === 1 }" style="margin-left: 3.9062rpx;"
             @click="handleAllSelect(1)">
             全选
-          </view>
-          <view class="sel-btn" :class="{ active: checkedAll === 0 }" @click="handleAllSelect(0)">
+          </div>
+          <div class="sel-btn" :class="{ active: checkedAll === 0 }" @click="handleAllSelect(0)">
             反选
-          </view>
-        </view>
+          </div>
+        </div>
 
-        <view class="input-area">
+        <div class="input-area">
           <input class="input-dom" type="text" v-model="form.deviceName" @blur="getDeviceList" placeholder="设备名称或桩号" />
-        </view>
+        </div>
 
-        <scroll-view :show-scrollbar="true" scroll-y="true" class="left-scroll">
-          <view class="device-item" v-for="(item, index) in deviceList" :key="item.id + '_' + index"
+        <div :show-scrollbar="true" scroll-y="true" class="left-scroll">
+          <div class="device-item" v-for="(item, index) in deviceList" :key="item.id + '_' + index"
             :class="{active: checkedList.indexOf(item.id) !== -1}" @click="handleSelect(item)">
-            <view class="device-title" :style="getStyle(item)">
-              <text>{{ item.workModeName }}</text>
-            </view>
-            <view class="device-info">
-              <text>{{ item.deviceName}}</text>
-              <text>{{item.pileNumberStr}}</text>
-            </view>
-            <view class="status" :class="{on: item.deviceCommunicationsState === 0}"></view>
-          </view>
-          <view class="no-data" v-if="!deviceList.length">
-            <image src="../../static/no-data.png" mode="widthFix"></image>
-            <text>暂无数据</text>
-          </view>
-        </scroll-view>
+            <div class="device-title" :style="getStyle(item)">
+              <span>{{ item.workModeName }}</span>
+            </div>
+            <div class="device-info">
+              <span>{{ item.deviceName}}</span>
+              <span>{{item.pileNumberStr}}</span>
+            </div>
+            <div class="status" :class="{on: item.deviceCommunicationsState === 0}"></div>
+          </div>
+          <div class="no-data" v-if="!deviceList.length">
+            <img src="../../../assets/tunnel/no-data.png" mode="widthFix">
+            <span>暂无数据</span>
+          </div>
+        </div>
 
-      </view>
-      <view class="right">
-        <view class="right-title">
-          <text
-            class="name">可变情报板：{{ currentDevice.deviceName || ''  + '('+ currentDevice.pileNumberStr || '' + ')' }}</text>
-          <text class="count">节目：{{ selectedQbBoardList.length }}个</text>
-          <text class="device-status">{{ currentDevice.deviceCommunicationsState === 0 ? '在线' : '离线' }}</text>
-        </view>
-        <view class="swiper-box">
+      </div>
+      <div class="right">
+        <div class="right-title">
+          <span
+            class="name">可变情报板：{{ currentDevice.deviceName || ''  + '('+ currentDevice.pileNumberStr || '' + ')' }}</span>
+          <span class="count">节目：{{ selectedQbBoardList.length }}个</span>
+          <span class="device-status">{{ currentDevice.deviceCommunicationsState === 0 ? '在线' : '离线' }}</span>
+        </div>
+        <div class="swiper-box">
           <Preview :list="selectedQbBoardList" :deviceData="currentDevice" :fontSize="fontSize"></Preview>
-        </view>
+        </div>
 
-        <view class="card-box">
-          <view class="card-group">
-            <view class="title">
-              <text>模板列表</text>
-              <text class="num">{{ deviceQbBoardList.length }}</text>
-            </view>
+        <div class="card-box">
+          <div class="card-group">
+            <div class="title">
+              <span>模板列表</span>
+              <span class="num">{{ deviceQbBoardList.length }}</span>
+            </div>
 
-            <scroll-view class="area-scroll" scroll-y="true">
-              <view class="audio-item" v-for="(item, index) in deviceQbBoardList"
+            <div class="area-scroll" scroll-y="true">
+              <div class="audio-item" v-for="(item, index) in deviceQbBoardList"
                 :key="'deviceQbBoardList_' + index + '_' + item.id" @click="selectDeviceQbBoard(item)">
-                <view class="checkbox" :class="{active: checkedDeviceQbBoardIds.indexOf(item.id) !== -1}">
-                  <icon class="checked" :size="getRealPx(12)" color="#2B79E3" type="success_no_circle" />
-                </view>
-                <view class="text">
-                  <text>{{ item.templetName }}</text>
-                </view>
-                <view class="listen-btn del-btn" @click.stop="handleDelete(item)">
-                  <text>删除</text>
-                </view>
-              </view>
+                <div class="checkbox" :class="{active: checkedDeviceQbBoardIds.indexOf(item.id) !== -1}">
+                  <!-- <icon class="checked" :size="getRealPx(12)" color="#2B79E3" type="success_no_circle" /> -->
+                  <span class="el-icon-check checked"></span>
+                </div>
+                <div class="text">
+                  <span>{{ item.templetName }}</span>
+                </div>
+                <div class="listen-btn del-btn" @click.stop="handleDelete(item)">
+                  <span>删除</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-              <!-- <view class="audio-item">
-                <view class="checkbox active">
-                  <icon class="checked" :size="getRealPx(12)" color="#2B79E3" type="success_no_circle"/>
-                </view>
-                <view class="text">
-                  <text>模版名称</text>
-                </view>
-                <view class="listen-btn del-btn" @click.stop="listenMp3(item.templetText)">
-                  <text>删除</text>
-                </view>
-              </view> -->
-            </scroll-view>
-          </view>
+          <div class="card-group">
+            <div class="title">
+              <span>节目单列表</span>
+              <span class="num">{{ selectedQbBoardList.length }}</span>
+            </div>
 
-          <view class="card-group">
-            <view class="title">
-              <text>节目单列表</text>
-              <text class="num">{{ selectedQbBoardList.length }}</text>
-            </view>
-
-            <scroll-view class="area-scroll" scroll-y="true">
-              <view class="audio-item" v-for="(item, index) in selectedQbBoardList" @click="handleSelectProgram(item)">
-                <view class="checkbox" :class="{active: selectedQbBoardIds.indexOf(item.id) !== -1}">
-                  <icon class="checked" :size="getRealPx(12)" color="#2B79E3" type="success_no_circle" />
-                </view>
-                <view class="text">
-                  <text>{{ item.templetName }}</text>
-                </view>
-                <view class="listen-btn del-btn" @click.stop="handleDeleteSelected(item)">
-                  <text>删除</text>
-                </view>
-              </view>
-            </scroll-view>
-          </view>
-        </view>
+            <div class="area-scroll" scroll-y="true">
+              <div class="audio-item" v-for="(item, index) in selectedQbBoardList" @click="handleSelectProgram(item)">
+                <div class="checkbox" :class="{active: selectedQbBoardIds.indexOf(item.id) !== -1}">
+                  <!-- <icon class="checked" :size="getRealPx(12)" color="#2B79E3" type="success_no_circle" /> -->
+                  <span class="el-icon-check checked"></span>
+                </div>
+                <div class="text">
+                  <span>{{ item.templetName }}</span>
+                </div>
+                <div class="listen-btn del-btn" @click.stop="handleDeleteSelected(item)">
+                  <span>删除</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <Edit :colors="colors" :backgroundColors="backgroundColors" :horizontal="horizontal" :vertical="vertical"
           :font="font" :fontSize="fontSize" :resolutionPowers="resolutionPower" :currentDevice="currentDevice"
           @update-list="updateList" @update-board="handleUpdateBoard"></Edit>
 
-        <view class="submit-area">
-          <text @tap="handleCancel">取消</text>
-          <text class="active" @click="handleSubmit">执行</text>
-        </view>
-      </view>
-    </view>
-  </view>
+        <div class="submit-area">
+          <span @click="handleCancel">取消</span>
+          <span class="active" @click="handleSubmit">执行</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-  import config from '../../config/index.js'
   import Preview from './preview.vue'
   import Edit from './edit.vue'
   import {
     guid
-  } from '../../util/tools.js'
+  } from '../../../utils/tools.js'
   export default {
+    services: ["_2d", "tunnel", "tunnel_2d"],
     name: "t-modal-intelligenceboard",
     components: {
       Preview,
@@ -192,7 +182,7 @@
         pathArr: null,
         showAddModal: false,
 
-        windowWidth: wx.getSystemInfoSync().windowWidth,
+        // windowWidth: wx.getSystemInfoSync().windowWidth,
 
         form: {
           // workMode: null, // 工作模式
@@ -241,9 +231,6 @@
     },
     async created() {
       this.form.tunnelId = this.tunnelId
-      uni.showLoading({
-        title: '加载中'
-      })
       await this.getDic()
       if (!this.type) {
         await this.getDeviceList()
@@ -257,7 +244,6 @@
       ])
       // await this.getWarnBroadcastList()
       // await this.getNoticeBroadcastList()
-      uni.hideLoading()
     },
     methods: {
       handleSubmit() {
@@ -266,21 +252,12 @@
           data: []
         }
         if (!this.checkedList.length) {
-          return uni.showToast({
-            title: '请选择设备',
-            icon: 'none'
-          })
+          return this.$message.warning("请选择设备")
         }
         obj.deviceIds = this.checkedList.join(',')
         if (!this.selectedQbBoardIds.length) {
-          return uni.showToast({
-            title: '请选择节目',
-            icon: 'none'
-          })
+          return this.$message.warning("请选择节目")
         }
-        uni.showLoading({
-          title: '加载中'
-        })
         for (let i = 0; i < this.selectedQbBoardList.length; i++) {
           if (this.selectedQbBoardIds.indexOf(this.selectedQbBoardList[i].id) !== -1) {
             let item = this.selectedQbBoardList[i]
@@ -313,12 +290,9 @@
           }
         }
 
-        this.$request.oprateDeviceQbBoard(obj).then(res => {
+        this.$service.tunnel_2d.oprateDeviceQbBoard(obj).then(res => {
           if (res.status === 1) {
-            uni.showToast({
-              icon: 'success',
-              title: '执行成功'
-            })
+            this.$notifySuccess()
             if (this.checkedList.length === 1) {
               this.$emit('update-device', {id: this.checkedList[0]})
             } else {
@@ -342,36 +316,23 @@
       // 删除播放文件
       handleDelete(item) {
         let self = this
-        uni.showModal({
-          title: '提示',
-          content: '确认是否删除',
-          success: function(ret) {
-            if (ret.confirm) {
-              uni.showLoading({
-                title: '加载中'
-              })
-              self.$request.deleteDeviceQbBoardTmepinfo({
-                tempId: item.id
-              }).then(res => {
-                if (res.status === 1) {
-                  uni.showToast({
-                    icon: 'success',
-                    title: '删除成功'
-                  })
-                  for (let i = 0; i < self.deviceQbBoardList.length; i++) {
-                    if (self.deviceQbBoardList[i].id === item.id) {
-                      self.deviceQbBoardList.splice(i, 1)
-                      break;
-                    }
+        this.$showConfirm("请确认是否删选择的节目信息，删除后不能恢复！").then(
+          () => {
+            self.$service.tunnel_2d.deleteDeviceQbBoardTmepinfo({
+              tempId: item.id
+            }).then(res => {
+              if (res.status === 1) {
+                this.$notifySuccess()
+                for (let i = 0; i < self.deviceQbBoardList.length; i++) {
+                  if (self.deviceQbBoardList[i].id === item.id) {
+                    self.deviceQbBoardList.splice(i, 1)
+                    break;
                   }
                 }
-                uni.hideLoading()
-              })
-            }
+              }
+            })
           }
-        })
-
-
+        );
 
       },
       handleSelectProgram(item) {
@@ -428,9 +389,7 @@
               ...templetText
             })
           } catch (e) {
-            uni.showToast({
-              title: '解析该文件失败'
-            })
+            this.$message.warning("解析该文件失败")
             //TODO handle the exception
           }
 
@@ -442,22 +401,18 @@
 
 
       async init () {
-        uni.showLoading({
-          title: '加载中'
-        })
         // 清空已勾选的播放表
         // this.checkedDeviceQbBoardList.splice(0, this.checkedDeviceQbBoardList.length)
         await Promise.all([
           this.getDeviceQbBoardList(),
           this.getDeviceQbByDeviceId()
         ])
-        uni.hideLoading()
       },
 
       // 获取设备节目单
       getDeviceQbByDeviceId() {
         this.exitQbBoardList.splice(0, this.exitQbBoardList.length)
-        return this.$request.getDeviceQbByDeviceId({
+        return this.$service.tunnel_2d.getDeviceQbByDeviceId({
           deviceId: this.currentDevice.id
         }).then(res => {
           let data = res.data
@@ -479,7 +434,7 @@
       // 获取播放列表
       getDeviceQbBoardList() {
         this.deviceQbBoardList.splice(0, this.deviceQbBoardList.length)
-        return this.$request.getDeviceQbBoardList({
+        return this.$service.tunnel_2d.getDeviceQbBoardList({
           resolutionPower: this.currentDevice.resolutionPower, // 分辨率
           templetName: null
         }).then(res => {
@@ -492,7 +447,7 @@
         this.userAddList.splice(0, this.userAddList.length)
         this.deviceList.splice(0, this.deviceList.length)
         this.checkedList.splice(0, this.checkedList.length) // 清空已选的设备
-        return this.$request.getIntelligenceBoardList(this.form).then(res => {
+        return this.$service.tunnel_2d.getIntelligenceBoardList(this.form).then(res => {
           if (res && res.data) {
             this.deviceList.push(...res.data)
             this.checkedList.push(res.data[0].id) // 默认选中第一个
@@ -518,37 +473,37 @@
 
       getDic() {
         return Promise.all([
-          this.$request.listChildrenByParentValue({
+          this.$service.tunnel_2d.listChildrenByParentValue({
             value: 'vertical'
           }).then(res => {
             this.vertical.push(...res.data)
           }),
-          this.$request.listChildrenByParentValue({
+          this.$service.tunnel_2d.listChildrenByParentValue({
             value: 'horizontal'
           }).then(res => {
             this.horizontal.push(...res.data)
           }),
-          this.$request.listChildrenByParentValue({
+          this.$service.tunnel_2d.listChildrenByParentValue({
             value: 'resolutionPower'
           }).then(res => {
             this.resolutionPower.push(...res.data)
           }),
-          this.$request.listChildrenByParentValue({
+          this.$service.tunnel_2d.listChildrenByParentValue({
             value: 'fontSize'
           }).then(res => {
             this.fontSize.push(...res.data)
           }),
-          this.$request.listChildrenByParentValue({
+          this.$service.tunnel_2d.listChildrenByParentValue({
             value: 'font'
           }).then(res => {
             this.font.push(...res.data)
           }),
-          this.$request.listChildrenByParentValue({
+          this.$service.tunnel_2d.listChildrenByParentValue({
             value: 'bgColor'
           }).then(res => {
             this.backgroundColors.push(...res.data)
           }),
-          this.$request.listChildrenByParentValue({
+          this.$service.tunnel_2d.listChildrenByParentValue({
             value: 'fontColor'
           }).then(res => {
             this.colors.push(...res.data)
@@ -633,7 +588,7 @@
       // 报警
       getWarnBroadcastList() {
         this.warnList.splice(0, this.warnList.length)
-        return this.$request.getDeviceCriticalBroadcastList({
+        return this.$service.tunnel_2d.getDeviceCriticalBroadcastList({
           boardcastFileType: 2
         }).then(res => {
           this.warnList.push(...res.data)
@@ -642,7 +597,7 @@
       // 通知
       getNoticeBroadcastList() {
         this.noticeList.splice(0, this.noticeList.length)
-        return this.$request.getDeviceCriticalBroadcastList({
+        return this.$service.tunnel_2d.getDeviceCriticalBroadcastList({
           boardcastFileType: 3
         }).then(res => {
           this.noticeList.push(...res.data)
@@ -676,14 +631,15 @@
         console.log(e.time) //取消事件 =>12:30-17:30
       },
       getRealPx(w) {
-        var real = 0;
-        try {
-          var scale = this.windowWidth / 1920
-          real = Math.floor(scale * w)
-          return real
-        } catch (e) {
-          return real
-        }
+        // var real = 0;
+        // try {
+        //   var scale = this.windowWidth / 1920
+        //   real = Math.floor(scale * w)
+        //   return real
+        // } catch (e) {
+        //   return real
+        // }
+        return w
       },
     }
   }
@@ -691,407 +647,409 @@
 
 <style lang="scss">
   .t-modal-intelligenceboard {
-    width: 394.5312rpx; //343.75rpx;
-    height: 312.5rpx; //274.6093rpx;
-    box-sizing: border-box;
-    background: #0B0A30;
-    border: 0.3906rpx solid #1D2388;
+  width: 1030px; //880px;
+  height: 800px; //703px;
+  box-sizing: border-box;
+  background: #0B0A30;
+  border: 1px solid #1D2388;
+  display: flex;
+  flex-direction: column;
+
+  .flex-box {
     display: flex;
-    flex-direction: column;
+    flex: 1;
 
-    .flex-box {
-      display: flex;
-      flex: 1;
+    .left {
+      width: 240px;
+      border-right: 1px solid #1D2388;
+      padding: 16px 10px;
+      flex-shrink: 0;
 
-      .left {
-        width: 93.75rpx;
-        border-right: 0.3906rpx solid #1D2388;
-        padding: 6.25rpx 3.9062rpx;
-        flex-shrink: 0;
-
-        .title {
-          font-size: 5.4687rpx;
-          font-family: Microsoft YaHei;
-          font-weight: 400;
-          color: #5DA0FE;
-        }
-
-        .left-scroll {
-          // border: 1px solid red;
-          margin-top: 1.9531rpx;
-          height: 195.3125rpx;
-
-          .device-item {
-            width: 100%; // 85.9375rpx;
-            height: 54.6875rpx; //46.875rpx;
-            background: #120F41;
-            border: 0.3906rpx solid #4E58ED;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            margin: 0 auto 3.125rpx;
-            box-sizing: border-box;
-
-            &.active {
-              border-color: #e7743a;
-            }
-
-            .status {
-              position: absolute;
-              top: 0;
-              right: 0;
-              width: 17.5781rpx;
-              height: 17.9687rpx;
-              background: url(../../static/modal/laneIndicator/offline.png) center center / 17.5781rpx 17.9687rpx no-repeat;
-
-              &.on {
-                background-image: url(../../static/modal/laneIndicator/online.png);
-              }
-            }
-
-            .device-title {
-              flex: 1;
-              font-size: 5.4687rpx;
-              font-family: Microsoft YaHei;
-              font-weight: bold;
-              color: #5DA0FE;
-              padding: 3.9062rpx 5.0781rpx;
-            }
-
-            .device-info {
-              height: 15.625rpx;
-              line-height: 7.8125rpx;
-              background: #262477;
-              font-size: 4.6875rpx;
-              font-family: Microsoft YaHei;
-              font-weight: 400;
-              color: #5DA0FE;
-              text-align: center;
-              width: 98%;
-              margin: 0 auto 1.1718rpx;
-
-              text {
-                display: block;
-              }
-            }
-          }
-        }
-
-        .filter {
-          padding: 1.9531rpx 0;
-
-          text {
-            font-size: 4.6875rpx;
-            font-family: Microsoft YaHei;
-            font-weight: 400;
-            color: #286BC8;
-            display: inline-block;
-            height: 8.9843rpx;
-            line-height: 8.9843rpx;
-            padding: 0 1.9531rpx;
-
-            &+text {
-              margin-left: 6.25rpx;
-            }
-          }
-        }
-
-        .input-area {
-          input {
-            width: 100%;
-            height: 13.2812rpx;
-            background: #120F41 url(../../static/modal/laneIndicator/sousuo.png) 74.2187rpx center / 7.8125rpx auto no-repeat;
-            border: 0.3906rpx solid #4E58ED;
-            display: block;
-            margin: 5.0781rpx auto 0;
-            font-size: 4.6875rpx;
-            font-family: Microsoft YaHei;
-            font-weight: 400;
-            color: #5DA0FE;
-            padding: 0 12.8906rpx 0 6.25rpx;
-            box-sizing: border-box;
-          }
-        }
-
-        .operation {
-          height: 11.7187rpx;
-          display: flex;
-          align-items: center;
-          margin-top: 5.4687rpx;
-
-          text {
-            display: inline-block;
-            height: 11.7187rpx;
-            line-height: 11.7187rpx;
-            width: 19.5312rpx;
-            text-align: center;
-            background: #1B195A;
-            font-size: 4.6875rpx;
-            font-family: Microsoft YaHei;
-            font-weight: 400;
-            color: #286BC8;
-
-            &.active {
-              background: #3B46E2;
-              color: #FFFFFF;
-            }
-
-            &+text {
-              margin-left: 3.5156rpx;
-            }
-          }
-
-          .sel-btn {
-            height: 11.7187rpx;
-            line-height: 11.7187rpx;
-            background: url(../../static/modal/laneIndicator/unselected.png) left center / 5.4687rpx auto no-repeat;
-            padding-left: 7.8125rpx;
-            font-size: 4.6875rpx;
-            font-family: Microsoft YaHei;
-            font-weight: 400;
-            color: #286BC8;
-            margin-left: 3.9062rpx;
-
-            &.active {
-              background-image: url(../../static/modal/laneIndicator/selected.png);
-            }
-          }
-        }
+      .title {
+        font-size: 14px;
+        font-family: Microsoft YaHei;
+        font-weight: 400;
+        color: #5DA0FE;
       }
 
-      .right {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        padding: 0 6.25rpx;
+      .left-scroll {
+        // border: 1px solid red;
+        margin-top: 5px;
+        height: 500px;
 
-        .submit-area {
-          width: 100%;
-          padding-right: 3.9062rpx;
-          box-sizing: border-box;
-          display: flex;
-          justify-content: flex-end;
-          margin-top: 4.6875rpx;
-
-          text {
-            width: 31.25rpx;
-            height: 13.2812rpx;
-            line-height: 13.2812rpx;
-            text-align: center;
-            background: #1B195A;
-            font-size: 4.6875rpx;
-            font-family: Microsoft YaHei;
-            font-weight: 400;
-            color: #286BC8;
-
-            &.active {
-              background: #3B46E2;
-              color: #FFFFFF;
-            }
-
-            &+text {
-              margin-left: 3.9062rpx;
-            }
-          }
-        }
-
-        .card-box {
-          display: flex;
-          overflow: hidden;
-
-          .card-group {
-            flex: 1;
-            flex-shrink: 0;
-            overflow: hidden;
-            width: 0;
-
-            &:first-child {
-              margin-right: 4.6875rpx;
-            }
-
-            .area-scroll {
-              height: 87.8906rpx; //68.3593rpx;
-              background: #050425;
-              box-sizing: border-box;
-              padding: 1.9531rpx 3.9062rpx 0;
-
-              .audio-item {
-                display: flex;
-                border-bottom: 0.3906rpx dashed #12105E;
-                height: 12.8906rpx;
-                align-items: center;
-
-                .checkbox {
-                  width: 5.8593rpx;
-                  height: 5.8593rpx;
-                  box-sizing: border-box;
-                  background: #050425;
-                  border: 0.3906rpx solid #4E58ED;
-                  position: relative;
-
-                  .checked {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    display: none;
-                  }
-
-                  &.active {
-                    background: #262477;
-
-                    .checked {
-                      display: block;
-                    }
-                  }
-                }
-
-                .text {
-                  flex: 1;
-                  // line-height: 68.3593rpx;
-                  padding: 0 4.2968rpx;
-                  font-size: 4.6875rpx;
-                  font-family: Microsoft YaHei;
-                  font-weight: 400;
-                  color: #5DA0FE;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  white-space: nowrap;
-                }
-
-                .listen-btn {
-                  width: 15.625rpx;
-                  height: 7.8125rpx;
-                  line-height: 7.8125rpx;
-                  text-align: center;
-                  background: #0B0A30;
-                  border: 0.3906rpx solid #3B46E2;
-                  border-radius: 1.5625rpx;
-                  font-size: 4.6875rpx;
-                  font-family: Microsoft YaHei;
-                  font-weight: 400;
-                  color: #3B46E2;
-
-                  &.del-btn {
-                    border-color: #E7743A;
-                    color: #E7743A;
-                  }
-
-                  &+.listen-btn {
-                    margin-left: 3.125rpx;
-                  }
-                }
-              }
-            }
-
-            .title {
-              font-size: 5.4687rpx;
-              font-family: Microsoft YaHei;
-              font-weight: bold;
-              color: #5DA0FE;
-              padding-left: 7.0312rpx;
-              height: 18.75rpx;
-              line-height: 18.75rpx;
-              position: relative;
-
-              &::before {
-                content: '';
-                width: 1.1718rpx;
-                height: 3.9062rpx;
-                position: absolute;
-                top: 8.2031rpx;
-                left: 2.7343rpx;
-                background: #4E58ED;
-              }
-
-              .num {
-                font-size: 4.6875rpx;
-                font-family: Microsoft YaHei;
-                font-weight: 400;
-                color: #5DA0FE;
-                display: inline-block;
-                background: #262477;
-                border-radius: 3.9062rpx;
-                padding: 0 3.5156rpx;
-                height: 7.8125rpx;
-                line-height: 7.8125rpx;
-                margin-left: 4.2968rpx;
-              }
-            }
-          }
-        }
-
-        .swiper-box {
-          height: 35.1562rpx;
+        .device-item {
+          width: 100%; // 220px;
+          height: 140px; //120px;
           background: #120F41;
-          border: 0.3906rpx solid #4E58ED;
-          box-sizing: border-box;
-        }
-
-        .right-title {
-          height: 19.5312rpx;
+          border: 1px solid #4E58ED;
+          position: relative;
           display: flex;
-          align-items: center;
+          flex-direction: column;
+          margin: 0 auto 8px;
+          box-sizing: border-box;
 
-          text {
-            font-size: 5.4687rpx;
+          &.active {
+            border-color: #e7743a;
+          }
+
+          .status {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 45px;
+            height: 46px;
+            background: url(../../../assets/tunnel/modal/laneIndicator/offline.png) center center / 45px 46px no-repeat;
+
+            &.on {
+              background-image: url(../../../assets/tunnel/modal/laneIndicator/online.png);
+            }
+          }
+
+          .device-title {
+            flex: 1;
+            font-size: 14px;
             font-family: Microsoft YaHei;
             font-weight: bold;
             color: #5DA0FE;
+            padding: 10px 13px;
           }
 
-          .name {
-            flex: 1;
-          }
-
-          .count {
-            font-size: 4.6875rpx;
+          .device-info {
+            height: 40px;
+            line-height: 20px;
+            background: #262477;
+            font-size: 12px;
             font-family: Microsoft YaHei;
             font-weight: 400;
-            color: #3B46E2;
-            line-height: 0;
-            margin-right: 3.9062rpx;
+            color: #5DA0FE;
+            text-align: center;
+            width: 98%;
+            margin: 0 auto 3px;
+
+            span {
+              display: block;
+            }
+          }
+        }
+      }
+
+      .filter {
+        padding: 5px 0;
+
+        span {
+          font-size: 12px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #286BC8;
+          display: inline-block;
+          height: 23px;
+          line-height: 23px;
+          padding: 0 5px;
+
+          &+span {
+            margin-left: 16px;
+          }
+        }
+      }
+
+      .input-area {
+        input {
+          width: 100%;
+          height: 34px;
+          background: #120F41 url(../../../assets/tunnel/modal/laneIndicator/sousuo.png) 190px center / 20px auto no-repeat;
+          border: 1px solid #4E58ED;
+          display: block;
+          margin: 13px auto 0;
+          font-size: 12px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #5DA0FE;
+          padding: 0 33px 0 16px;
+          box-sizing: border-box;
+        }
+      }
+
+      .operation {
+        height: 30px;
+        display: flex;
+        align-items: center;
+        margin-top: 14px;
+
+        span {
+          display: inline-block;
+          height: 30px;
+          line-height: 30px;
+          width: 50px;
+          text-align: center;
+          background: #1B195A;
+          font-size: 12px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #286BC8;
+
+          &.active {
+            background: #3B46E2;
+            color: #FFFFFF;
           }
 
-          .device-status {
-            width: 22.2656rpx;
-            height: 9.375rpx;
-            line-height: 8.5937rpx; //9.375rpx;
-            box-sizing: border-box;
-            background: #0B0A30;
-            border: 0.3906rpx solid #4E58ED;
-            border-radius: 4.6875rpx;
-            font-weight: 400;
-            text-align: center;
+          &+span {
+            margin-left: 9px;
+          }
+        }
+
+        .sel-btn {
+          height: 30px;
+          line-height: 30px;
+          background: url(../../../assets/tunnel/modal/laneIndicator/unselected.png) left center / 14px auto no-repeat;
+          padding-left: 20px;
+          font-size: 12px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #286BC8;
+          margin-left: 10px;
+
+          &.active {
+            background-image: url(../../../assets/tunnel/modal/laneIndicator/selected.png);
           }
         }
       }
     }
 
-    .header {
-      border-bottom: 0.3906rpx solid #1D2388;
-      font-size: 6.25rpx;
-      font-family: Microsoft YaHei;
-      font-weight: bold;
-      color: #5DA0FE;
-      background: url(../../static/modal/laneIndicator/dot.png) 7.4218rpx center / 7.0312rpx auto no-repeat;
-      padding-left: 19.9218rpx;
-      height: 21.875rpx;
-      line-height: 21.875rpx;
-      position: relative;
+    .right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0 16px;
+      overflow: hidden;
 
-      .close {
-        position: absolute;
-        width: 12.8906rpx;
-        height: 12.8906rpx;
-        line-height: 12.8906rpx;
-        text-align: center;
-        background: #1B195A;
-        color: #2B79E3;
-        font-size: 8.5937rpx;
-        right: 5.4687rpx;
-        top: 4.2968rpx;
+      .submit-area {
+        width: 100%;
+        padding-right: 10px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 12px;
+
+        span {
+          width: 80px;
+          height: 34px;
+          line-height: 34px;
+          text-align: center;
+          background: #1B195A;
+          font-size: 12px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #286BC8;
+
+          &.active {
+            background: #3B46E2;
+            color: #FFFFFF;
+          }
+
+          &+span {
+            margin-left: 10px;
+          }
+        }
+      }
+
+      .card-box {
+        display: flex;
+        overflow: hidden;
+
+        .card-group {
+          flex: 1;
+          flex-shrink: 0;
+          overflow: hidden;
+          width: 0;
+
+          &:first-child {
+            margin-right: 12px;
+          }
+
+          .area-scroll {
+            height: 225px; //175px;
+            background: #050425;
+            box-sizing: border-box;
+            padding: 5px 10px 0;
+
+            .audio-item {
+              display: flex;
+              border-bottom: 1px dashed #12105E;
+              height: 33px;
+              align-items: center;
+
+              .checkbox {
+                width: 15px;
+                height: 15px;
+                box-sizing: border-box;
+                background: #050425;
+                border: 1px solid #4E58ED;
+                position: relative;
+
+                .checked {
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  display: none;
+                  color: #5DA0FE;
+                }
+
+                &.active {
+                  background: #262477;
+
+                  .checked {
+                    display: block;
+                  }
+                }
+              }
+
+              .text {
+                flex: 1;
+                // line-height: 175px;
+                padding: 0 11px;
+                font-size: 12px;
+                font-family: Microsoft YaHei;
+                font-weight: 400;
+                color: #5DA0FE;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+
+              .listen-btn {
+                width: 40px;
+                height: 20px;
+                line-height: 20px;
+                text-align: center;
+                background: #0B0A30;
+                border: 1px solid #3B46E2;
+                border-radius: 4px;
+                font-size: 12px;
+                font-family: Microsoft YaHei;
+                font-weight: 400;
+                color: #3B46E2;
+
+                &.del-btn {
+                  border-color: #E7743A;
+                  color: #E7743A;
+                }
+
+                &+.listen-btn {
+                  margin-left: 8px;
+                }
+              }
+            }
+          }
+
+          .title {
+            font-size: 14px;
+            font-family: Microsoft YaHei;
+            font-weight: bold;
+            color: #5DA0FE;
+            padding-left: 18px;
+            height: 48px;
+            line-height: 48px;
+            position: relative;
+
+            &::before {
+              content: '';
+              width: 3px;
+              height: 10px;
+              position: absolute;
+              top: 21px;
+              left: 7px;
+              background: #4E58ED;
+            }
+
+            .num {
+              font-size: 12px;
+              font-family: Microsoft YaHei;
+              font-weight: 400;
+              color: #5DA0FE;
+              display: inline-block;
+              background: #262477;
+              border-radius: 10px;
+              padding: 0 9px;
+              height: 20px;
+              line-height: 20px;
+              margin-left: 11px;
+            }
+          }
+        }
+      }
+
+      .swiper-box {
+        height: 90px;
+        background: #120F41;
+        border: 1px solid #4E58ED;
+        box-sizing: border-box;
+      }
+
+      .right-title {
+        height: 50px;
+        display: flex;
+        align-items: center;
+
+        span {
+          font-size: 14px;
+          font-family: Microsoft YaHei;
+          font-weight: bold;
+          color: #5DA0FE;
+        }
+
+        .name {
+          flex: 1;
+        }
+
+        .count {
+          font-size: 12px;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          color: #3B46E2;
+          line-height: 0;
+          margin-right: 10px;
+        }
+
+        .device-status {
+          width: 57px;
+          height: 24px;
+          line-height: 22px; //24px;
+          box-sizing: border-box;
+          background: #0B0A30;
+          border: 1px solid #4E58ED;
+          border-radius: 12px;
+          font-weight: 400;
+          text-align: center;
+        }
       }
     }
   }
+
+  .header {
+    border-bottom: 1px solid #1D2388;
+    font-size: 16px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #5DA0FE;
+    background: url(../../../assets/tunnel/modal/laneIndicator/dot.png) 19px center / 18px auto no-repeat;
+    padding-left: 51px;
+    height: 56px;
+    line-height: 56px;
+    position: relative;
+
+    .close {
+      position: absolute;
+      width: 33px;
+      height: 33px;
+      line-height: 33px;
+      text-align: center;
+      background: #1B195A;
+      color: #2B79E3;
+      font-size: 22px;
+      right: 14px;
+      top: 11px;
+    }
+  }
+}
 </style>

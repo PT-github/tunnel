@@ -336,18 +336,18 @@ import tModalSeries from "../../components/tunnel-new/t-modal-series/t-modal-ser
 import tModalSmart from "../../components/tunnel-new/t-modal-smart/t-modal-smart";
 import tModalEmergency from "../../components/tunnel-new/t-modal-emergency/t-modal-emergency";
 import tModalLighting from "../../components/tunnel-new/t-modal-lighting/t-modal-lighting";
-// import tModalLaneIndicator from "../../components/tunnel-new/t-modal-laneIndicator/t-modal-laneIndicator";
-// import tModalSignallamp from "../../components/tunnel-new/t-modal-signallamp/t-modal-signallamp";
-// import tModalUrgentphone from "../../components/tunnel-new/t-modal-urgentphone/t-modal-urgentphone";
-// import tModalConflagration from "../../components/tunnel-new/t-modal-conflagration/t-modal-conflagration";
-// import tModalWaterlevel from "../../components/tunnel-new/t-modal-waterlevel/t-modal-waterlevel";
-// import tModalDraughtfan from "../../components/tunnel-new/t-modal-draughtfan/t-modal-draughtfan";
+import tModalLaneIndicator from "../../components/tunnel-new/t-modal-laneIndicator/t-modal-laneIndicator";
+import tModalSignallamp from "../../components/tunnel-new/t-modal-signallamp/t-modal-signallamp";
+import tModalUrgentphone from "../../components/tunnel-new/t-modal-urgentphone/t-modal-urgentphone";
+import tModalConflagration from "../../components/tunnel-new/t-modal-conflagration/t-modal-conflagration";
+import tModalWaterlevel from "../../components/tunnel-new/t-modal-waterlevel/t-modal-waterlevel";
+import tModalDraughtfan from "../../components/tunnel-new/t-modal-draughtfan/t-modal-draughtfan";
 // import tModalBroadcast from "../../components/tunnel-new/t-modal-broadcast/t-modal-broadcast";
-// import tModalTunneldoor from "../../components/tunnel-new/t-modal-tunneldoor/t-modal-tunneldoor";
-// import tModalDynamotor from "../../components/tunnel-new/t-modal-dynamotor/t-modal-dynamotor";
-// import tModalEnvironment from "../../components/tunnel-new/t-modal-environment/t-modal-environment";
+import tModalTunneldoor from "../../components/tunnel-new/t-modal-tunneldoor/t-modal-tunneldoor";
+import tModalDynamotor from "../../components/tunnel-new/t-modal-dynamotor/t-modal-dynamotor";
+import tModalEnvironment from "../../components/tunnel-new/t-modal-environment/t-modal-environment";
 // import tModalVideo from "../../components/tunnel-new/t-modal-video/t-modal-video";
-// import tModalIntelligenceboard from "../../components/tunnel-new/t-modal-intelligenceboar/t-modal-intelligenceboar";
+import tModalIntelligenceboard from "../../components/tunnel-new/t-modal-intelligenceboard/t-modal-intelligenceboard";
 export default {
   components: {
     TTunnel,
@@ -356,18 +356,18 @@ export default {
     tModalSmart,
     tModalEmergency,
     tModalLighting,
-    // tModalLaneIndicator,
-    // tModalSignallamp,
-    // tModalUrgentphone,
-    // tModalConflagration,
-    // tModalWaterlevel,
-    // tModalDraughtfan,
+    tModalLaneIndicator,
+    tModalSignallamp,
+    tModalUrgentphone,
+    tModalConflagration,
+    tModalWaterlevel,
+    tModalDraughtfan,
     // tModalBroadcast,
-    // tModalTunneldoor,
-    // tModalDynamotor,
-    // tModalEnvironment,
+    tModalTunneldoor,
+    tModalDynamotor,
+    tModalEnvironment,
     // tModalVideo,
-    // tModalIntelligenceboard,
+    tModalIntelligenceboard,
   },
   services: ["_2d", "tunnel", "tunnel_2d"],
   events: {

@@ -2,7 +2,7 @@
  * @Author: PT
  * @Date: 2021-09-22 23:58:46
  * @LastEditors: PT
- * @LastEditTime: 2021-09-26 01:14:17
+ * @LastEditTime: 2021-09-26 21:48:22
  * @Description: file content
  */
 export default class TwoDService extends Service {
@@ -326,8 +326,8 @@ getIntelligenceBoardList(data) {
 // 获取播放列表
 getDeviceQbBoardList(data) {
   return this.get({
-    url: '/tunnel/rest/IntelligenceBoard/getDeviceQbBoardList',
-    data,
+    url: '/tunnel/rest/IntelligenceBoard/getDeviceQbBoardList?resolutionPower=' + data.resolutionPower + '&templetName=',
+    // data,
     method: 'GET',
     retAll: true
   })

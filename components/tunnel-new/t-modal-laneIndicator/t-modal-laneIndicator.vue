@@ -1,181 +1,171 @@
 <template>
-  <view class="t-modal-laneIndicator">
-    <view class="header">
-      <text>手动模式-车道指示器</text>
-    </view>
+  <div class="t-modal-laneIndicator">
+    <div class="header">
+      <span>手动模式-车道指示器</span>
+    </div>
     <!-- 左线超车道 1;右线超车道 2;左线行车道 3;右线行车道 4;左线慢车道 5;右线慢车道 6 -->
-    <view class="group">
-      <view class="group-item" :class="{'group-item-hide': singleDoubleType === 1}">
-        <view class="check-group-item" v-if="laneIndicatorDataFormat['1']">
-          <view class="check-label">
-            <text>{{ laneIndicatorDataFormat['1']['name'] }}</text>
-          </view>
-          <view class="check-list">
-            <view class="check-item" v-for="item in laneIndicatorDataFormat['1'].deviceCurrentStatusList" :key="'1_' + item.deviceStatus" @click="handleChecked(1, item)">
-              <view class="checkbox" :class="{ active: checkedObj['1'] === item.deviceStatus }"></view>
-              <view class="check-value">
-                <image :src="require(`../../static/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix"></image>
-                <text>{{ item.deviceName }}</text>
-              </view>
-            </view>
-          </view>
-        </view>
+    <div class="group">
+      <div class="group-item" :class="{'group-item-hide': singleDoubleType === 1}">
+        <div class="check-group-item" v-if="laneIndicatorDataFormat['1']">
+          <div class="check-label">
+            <span>{{ laneIndicatorDataFormat['1']['name'] }}</span>
+          </div>
+          <div class="check-list">
+            <div class="check-item" v-for="item in laneIndicatorDataFormat['1'].deviceCurrentStatusList" :key="'1_' + item.deviceStatus" @click="handleChecked(1, item)">
+              <div class="checkbox" :class="{ active: checkedObj['1'] === item.deviceStatus }"></div>
+              <div class="check-value">
+                <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
+                <span>{{ item.deviceName }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
         
         
-        <view class="check-group-item" v-if="laneIndicatorDataFormat['3']">
-          <view class="check-label">
-            <text>{{ laneIndicatorDataFormat['3'].name }}</text>
-          </view>
-          <view class="check-list">
-            <view class="check-item" v-for="item in laneIndicatorDataFormat['3'].deviceCurrentStatusList" :key="'3_' + item.deviceStatus" @click="handleChecked(3, item)">
-              <view class="checkbox" :class="{ active: checkedObj['3'] === item.deviceStatus }"></view>
-              <view class="check-value">
-                <image :src="require(`../../static/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix"></image>
-                <text>{{ item.deviceName }}</text>
-              </view>
-            </view>
-          </view>
-        </view>
+        <div class="check-group-item" v-if="laneIndicatorDataFormat['3']">
+          <div class="check-label">
+            <span>{{ laneIndicatorDataFormat['3'].name }}</span>
+          </div>
+          <div class="check-list">
+            <div class="check-item" v-for="item in laneIndicatorDataFormat['3'].deviceCurrentStatusList" :key="'3_' + item.deviceStatus" @click="handleChecked(3, item)">
+              <div class="checkbox" :class="{ active: checkedObj['3'] === item.deviceStatus }"></div>
+              <div class="check-value">
+                <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
+                <span>{{ item.deviceName }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
         
-        <view class="check-group-item"  v-if="laneIndicatorDataFormat['5']">
-          <view class="check-label">
-            <text>{{ laneIndicatorDataFormat['3'].name }}</text>
-          </view>
-          <view class="check-list">
-            <view class="check-item" v-for="item in laneIndicatorDataFormat['5'].deviceCurrentStatusList" :key="'5_' + item.deviceStatus" @click="handleChecked(5, item)">
-              <view class="checkbox" :class="{ active: checkedObj['5'] === item.deviceStatus }"></view>
-              <view class="check-value">
-                <image :src="require(`../../static/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix"></image>
-                <text>{{ item.deviceName }}</text>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
+        <div class="check-group-item"  v-if="laneIndicatorDataFormat['5']">
+          <div class="check-label">
+            <span>{{ laneIndicatorDataFormat['3'].name }}</span>
+          </div>
+          <div class="check-list">
+            <div class="check-item" v-for="item in laneIndicatorDataFormat['5'].deviceCurrentStatusList" :key="'5_' + item.deviceStatus" @click="handleChecked(5, item)">
+              <div class="checkbox" :class="{ active: checkedObj['5'] === item.deviceStatus }"></div>
+              <div class="check-value">
+                <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
+                <span>{{ item.deviceName }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       
-      <view class="group-item" :class="{'group-item-hide': singleDoubleType === 2}">
-        <view class="check-group-item" v-if="laneIndicatorDataFormat['2']">
-          <view class="check-label">
-            <text>{{ laneIndicatorDataFormat['2'].name }}</text>
-          </view>
-          <view class="check-list">
-            <view class="check-item" v-for="item in laneIndicatorDataFormat['2'].deviceCurrentStatusList" :key="'2_' + item.deviceStatus" @click="handleChecked(2, item)">
-              <view class="checkbox" :class="{ active: checkedObj['2'] === item.deviceStatus }"></view>
-              <view class="check-value">
-                <image :src="require(`../../static/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix"></image>
-                <text>{{ item.deviceName }}</text>
-              </view>
-            </view>
-          </view>
-        </view>
-        <view class="check-group-item" v-if="laneIndicatorDataFormat['4']">
-          <view class="check-label">
-            <text>{{laneIndicatorDataFormat['4'].name}}</text>
-          </view>
-          <view class="check-list">
-            <view class="check-item" v-for="item in laneIndicatorDataFormat['4'].deviceCurrentStatusList" :key="'4_' + item.deviceStatus" @click="handleChecked(4, item)">
-              <view class="checkbox" :class="{ active: checkedObj['4'] === item.deviceStatus }"></view>
-              <view class="check-value">
-                <image :src="require(`../../static/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix"></image>
-                <text>{{ item.deviceName }}</text>
-              </view>
-            </view>
-          </view>
-        </view>
-        <view class="check-group-item" v-if="laneIndicatorDataFormat['6']">
-          <view class="check-label">
-            <text>{{laneIndicatorDataFormat['6'].name}}</text>
-          </view>
-          <view class="check-list">
-            <view class="check-item" v-for="item in laneIndicatorDataFormat['6'].deviceCurrentStatusList" :key="'6_' + item.deviceStatus" @click="handleChecked(6, item)">
-              <view class="checkbox" :class="{ active: checkedObj['6'] === item.deviceStatus }"></view>
-              <view class="check-value">
-                <image :src="require(`../../static/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix"></image>
-                <text>{{ item.deviceName }}</text>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-    </view>
-    <view class="custom-area">
-      <view class="title">
-        <text>自定义组合区域</text>
-      </view>
+      <div class="group-item" :class="{'group-item-hide': singleDoubleType === 2}">
+        <div class="check-group-item" v-if="laneIndicatorDataFormat['2']">
+          <div class="check-label">
+            <span>{{ laneIndicatorDataFormat['2'].name }}</span>
+          </div>
+          <div class="check-list">
+            <div class="check-item" v-for="item in laneIndicatorDataFormat['2'].deviceCurrentStatusList" :key="'2_' + item.deviceStatus" @click="handleChecked(2, item)">
+              <div class="checkbox" :class="{ active: checkedObj['2'] === item.deviceStatus }"></div>
+              <div class="check-value">
+                <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
+                <span>{{ item.deviceName }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="check-group-item" v-if="laneIndicatorDataFormat['4']">
+          <div class="check-label">
+            <span>{{laneIndicatorDataFormat['4'].name}}</span>
+          </div>
+          <div class="check-list">
+            <div class="check-item" v-for="item in laneIndicatorDataFormat['4'].deviceCurrentStatusList" :key="'4_' + item.deviceStatus" @click="handleChecked(4, item)">
+              <div class="checkbox" :class="{ active: checkedObj['4'] === item.deviceStatus }"></div>
+              <div class="check-value">
+                <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
+                <span>{{ item.deviceName }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="check-group-item" v-if="laneIndicatorDataFormat['6']">
+          <div class="check-label">
+            <span>{{laneIndicatorDataFormat['6'].name}}</span>
+          </div>
+          <div class="check-list">
+            <div class="check-item" v-for="item in laneIndicatorDataFormat['6'].deviceCurrentStatusList" :key="'6_' + item.deviceStatus" @click="handleChecked(6, item)">
+              <div class="checkbox" :class="{ active: checkedObj['6'] === item.deviceStatus }"></div>
+              <div class="check-value">
+                <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
+                <span>{{ item.deviceName }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="custom-area">
+      <div class="title">
+        <span>自定义组合区域</span>
+      </div>
       
-      <view class="search-container">
-        <text :class="{active: leftRightFlag === 2}" @click="switchLeftRight(2)" v-if="singleDoubleType === 3 || singleDoubleType === 2">左洞</text>
-        <text :class="{active: leftRightFlag === 1}" @click="switchLeftRight(1)" v-if="singleDoubleType === 3 || singleDoubleType === 1">右洞</text>
+      <div class="search-container">
+        <span :class="{active: leftRightFlag === 2}" @click="switchLeftRight(2)" v-if="singleDoubleType === 3 || singleDoubleType === 2">左洞</span>
+        <span :class="{active: leftRightFlag === 1}" @click="switchLeftRight(1)" v-if="singleDoubleType === 3 || singleDoubleType === 1">右洞</span>
         <input class="input-dom" type="text" v-model="form.deviceName" @blur="getDeviceList" placeholder="设备名称或桩号" />
-      </view>
+      </div>
       
-      <view class="search-container">
-        <!-- <yealuo-select
-          class="mul-select"
-          value=""
-          placeholder='可多选 车道指示器组合进行筛选'
-          :binData="binData"
-          checkType="checkbox"
-          overflow="hide"
-          @getBackVal="getBackVal"
-          :selectIco="true"
-          >
-        </yealuo-select> -->
-        <text :class="{ active: form.vehicleLane === 1 }" @click="switchVehicleLane(1)">超车道</text>
-        <text :class="{ active: form.vehicleLane === 2 }" @click="switchVehicleLane(2)">行车道</text>
-        <text :class="{ active: form.vehicleLane === 3 }" @click="switchVehicleLane(3)">慢车道</text>
+      <div class="search-container">
+        <span :class="{ active: form.vehicleLane === 1 }" @click="switchVehicleLane(1)">超车道</span>
+        <span :class="{ active: form.vehicleLane === 2 }" @click="switchVehicleLane(2)">行车道</span>
+        <span :class="{ active: form.vehicleLane === 3 }" @click="switchVehicleLane(3)">慢车道</span>
         
-        <view class="sel-btn" :class="{ active: checkedAll === 1 }" style="margin-left: 9.7656rpx;" @click="handleAllSelect(1)">
+        <div class="sel-btn" :class="{ active: checkedAll === 1 }" style="margin-left: 9.7656rpx;" @click="handleAllSelect(1)">
           全选
-        </view>
-        <view class="sel-btn" :class="{ active: checkedAll === 0 }" @click="handleAllSelect(0)">
+        </div>
+        <div class="sel-btn" :class="{ active: checkedAll === 0 }" @click="handleAllSelect(0)">
           反选
-        </view>
-      </view>
+        </div>
+      </div>
       
-      <scroll-view :show-scrollbar="true" class="scroll-container" scroll-y="true" >
-        <view class="scroll-content">
-          <view class="device-item" v-for="(item, index) in deviceList" :key="item.id + '_' + index" :class="{active: checkedList.indexOf(item.id) !== -1}" @click="handleSelect(item)">
-            <view class="device-title" :style="getStyle(item)">
-              <text>{{ item.workModeName }}</text>
-              <view class="sensorValTextShow" v-if="item.sensorValTextShow">
-                <text>{{ item.sensorValTextList }}</text>
-              </view>
-            </view>
-            <view class="device-info">
-              <text>{{ item.deviceName}}</text>
-              <text>{{item.pileNumberStr}}</text>
-            </view>
-            <view class="status" :class="{on: item.deviceCommunicationsState === 0}"></view>
-          </view>
-          <view class="no-data" v-if="!deviceList.length">
-            <image src="../../static/no-data.png" mode="widthFix"></image>
-            <text>暂无数据</text>
-          </view>
-        </view>
-      </scroll-view>
+      <div :show-scrollbar="true" class="scroll-container" scroll-y="true" >
+        <div class="scroll-content">
+          <div class="device-item" v-for="(item, index) in deviceList" :key="item.id + '_' + index" :class="{active: checkedList.indexOf(item.id) !== -1}" @click="handleSelect(item)">
+            <div class="device-title" :style="getStyle(item)">
+              <span>{{ item.workModeName }}</span>
+              <div class="sensorValTextShow" v-if="item.sensorValTextShow">
+                <span>{{ item.sensorValTextList }}</span>
+              </div>
+            </div>
+            <div class="device-info">
+              <span>{{ item.deviceName}}</span>
+              <span>{{item.pileNumberStr}}</span>
+            </div>
+            <div class="status" :class="{on: item.deviceCommunicationsState === 0}"></div>
+          </div>
+          <div class="no-data" v-if="!deviceList.length">
+            <img src="../../../assets/tunnel/no-data.png" mode="widthFix">
+            <span>暂无数据</span>
+          </div>
+        </div>
+      </div>
       
-      <view class="control-container">
-        <view class="check-item" v-for="(item, index) in workMode" :key="item.value + '_workMode_' + item" @click="workModeChecked = item.value">
-          <view class="checkbox" :class="{ active: workModeChecked === item.value }"></view>
-          <view class="check-value">
-            <image :src="require(`../../static/modal/laneIndicator/icon${item.value}.png`)" mode="widthFix"></image>
-            <text>{{ item.name }}</text>
-          </view>
-        </view>
-      </view>
+      <div class="control-container">
+        <div class="check-item" v-for="(item, index) in workMode" :key="item.value + '_workMode_' + item" @click="workModeChecked = item.value">
+          <div class="checkbox" :class="{ active: workModeChecked === item.value }"></div>
+          <div class="check-value">
+            <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.value}.png`)" mode="widthFix">
+            <span>{{ item.name }}</span>
+          </div>
+        </div>
+      </div>
       
-    </view>
+    </div>
     
-    <view class="operation">
-      <text class="cancel" @tap="handleCancel">取消</text>
-      <text class="start" @click="laneIndicatorImplementList">执行</text>
-    </view>
-  </view>
+    <div class="operation">
+      <span class="cancel" @click="handleCancel">取消</span>
+      <span class="start" @click="laneIndicatorImplementList">执行</span>
+    </div>
+  </div>
 </template>
 
 <script>
   export default {
+    services: ["_2d", "tunnel", "tunnel_2d"],
     name:"t-modal-laneIndicator",
     props: {
       tunnelId: {
@@ -247,18 +237,14 @@
       },
     },
     async created () {
-      uni.showLoading({
-        title: '加载中'
-      })
       await this.getLaneIndicatorData()
       await this.getDeviceList()
       await this.getDeviceClassifyControlInfo()
-      uni.hideLoading()
     },
     methods: {
       // 控制模式
       getDeviceClassifyControlInfo () {
-        return this.$request.getDeviceClassifyControlInfo({
+        return this.$service.tunnel_2d.getDeviceClassifyControlInfo({
           Id: this.classifyId
         }).then(res => {
           if (res && res.data) {
@@ -366,18 +352,12 @@
         }
         let deviceId = ''
         if (!this.workModeChecked) {
-          return uni.showToast({
-            icon:'none',
-            title: '请选择控制模式'
-          })
+          return this.$message.warning("请选择控制模式")
         } else if (!this.checkedList.length && !laneIndicatorDTOList.length) {
-          return uni.showToast({
-            icon:'none',
-            title: '请选设备或组合'
-          })
+          return this.$message.warning("请选设备或组合")
         }
         
-        this.$request.laneIndicatorImplementList(laneIndicatorDTOList, {
+        this.$service.tunnel_2d.laneIndicatorImplementList(laneIndicatorDTOList, {
           tunnelId: this.tunnelId,
           classifyId: this.classifyId,
           deviceId: this.checkedList.join(','),
@@ -385,10 +365,7 @@
           typeCode: 'laneIndicator',
         }).then(res => {
           if (res.status === 1) {
-            uni.showToast({
-              title: '执行成功',
-              icon: 'success'
-            })
+            this.$notifySuccess()
             this.handleCancel()
             
             // let updateDevices = []
@@ -418,7 +395,7 @@
       },
       // 获取车道指示器数据
       getLaneIndicatorData () {
-        return this.$request.getLaneIndicatorData({
+        return this.$service.tunnel_2d.getLaneIndicatorData({
           classifyId: this.classifyId,
           tunnelId: this.tunnelId,
           typeCode: 'laneIndicator'
@@ -431,7 +408,7 @@
         this.checkedAll = null
         this.deviceList.splice(0, this.deviceList.length)
         this.checkedList.splice(0, this.checkedList.length) // 清空已选的设备
-        return this.$request.getSelectDeviceList(this.form).then(res => {
+        return this.$service.tunnel_2d.getSelectDeviceList(this.form).then(res => {
           if (res && res.data) {
             this.deviceList.push(...res.data.map(item => {
               if (item.sensorValTextShow) {
@@ -465,20 +442,20 @@
 
 <style lang="scss">
 .t-modal-laneIndicator {
-  height: 373.8281rpx;
-  width: 340.625rpx;
-  background: url(../../static/modal/laneIndicator/bg.png) center center / 100% 100% no-repeat;
+  height: 980px;
+  width: 872px;
+  background: url(../../../assets/tunnel/modal/laneIndicator/bg.png) center center / 100% 100% no-repeat;
   display: flex;
   flex-direction: column;
-  padding: 5.4687rpx 12.5rpx 2.7343rpx;
+  padding: 14px 32px 7px;
   box-sizing: border-box;
   .header {
-    width: 108.2031rpx;
-    height: 17.1875rpx;
-    line-height: 17.1875rpx;
+    width: 277px;
+    height: 44px;
+    line-height: 44px;
     text-align: center;
-    background: url(../../static/modal/laneIndicator/top-bg.png) center center / 100% 100% no-repeat;
-    font-size: 7.0312rpx;
+    background: url(../../../assets/tunnel/modal/laneIndicator/top-bg.png) center center / 100% 100% no-repeat;
+    font-size: 18px;
     font-family: Microsoft YaHei;
     font-weight: bold;
     color: #FFFFFF;
@@ -489,10 +466,10 @@
     display: flex;
     justify-content: space-between;
     .group-item {
-      width: 154.2968rpx;
-      // height: 99.6093rpx;
+      width: 395px;
+      // height: 255px;
       background: #0B0A30;
-      border: 0.3906rpx solid #1D2388;
+      border: 1px solid #1D2388;
       // opacity: .5;
       position: relative;
       &.group-item-hide {
@@ -508,14 +485,14 @@
       }
     }
     .check-group-item {
-      padding: 3.9062rpx 6.25rpx;
+      padding: 10px 16px;
       .check-label {
-        background: url(../../static/modal/laneIndicator/dot.png) left center / 7.0312rpx auto no-repeat;
-        font-size: 5.4687rpx;
+        background: url(../../../assets/tunnel/modal/laneIndicator/dot.png) left center / 18px auto no-repeat;
+        font-size: 14px;
         font-family: Microsoft YaHei;
         font-weight: 400;
         color: #5DA0FE;
-        padding-left: 10.9375rpx;
+        padding-left: 28px;
       }
       .check-list {
         display: flex;
@@ -524,23 +501,23 @@
           display: flex;
           align-items: center;
           .checkbox {
-            background: url(../../static/modal/laneIndicator/unselected.png) center center / 5.4687rpx auto no-repeat;
-            width: 5.4687rpx;
-            height: 5.4687rpx;
-            margin-right: 3.125rpx;
+            background: url(../../../assets/tunnel/modal/laneIndicator/unselected.png) center center / 14px auto no-repeat;
+            width: 14px;
+            height: 14px;
+            margin-right: 8px;
             &.active {
-              background-image: url(../../static/modal/laneIndicator/selected.png);
+              background-image: url(../../../assets/tunnel/modal/laneIndicator/selected.png);
             }
           }
           .check-value {
             display: flex;
             flex-direction: column;
             text-align: center;
-            image {
-              width: 21.875rpx;
+            img {
+              width: 56px;
             }
-            text {
-              font-size: 4.6875rpx;
+            span {
+              font-size: 12px;
               font-family: Microsoft YaHei;
               font-weight: 400;
               color: #286BC8;
@@ -552,33 +529,33 @@
   }
   .custom-area {
     flex: 1;
-    margin-top: 5.0781rpx;
+    margin-top: 13px;
     background: #0B0A30;
     border: 1px solid #1D2388;
     display: flex;
     flex-direction: column;
-    padding: 7.0312rpx 6.25rpx 5.4687rpx;
+    padding: 18px 16px 14px;
     .title {
-      background: url(../../static/modal/laneIndicator/dot.png) left center / 7.0312rpx auto no-repeat;
-      font-size: 5.4687rpx;
+      background: url(../../../assets/tunnel/modal/laneIndicator/dot.png) left center / 18px auto no-repeat;
+      font-size: 14px;
       font-family: Microsoft YaHei;
       font-weight: 400;
       color: #5DA0FE;
-      padding-left: 10.9375rpx;
+      padding-left: 28px;
     }
     .search-container {
-      height: 13.2812rpx;
+      height: 34px;
       display: flex;
       align-items: center;
-      margin-top: 5.8593rpx;
-      text {
+      margin-top: 15px;
+      span {
         display: inline-block;
-        height: 13.2812rpx;
-        line-height: 13.2812rpx;
-        width: 31.25rpx;
+        height: 34px;
+        line-height: 34px;
+        width: 80px;
         text-align: center;
         background: #1B195A;
-        font-size: 4.6875rpx;
+        font-size: 12px;
         font-family: Microsoft YaHei;
         font-weight: 400;
         color: #286BC8;
@@ -586,108 +563,111 @@
           background: #3B46E2;
           color: #FFFFFF;
         }
-        & + text {
-          margin-left: 3.9062rpx;
+        & + span {
+          margin-left: 10px;
         }
       }
       input {
-        width: 138.2812rpx;
-        height: 13.2812rpx;
-        background: #120F41 url(../../static/modal/laneIndicator/sousuo.png) 125.3906rpx center / 7.8125rpx auto no-repeat;
+        width: 354px;
+        height: 34px;
+        background: #120F41 url(../../../assets/tunnel/modal/laneIndicator/sousuo.png) 321px center / 20px auto no-repeat;
         border: 1px solid #4E58ED;
         display: inline-block;
-        font-size: 4.6875rpx;
+        font-size: 12px;
         font-family: Microsoft YaHei;
         font-weight: 400;
         color: #5DA0FE;
-        padding: 0 12.8906rpx 0 6.25rpx;
+        padding: 0 33px 0 16px;
         box-sizing: border-box;
         &.input-dom {
-          margin-left: 5.0781rpx;
+          margin-left: 13px;
         }
       }
       .mul-select {
-        width: 138.2812rpx;
-        height: 13.2812rpx;
+        width: 354px;
+        height: 34px;
         background: #120F41;
-        border: 0.3906rpx solid #4E58ED;
+        border: 1px solid #4E58ED;
         box-sizing: border-box;
-        margin-right: 3.9062rpx;
+        margin-right: 10px;
       }
       .sel-btn {
-        height: 13.2812rpx;
-        line-height: 13.2812rpx;
-        background: url(../../static/modal/laneIndicator/unselected.png) left center / 5.4687rpx auto no-repeat;
-        padding-left: 8.2031rpx;
-        font-size: 4.6875rpx;
+        height: 34px;
+        line-height: 34px;
+        background: url(../../../assets/tunnel/modal/laneIndicator/unselected.png) left center / 14px auto no-repeat;
+        padding-left: 21px;
+        font-size: 12px;
         font-family: Microsoft YaHei;
         font-weight: 400;
         color: #286BC8;
-        margin-left: 3.5156rpx;
+        margin-left: 9px;
         &:first-of-type {
           
         }
         &.active {
-          background-image: url(../../static/modal/laneIndicator/selected.png);
+          background-image: url(../../../assets/tunnel/modal/laneIndicator/selected.png);
         }
       }
     }
     
     .scroll-container {
-      height: 136.7187rpx;
-      margin: 5.4687rpx 0 6.6406rpx;
+      height: 350px;
+      margin: 14px 0 17px;
       
       .scroll-content {
         display: flex;
         flex-wrap: wrap;
         // justify-content: space-between;
         .device-item {
-          width: 69.5312rpx;
-          height: 62.1093rpx;
+          width: 178px;
+          height: 159px;
           background: #120F41;
-          border: 0.3906rpx solid #4E58ED;
+          border: 1px solid #4E58ED;
           position: relative;
           display: flex;
           flex-direction: column;
-          margin-bottom: 5.8593rpx;
+          margin-bottom: 15px;
           &.active {
             border-color: #e7743a;
           }
           &:not(:nth-child(4n)) {
-            margin-right: 5.0781rpx;//5.8593rpx;//7.0312rpx;
+            margin-right: 13px;//15px;//18px;
           }
           .status {
             position: absolute;
             top: 0;
             right: 0;
-            width: 17.5781rpx;
-            height: 17.9687rpx;
-            background: url(../../static/modal/laneIndicator/offline.png) center center / 17.5781rpx 17.9687rpx no-repeat;
+            width: 45px;
+            height: 46px;
+            background: url(../../../assets/tunnel/modal/laneIndicator/offline.png) center center / 45px 46px no-repeat;
             &.on {
-              background-image: url(../../static/modal/laneIndicator/online.png);
+              background-image: url(../../../assets/tunnel/modal/laneIndicator/online.png);
             }
           }
           .device-title {
             flex: 1;
-            font-size: 5.4687rpx;
+            font-size: 14px;
             font-family: Microsoft YaHei;
             font-weight: bold;
             color: #5DA0FE;
-            padding: 3.9062rpx 5.0781rpx;
+            padding: 10px 13px;
           }
           .device-info {
-            height: 15.625rpx;
-            line-height: 7.8125rpx;
+            height: 40px;
+            line-height: 20px;
             background: #262477;
-            font-size: 4.6875rpx;
+            font-size: 12px;
             font-family: Microsoft YaHei;
             font-weight: 400;
             color: #5DA0FE;
             text-align: center;
-            width: 67.1875rpx;
-            margin: 0 auto 1.1718rpx;
-            text {
+            width: 172px;
+            margin: 0 auto 3px;
+            span {
               display: block;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
             }
           }
         }
@@ -700,26 +680,26 @@
         display: flex;
         align-items: center;
         & + .check-item {
-          margin-left: 4.6875rpx;
+          margin-left: 12px;
         }
         .checkbox {
-          background: url(../../static/modal/laneIndicator/unselected.png) center center / 5.4687rpx auto no-repeat;
-          width: 5.4687rpx;
-          height: 5.4687rpx;
-          margin-right: 3.125rpx;
+          background: url(../../../assets/tunnel/modal/laneIndicator/unselected.png) center center / 14px auto no-repeat;
+          width: 14px;
+          height: 14px;
+          margin-right: 8px;
           &.active {
-            background-image: url(../../static/modal/laneIndicator/selected.png);
+            background-image: url(../../../assets/tunnel/modal/laneIndicator/selected.png);
           }
         }
         .check-value {
           display: flex;
           flex-direction: column;
           text-align: center;
-          image {
-            width: 21.875rpx;
+          img {
+            width: 56px;
           }
-          text {
-            font-size: 4.6875rpx;
+          span {
+            font-size: 12px;
             font-family: Microsoft YaHei;
             font-weight: 400;
             color: #286BC8;
@@ -730,16 +710,16 @@
   }
   
   .operation {
-    height: 13.2812rpx;
-    margin-top: 7.8125rpx;
+    height: 34px;
+    margin-top: 20px;
     text-align: center;
-    text {
+    span {
       display: inline-block;
-      width: 31.25rpx;
-      height: 13.2812rpx;
-      line-height: 13.2812rpx;
+      width: 80px;
+      height: 34px;
+      line-height: 34px;
       text-align: center;
-      font-size: 4.6875rpx;
+      font-size: 12px;
       font-family: Microsoft YaHei;
       font-weight: 400;
       color: #FFFFFF;
@@ -747,7 +727,7 @@
     .cancel {
       background: #1B195A;
       color: #286BC8;
-      margin-right: 3.5156rpx;
+      margin-right: 9px;
     }
     .start {
       background: #3B46E2;

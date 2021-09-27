@@ -1278,6 +1278,8 @@ export default {
     display: none;
   }
 }
+
+  
 </style>
 
 <style lang="scss">
@@ -1335,6 +1337,27 @@ export default {
     font-family: Microsoft YaHei;
     font-weight: 400;
     color: #5DA0FE;
+  }
+}
+.device-item {
+  .device-title {
+    position: relative;
+  }
+  .sensorValTextShow {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #FFFFFF;
+    font-size: 12px;
+    line-height: 14px;
+  }
+  &.active {
+    .device-info {
+      background: #e7743a !important;
+      color: #FFFFFF !important;
+    }
   }
 }
 </style>

@@ -1,90 +1,91 @@
 <template>
-  <view class="t-modal-signallamp">
-    <view class="header">
-      <text>手动模式-交通信号灯</text>
-    </view>
+  <div class="t-modal-signallamp">
+    <div class="header">
+      <span>手动模式-交通信号灯</span>
+    </div>
     
-    <view class="signallamp-content">
-      <view class="search-container">
-        <text :class="{active: leftRightFlag === 2}" @click="switchLeftRight(2)" v-if="singleDoubleType === 3 || singleDoubleType === 2">左洞</text>
-        <text :class="{active: leftRightFlag === 1}" @click="switchLeftRight(1)" v-if="singleDoubleType === 3 || singleDoubleType === 1">右洞</text>
+    <div class="signallamp-content">
+      <div class="search-container">
+        <span :class="{active: leftRightFlag === 2}" @click="switchLeftRight(2)" v-if="singleDoubleType === 3 || singleDoubleType === 2">左洞</span>
+        <span :class="{active: leftRightFlag === 1}" @click="switchLeftRight(1)" v-if="singleDoubleType === 3 || singleDoubleType === 1">右洞</span>
         <input class="input-dom" type="text" v-model="form.deviceName" @blur="getDeviceList" placeholder="设备名称或桩号" />
-        <view class="sel-btn" :class="{ active: checkedAll === 1 }" style="margin-left: 9.7656rpx;" @click="handleAllSelect(1)">
+        <div class="sel-btn" :class="{ active: checkedAll === 1 }" style="margin-left: 9.7656rpx;" @click="handleAllSelect(1)">
           全选
-        </view>
-        <view class="sel-btn" :class="{ active: checkedAll === 0 }" @click="handleAllSelect(0)">
+        </div>
+        <div class="sel-btn" :class="{ active: checkedAll === 0 }" @click="handleAllSelect(0)">
           反选
-        </view>
-      </view>
+        </div>
+      </div>
       
-      <scroll-view :show-scrollbar="true" class="scroll-container" scroll-y="true" >
-        <view class="scroll-content">
-          <view class="device-item" v-for="item in deviceList" :key="item.id" :class="{active: checkedList.indexOf(item.id) !== -1}" @click="handleSelect(item)">
-            <view class="device-title" :style="getStyle(item)">
-              <text>{{ item.workModeName }}</text>
-              <view class="sensorValTextShow" v-if="item.sensorValTextShow">
-                              <text>{{ item.sensorValTextList }}</text>
-                            </view>
-            </view>
-            <view class="device-info">
-              <text>{{ item.deviceName}}</text>
-              <text>{{item.pileNumberStr}}</text>
-            </view>
-            <view class="status" :class="{on: item.deviceCommunicationsState === 0}"></view>
-          </view>
-          <view class="no-data" v-if="!deviceList.length">
-            <image src="../../static/no-data.png" mode="widthFix"></image>
-            <text>暂无数据</text>
-          </view>
-          <!-- <view class="device-item">
-            <view class="device-title">
-              <text>红</text>
-            </view>
-            <view class="device-info">
-              <text>设备名称+桩号</text>
-            </view>
-            <view class="status offline"></view>
-          </view> -->
-        </view>
-      </scroll-view>
+      <div :show-scrollbar="true" class="scroll-container" scroll-y="true" >
+        <div class="scroll-content">
+          <div class="device-item" v-for="item in deviceList" :key="item.id" :class="{active: checkedList.indexOf(item.id) !== -1}" @click="handleSelect(item)">
+            <div class="device-title" :style="getStyle(item)">
+              <span>{{ item.workModeName }}</span>
+              <div class="sensorValTextShow" v-if="item.sensorValTextShow">
+                              <span>{{ item.sensorValTextList }}</span>
+                            </div>
+            </div>
+            <div class="device-info">
+              <span>{{ item.deviceName}}</span>
+              <span>{{item.pileNumberStr}}</span>
+            </div>
+            <div class="status" :class="{on: item.deviceCommunicationsState === 0}"></div>
+          </div>
+          <div class="no-data" v-if="!deviceList.length">
+            <img src="../../../assets/tunnel/no-data.png" mode="widthFix">
+            <span>暂无数据</span>
+          </div>
+          <!-- <div class="device-item">
+            <div class="device-title">
+              <span>红</span>
+            </div>
+            <div class="device-info">
+              <span>设备名称+桩号</span>
+            </div>
+            <div class="status offline"></div>
+          </div> -->
+        </div>
+      </div>
       
-      <view class="control-container">
-        <view class="check-item" v-for="item in workMode" :key="item.value" @click="workModeChecked = item.value">
-          <view class="checkbox" :class="{ active: workModeChecked === item.value }"></view>
-          <view class="check-value">
-            <text>{{ item.name }}</text>
-          </view>
-        </view>
-        <!-- <view class="check-item">
-          <view class="checkbox"></view>
-          <view class="check-value">
-            <text>红</text>
-          </view>
-        </view>
-        <view class="check-item">
-          <view class="checkbox"></view>
-          <view class="check-value">
-            <text>绿</text>
-          </view>
-        </view>
-        <view class="check-item">
-          <view class="checkbox"></view>
-          <view class="check-value">
-            <text>左转</text>
-          </view>
-        </view> -->
-      </view>
-    </view>
+      <div class="control-container">
+        <div class="check-item" v-for="item in workMode" :key="item.value" @click="workModeChecked = item.value">
+          <div class="checkbox" :class="{ active: workModeChecked === item.value }"></div>
+          <div class="check-value">
+            <span>{{ item.name }}</span>
+          </div>
+        </div>
+        <!-- <div class="check-item">
+          <div class="checkbox"></div>
+          <div class="check-value">
+            <span>红</span>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="checkbox"></div>
+          <div class="check-value">
+            <span>绿</span>
+          </div>
+        </div>
+        <div class="check-item">
+          <div class="checkbox"></div>
+          <div class="check-value">
+            <span>左转</span>
+          </div>
+        </div> -->
+      </div>
+    </div>
     
-    <view class="operation">
-      <text class="cancel" @click="handleCancel">取消</text>
-      <text class="start" @click="handleSubmit">执行</text>
-    </view>
-  </view>
+    <div class="operation">
+      <span class="cancel" @click="handleCancel">取消</span>
+      <span class="start" @click="handleSubmit">执行</span>
+    </div>
+  </div>
 </template>
 
 <script>
   export default {
+    services: ["_2d", "tunnel", "tunnel_2d"],
     name:"t-modal-signallamp",
     props: {
       tunnelId: {
@@ -133,25 +134,18 @@
       // 执行
       handleSubmit () {
         if (this.checkedList.length === 0) {
-          return uni.showToast({
-            title: '请选择设备'
-          })
+          return this.$message.warning("请选择设备")
         }
         if (!this.workModeChecked) {
-          return uni.showToast({
-            title: '请选择控制模式'
-          })
+          return this.$message.warning("请选择控制模式")
         }
-        this.$request.operateCommonDevice({
+        this.$service.tunnel_2d.operateCommonDevice({
           classifyNumber: 'signallamp',
           deviceIds: this.checkedList.join(','),
           workMode: parseInt(this.workModeChecked)
         }).then(res => {
           if (res.status === 1) {
-            uni.showToast({
-              title: '执行成功',
-              icon: 'success'
-            })
+            this.$notifySuccess()
             this.$emit('update-devices', this.checkedList.map(id => {
               return {
                 id,
@@ -221,7 +215,7 @@
         this.checkedAll = null
         this.deviceList.splice(0, this.deviceList.length)
         this.checkedList.splice(0, this.checkedList.length) // 清空已选的设备
-        this.$request.getSelectDeviceList(this.form).then(res => {
+        this.$service.tunnel_2d.getSelectDeviceList(this.form).then(res => {
           if (res && res.data) {
             this.deviceList.push(...res.data.map(item => {
               if (item.sensorValTextShow) {
@@ -244,7 +238,7 @@
       },
       // 控制模式
       getDeviceClassifyControlInfo () {
-        return this.$request.getDeviceClassifyControlInfo({
+        return this.$service.tunnel_2d.getDeviceClassifyControlInfo({
           Id: this.classifyId
         }).then(res => {
           if (res && res.data) {
@@ -273,47 +267,47 @@
 
 <style lang="scss">
 .t-modal-signallamp {
-  width: 340.2343rpx;
-  height: 237.5rpx;
-  background: url(../../static/modal/laneIndicator/bg.png) center center / 100% 100% no-repeat;
+  width: 871px;
+  height: 608px;
+  background: url(../../../assets/tunnel/modal/laneIndicator/bg.png) center center / 100% 100% no-repeat;
   display: flex;
   flex-direction: column;
-  padding: 5.4687rpx 12.5rpx 2.7343rpx;
+  padding: 14px 32px 7px;
   .header {
-    width: 108.2031rpx;
-    height: 17.1875rpx;
-    line-height: 17.1875rpx;
+    width: 277px;
+    height: 44px;
+    line-height: 44px;
     text-align: center;
-    background: url(../../static/modal/laneIndicator/top-bg.png) center center / 100% 100% no-repeat;
-    font-size: 7.0312rpx;
+    background: url(../../../assets/tunnel/modal/laneIndicator/top-bg.png) center center / 100% 100% no-repeat;
+    font-size: 18px;
     font-family: Microsoft YaHei;
     font-weight: bold;
     color: #FFFFFF;
     margin: 0 auto;
   }
   .signallamp-content {
-    width: 313.6718rpx;
-    margin: 10.1562rpx auto;
-    height: 168.3593rpx;
+    width: 803px;
+    margin: 26px auto;
+    height: 431px;
     background: #0B0A30;
     border: 1px solid #1D2388;
-    margin-bottom: 10.5468rpx;
-    padding: 7.4218rpx 8.9843rpx 6.6406rpx;
+    margin-bottom: 27px;
+    padding: 19px 23px 17px;
     display: flex;
     flex-direction: column;
   }
   .search-container {
-    height: 13.2812rpx;
+    height: 34px;
     display: flex;
     align-items: center;
-    text {
+    span {
       display: inline-block;
-      height: 13.2812rpx;
-      line-height: 13.2812rpx;
-      width: 31.25rpx;
+      height: 34px;
+      line-height: 34px;
+      width: 80px;
       text-align: center;
       background: #1B195A;
-      font-size: 4.6875rpx;
+      font-size: 12px;
       font-family: Microsoft YaHei;
       font-weight: 400;
       color: #286BC8;
@@ -321,106 +315,106 @@
         background: #3B46E2;
         color: #FFFFFF;
       }
-      & + text {
-        margin-left: 3.9062rpx;
+      & + span {
+        margin-left: 10px;
       }
     }
     input {
-      width: 138.2812rpx;
-      height: 13.2812rpx;
-      background: #120F41 url(../../static/modal/laneIndicator/sousuo.png) 125.3906rpx center / 7.8125rpx auto no-repeat;
+      width: 354px;
+      height: 34px;
+      background: #120F41 url(../../../assets/tunnel/modal/laneIndicator/sousuo.png) 321px center / 20px auto no-repeat;
       border: 1px solid #4E58ED;
       display: inline-block;
-      font-size: 4.6875rpx;
+      font-size: 12px;
       font-family: Microsoft YaHei;
       font-weight: 400;
       color: #5DA0FE;
-      padding: 0 12.8906rpx 0 6.25rpx;
+      padding: 0 33px 0 16px;
       box-sizing: border-box;
       &.input-dom {
-        margin-left: 5.0781rpx;
+        margin-left: 13px;
       }
     }
     .mul-select {
-      width: 138.2812rpx;
-      height: 13.2812rpx;
+      width: 354px;
+      height: 34px;
       background: #120F41;
-      border: 0.3906rpx solid #4E58ED;
+      border: 1px solid #4E58ED;
       box-sizing: border-box;
-      margin-right: 3.9062rpx;
+      margin-right: 10px;
     }
     .sel-btn {
-      height: 13.2812rpx;
-      line-height: 13.2812rpx;
-      background: url(../../static/modal/laneIndicator/unselected.png) left center / 5.4687rpx auto no-repeat;
-      padding-left: 8.2031rpx;
-      font-size: 4.6875rpx;
+      height: 34px;
+      line-height: 34px;
+      background: url(../../../assets/tunnel/modal/laneIndicator/unselected.png) left center / 14px auto no-repeat;
+      padding-left: 21px;
+      font-size: 12px;
       font-family: Microsoft YaHei;
       font-weight: 400;
       color: #286BC8;
-      margin-left: 3.5156rpx;
+      margin-left: 9px;
       &:first-of-type {
         
       }
       &.active {
-        background-image: url(../../static/modal/laneIndicator/selected.png);
+        background-image: url(../../../assets/tunnel/modal/laneIndicator/selected.png);
       }
     }
   }
   
   .scroll-container {
-    height: 132.8125rpx;
+    height: 340px;
     // flex: 1;
-    margin: 8.2031rpx 0;
+    margin: 21px 0;
     .scroll-content {
       display: flex;
       flex-wrap: wrap;
       .device-item {
-        width: 69.5312rpx;
-        height: 62.1093rpx;
+        width: 178px;
+        height: 159px;
         background: #120F41;
-        border: 0.3906rpx solid #4E58ED;
+        border: 1px solid #4E58ED;
         position: relative;
         display: flex;
         flex-direction: column;
-        margin-bottom: 5.8593rpx;
+        margin-bottom: 15px;
         &.active {
           border-color: #e7743a;
         }
         &:not(:nth-child(4n)) {
-          margin-right: 7.0312rpx; //9.7656rpx;//10.9375rpx;
+          margin-right: 10px; //25px;//28px;
         }
         .status {
           position: absolute;
           top: 0;
           right: 0;
-          width: 17.5781rpx;
-          height: 17.9687rpx;
-          background: url(../../static/modal/laneIndicator/offline.png) center center / 17.5781rpx 17.9687rpx no-repeat;
+          width: 45px;
+          height: 46px;
+          background: url(../../../assets/tunnel/modal/laneIndicator/offline.png) center center / 45px 46px no-repeat;
           &.on {
-            background-image: url(../../static/modal/laneIndicator/online.png);
+            background-image: url(../../../assets/tunnel/modal/laneIndicator/online.png);
           }
         }
         .device-title {
           flex: 1;
-          font-size: 5.4687rpx;
+          font-size: 14px;
           font-family: Microsoft YaHei;
           font-weight: bold;
           color: #5DA0FE;
-          padding: 3.9062rpx 5.0781rpx;
+          padding: 10px 13px;
         }
         .device-info {
-          height: 15.625rpx;
-          line-height: 7.8125rpx;
+          height: 40px;
+          line-height: 20px;
           background: #262477;
-          font-size: 4.6875rpx;
+          font-size: 12px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: #5DA0FE;
           text-align: center;
-          width: 67.1875rpx;
-          margin: 0 auto 1.1718rpx;
-          text {
+          width: 172px;
+          margin: 0 auto 3px;
+          span {
             display: block;
           }
         }
@@ -434,19 +428,19 @@
       display: flex;
       align-items: center;
       & + .check-item {
-        margin-left: 6.6406rpx;
+        margin-left: 17px;
       }
       .checkbox {
-        background: url(../../static/modal/laneIndicator/unselected.png) center center / 5.4687rpx auto no-repeat;
-        width: 5.4687rpx;
-        height: 5.4687rpx;
-        margin-right: 3.125rpx;
+        background: url(../../../assets/tunnel/modal/laneIndicator/unselected.png) center center / 14px auto no-repeat;
+        width: 14px;
+        height: 14px;
+        margin-right: 8px;
         &.active {
-          background-image: url(../../static/modal/laneIndicator/selected.png);
+          background-image: url(../../../assets/tunnel/modal/laneIndicator/selected.png);
         }
       }
       .check-value {
-        font-size: 4.6875rpx;
+        font-size: 12px;
         font-family: Microsoft YaHei;
         font-weight: 400;
         color: #286BC8;
@@ -454,10 +448,10 @@
         // flex-direction: column;
         // text-align: center;
         // image {
-        //   width: 21.875rpx;
+        //   width: 56px;
         // }
-        // text {
-        //   font-size: 4.6875rpx;
+        // span {
+        //   font-size: 12px;
         //   font-family: Microsoft YaHei;
         //   font-weight: 400;
         //   color: #286BC8;
@@ -467,15 +461,15 @@
   }
   
   .operation {
-    height: 13.2812rpx;
+    height: 34px;
     text-align: center;
-    text {
+    span {
       display: inline-block;
-      width: 31.25rpx;
-      height: 13.2812rpx;
-      line-height: 13.2812rpx;
+      width: 80px;
+      height: 34px;
+      line-height: 34px;
       text-align: center;
-      font-size: 4.6875rpx;
+      font-size: 12px;
       font-family: Microsoft YaHei;
       font-weight: 400;
       color: #FFFFFF;
@@ -483,7 +477,7 @@
     .cancel {
       background: #1B195A;
       color: #286BC8;
-      margin-right: 3.5156rpx;
+      margin-right: 9px;
     }
     .start {
       background: #3B46E2;
