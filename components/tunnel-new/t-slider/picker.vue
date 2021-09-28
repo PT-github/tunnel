@@ -2,7 +2,7 @@
  * @Author: PT
  * @Date: 2021-09-25 23:02:06
  * @LastEditors: PT
- * @LastEditTime: 2021-09-25 23:29:29
+ * @LastEditTime: 2021-09-28 21:51:01
  * @Description: file content
 -->
 <template>
@@ -13,9 +13,10 @@
     value-format="HH:mm"
     placeholder="选择时间"
     class="time-select"
-    style="width: 50px"
+    :style="{width: width}"
     prefix-icon="none"
     :clearable="false"
+    popper-class="picker-select"
     @input="handleChange">
   </el-time-select>
 </template>
@@ -29,7 +30,11 @@ export default {
       type: Boolean,
       default: false
     },
-    value: String
+    value: String,
+    width: {
+      type: String,
+      default: '50px'
+    }
   },
   data () {
     return {
@@ -57,5 +62,8 @@ export default {
     text-align: center;
     background: #0B0A30;
   }
+}
+.picker-select {
+  z-index: 1000001 !important;
 }
 </style>

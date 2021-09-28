@@ -342,7 +342,7 @@ import tModalUrgentphone from "../../components/tunnel-new/t-modal-urgentphone/t
 import tModalConflagration from "../../components/tunnel-new/t-modal-conflagration/t-modal-conflagration";
 import tModalWaterlevel from "../../components/tunnel-new/t-modal-waterlevel/t-modal-waterlevel";
 import tModalDraughtfan from "../../components/tunnel-new/t-modal-draughtfan/t-modal-draughtfan";
-// import tModalBroadcast from "../../components/tunnel-new/t-modal-broadcast/t-modal-broadcast";
+import tModalBroadcast from "../../components/tunnel-new/t-modal-broadcast/t-modal-broadcast";
 import tModalTunneldoor from "../../components/tunnel-new/t-modal-tunneldoor/t-modal-tunneldoor";
 import tModalDynamotor from "../../components/tunnel-new/t-modal-dynamotor/t-modal-dynamotor";
 import tModalEnvironment from "../../components/tunnel-new/t-modal-environment/t-modal-environment";
@@ -362,7 +362,7 @@ export default {
     tModalConflagration,
     tModalWaterlevel,
     tModalDraughtfan,
-    // tModalBroadcast,
+    tModalBroadcast,
     tModalTunneldoor,
     tModalDynamotor,
     tModalEnvironment,
@@ -1563,5 +1563,8 @@ export default {
 <style lang="scss">
 .el-message, .el-notification, .el-message-box__wrapper {
   z-index: 1100000 !important;
+}
+.my-loading {
+  z-index: 1090000 !important;
 }
 </style>

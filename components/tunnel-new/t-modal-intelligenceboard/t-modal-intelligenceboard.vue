@@ -676,6 +676,8 @@
         // border: 1px solid red;
         margin-top: 5px;
         height: 500px;
+        overflow-y: auto;
+        position: relative;
 
         .device-item {
           width: 100%; // 220px;

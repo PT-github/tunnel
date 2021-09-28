@@ -1292,7 +1292,7 @@ export default {
     transform: translateX(-200%);
   }
 }
-.map-scroll, .scroll-container, .lighting-center-scroll {
+.left-scroll, .area-scroll, .map-scroll, .scroll-container, .lighting-center-scroll {
   overflow-y: auto;
   &::-webkit-scrollbar {
     width: 10px;

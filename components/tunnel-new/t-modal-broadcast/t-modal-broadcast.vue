@@ -1,215 +1,236 @@
 <!-- 隧道广播 -->
 <template>
-  <view class="t-modal-broadcast">
-    <view class="header">
-      <text>隧道广播设置</text>
-      <text class="close" @tap="handleCancel">x</text>
-    </view>
+  <div class="t-modal-broadcast">
+    <div class="header">
+      <span>隧道广播设置</span>
+      <span class="close" @click="handleCancel">x</span>
+    </div>
     
-    <view class="flex-box">
-      <view class="left" v-if="!type">
-        <view class="title">
-          <text>隧道广播列表</text>
-        </view>
+    <div class="flex-box">
+      <div class="left" v-if="!type">
+        <div class="title">
+          <span>隧道广播列表</span>
+        </div>
         
-        <view class="operation">
+        <div class="operation">
           
-          <text :class="{active: leftRightFlag === 2}" @click="switchLeftRight(2)" v-if="singleDoubleType === 3 || singleDoubleType === 2">左洞</text>
-          <text :class="{active: leftRightFlag === 1}" @click="switchLeftRight(1)" v-if="singleDoubleType === 3 || singleDoubleType === 1">右洞</text>
-          <view class="sel-btn" :class="{ active: checkedAll === 1 }" style="margin-left: 3.9062rpx;" @click="handleAllSelect(1)">
+          <span :class="{active: leftRightFlag === 2}" @click="switchLeftRight(2)" v-if="singleDoubleType === 3 || singleDoubleType === 2">左洞</span>
+          <span :class="{active: leftRightFlag === 1}" @click="switchLeftRight(1)" v-if="singleDoubleType === 3 || singleDoubleType === 1">右洞</span>
+          <div class="sel-btn" :class="{ active: checkedAll === 1 }" style="margin-left: 9px;" @click="handleAllSelect(1)">
             全选
-          </view>
-          <view class="sel-btn" :class="{ active: checkedAll === 0 }" @click="handleAllSelect(0)">
+          </div>
+          <div class="sel-btn" :class="{ active: checkedAll === 0 }" @click="handleAllSelect(0)">
             反选
-          </view>
-        </view>
+          </div>
+        </div>
         
-        <view class="input-area">
+        <div class="input-area">
           <input class="input-dom" type="text" v-model="form.deviceName" @blur="getDeviceList" placeholder="设备名称或桩号" />
-        </view>
+        </div>
         
-        <view class="filter">
-          <text :class="{active: form.workMode === 0}" @click="switchWorkMode(0)">空闲</text>
-          <text :class="{active: form.workMode === 1}" @click="switchWorkMode(1)">播放中</text>
-        </view>
+        <div class="filter">
+          <span :class="{active: form.workMode === 0}" @click="switchWorkMode(0)">空闲</span>
+          <span :class="{active: form.workMode === 1}" @click="switchWorkMode(1)">播放中</span>
+        </div>
         
-        <scroll-view :show-scrollbar="true" scroll-y="true" class="left-scroll">
-          <view class="device-item" v-for="(item, index) in deviceList" :key="item.id + '_' + index" :class="{active: checkedList.indexOf(item.id) !== -1}" @click="handleSelect(item)">
-            <view class="device-title" :style="getStyle(item)">
-              <text>{{ item.workModeName }}</text>
-            </view>
-            <view class="device-info">
-              <text>{{ item.deviceName}}</text>
-              <text>{{item.pileNumberStr}}</text>
-            </view>
-            <view class="status" :class="{on: item.deviceCommunicationsState === 0}"></view>
-          </view>
-          <view class="no-data" v-if="!deviceList.length">
-            <image src="../../static/no-data.png" mode="widthFix"></image>
-            <text>暂无数据</text>
-          </view>
-        </scroll-view>
+        <div :show-scrollbar="true" scroll-y="true" class="left-scroll">
+          <div class="device-item" v-for="(item, index) in deviceList" :key="item.id + '_' + index" :class="{active: checkedList.indexOf(item.id) !== -1}" @click="handleSelect(item)">
+            <div class="device-title" :style="getStyle(item)">
+              <span>{{ item.workModeName }}</span>
+            </div>
+            <div class="device-info">
+              <span>{{ item.deviceName}}</span>
+              <span>{{item.pileNumberStr}}</span>
+            </div>
+            <div class="status" :class="{on: item.deviceCommunicationsState === 0}"></div>
+          </div>
+          <div class="no-data" v-if="!deviceList.length">
+            <img src="../../../assets/tunnel/no-data.png" mode="widthFix">
+            <span>暂无数据</span>
+          </div>
+        </div>
         
-      </view>
-      <view class="right">
-        <view class="content-area">
-          <view class="area-top">
-            <view class="title">
-              <text>报警广播</text>
-              <text class="num">{{ warnList.length }}</text>
-            </view>
-            <view class="button">
-              <text @click="handleAdd(2)">新增广播</text>
-            </view>
-          </view>
+      </div>
+      <div class="right">
+        <div class="content-area">
+          <div class="area-top">
+            <div class="title">
+              <span>报警广播</span>
+              <span class="num">{{ warnList.length }}</span>
+            </div>
+            <div class="button">
+              <span @click="handleAdd(2)">新增广播</span>
+            </div>
+          </div>
           
-          <scroll-view class="area-scroll" scroll-y="true" >
-            <view class="audio-item" v-for="(item, index) in warnList" :key="item.id + '-' + index" @click="selectBroad(item)">
-              <view class="checkbox" :class="{active: checkedBroadIds.indexOf(item.id) !== -1}">
-                <icon class="checked" :size="getRealPx(12)" color="#2B79E3" type="success_no_circle"/>
-              </view>
-              <view class="text">
-                <text>{{ item.templetName }}</text>
-              </view>
-              <view class="listen-btn" @click.stop="listenMp3(item.templetText)">
-                <text>试听</text>
-              </view>
-            </view>
-          </scroll-view>
-          <view class="info">
-            <text>点击击以添加到节目单</text>
-          </view>
-        </view>
+          <div class="area-scroll" scroll-y="true" >
+            <div class="audio-item" v-for="(item, index) in warnList" :key="item.id + '-' + index" @click="selectBroad(item)">
+              <div class="checkbox" :class="{active: checkedBroadIds.indexOf(item.id) !== -1}">
+                <span class="el-icon-check checked"></span>
+              </div>
+              <div class="text">
+                <span>{{ item.templetName }}</span>
+              </div>
+              <div class="listen-btn" @click.stop="listenMp3(item.templetText)">
+                <span>试听</span>
+              </div>
+            </div>
+          </div>
+          <div class="info">
+            <span>点击击以添加到节目单</span>
+          </div>
+        </div>
         
-        <view class="content-area">
-          <view class="area-top">
-            <view class="title">
-              <text>选中播放的广播</text>
-            </view>
-          </view>
+        <div class="content-area">
+          <div class="area-top">
+            <div class="title">
+              <span>选中播放的广播</span>
+            </div>
+          </div>
           
-          <scroll-view :show-scrollbar="true" class="area-scroll" scroll-y="true" style="height: 87.8905rpx">
-            <view class="audio-item" v-for="(item, index) in checkedBroadList" :key="item.id + '-' + index">
-              <view class="text">
-                <text>{{ item.templetName }}</text>
-              </view>
-              <view class="listen-btn" @click.stop="listenMp3(item.templetText)">
-                <text>试听</text>
-              </view>
-              <view class="listen-btn del-btn">
-                <text @click="removeSelected(item.id)">删除</text>
-              </view>
-            </view>
-          </scroll-view>
-        </view>
+          <div :show-scrollbar="true" class="area-scroll" scroll-y="true" style="height: 225px">
+            <div class="audio-item" v-for="(item, index) in checkedBroadList" :key="item.id + '-' + index">
+              <div class="text">
+                <span>{{ item.templetName }}</span>
+              </div>
+              <div class="listen-btn" @click.stop="listenMp3(item.templetText)">
+                <span>试听</span>
+              </div>
+              <div class="listen-btn del-btn">
+                <span @click="removeSelected(item.id)">删除</span>
+              </div>
+            </div>
+          </div>
+        </div>
       
-        <view class="content-area">
-          <view class="area-top">
-            <view class="title">
-              <text>通知广播</text>
-              <text class="num">{{ noticeList.length }}</text>
-            </view>
-            <view class="button">
-              <text @click="handleAdd(3)">新增广播</text>
-            </view>
-          </view>
+        <div class="content-area">
+          <div class="area-top">
+            <div class="title">
+              <span>通知广播</span>
+              <span class="num">{{ noticeList.length }}</span>
+            </div>
+            <div class="button">
+              <span @click="handleAdd(3)">新增广播</span>
+            </div>
+          </div>
           
-          <scroll-view :show-scrollbar="true" class="area-scroll" scroll-y="true" >
-            <view class="audio-item" v-for="(item, index) in noticeList" :key="item.id + '-' + index" @click="selectBroad(item)">
-              <view class="checkbox" :class="{active: checkedBroadIds.indexOf(item.id) !== -1}">
-                <icon class="checked" :size="getRealPx(12)" color="#2B79E3" type="success_no_circle"/>
-              </view>
-              <view class="text">
-                <text>{{ item.templetName }}</text>
-              </view>
-              <view class="listen-btn" @click.stop="listenMp3(item.templetText)">
-                <text>试听</text>
-              </view>
-            </view>
-          </scroll-view>
-          <view class="info">
-            <text>点击击以添加到节目单</text>
-          </view>
-        </view>
+          <div :show-scrollbar="true" class="area-scroll" scroll-y="true" >
+            <div class="audio-item" v-for="(item, index) in noticeList" :key="item.id + '-' + index" @click="selectBroad(item)">
+              <div class="checkbox" :class="{active: checkedBroadIds.indexOf(item.id) !== -1}">
+                <span class="el-icon-check checked"></span>
+              </div>
+              <div class="text">
+                <span>{{ item.templetName }}</span>
+              </div>
+              <div class="listen-btn" @click.stop="listenMp3(item.templetText)">
+                <span>试听</span>
+              </div>
+            </div>
+          </div>
+          <div class="info">
+            <span>点击击以添加到节目单</span>
+          </div>
+        </div>
       
-        <view class="content-area">
-          <view class="area-top">
-            <view class="title">
-              <text>控制区域</text>
-            </view>
-          </view>
+        <div class="content-area">
+          <div class="area-top">
+            <div class="title">
+              <span>控制区域</span>
+            </div>
+          </div>
           
-          <view class="control-content">
-            <view class="control-part1">
-              <text :class="{active: controlType === 1}" @click="controlType = 1">播放</text>
-              <text :class="{active: controlType === 2}" @click="controlType = 2">停止定时</text>
-              <text :class="{active: controlType === 0}" @click="controlType = 0">停止播放</text>
-            </view>
+          <div class="control-content">
+            <div class="control-part1">
+              <span :class="{active: controlType === 1}" @click="controlType = 1">播放</span>
+              <span :class="{active: controlType === 2}" @click="controlType = 2">停止定时</span>
+              <span :class="{active: controlType === 0}" @click="controlType = 0">停止播放</span>
+            </div>
             
-            <view class="control-part2" v-if="controlType === 1">
+            <div class="control-part2" v-if="controlType === 1">
               <!--  @click="isSetTime = !isSetTime" -->
-              <text :class="{ active: isSetTime }">定时播放</text>
-              <!-- <text>取消播放</text> -->
-            </view>
+              <span :class="{ active: isSetTime }">定时播放</span>
+              <!-- <span>取消播放</span> -->
+            </div>
             
-            <view class="control-time" v-if="controlType === 1 && isSetTime">
+            <div class="control-time" v-if="controlType === 1 && isSetTime">
               <!-- start="09:01" end="21:01" -->
-              <picker mode="time" :value="sDate" @change="bindTimeChange">
-                <view class="uni-input">{{sDate}}</view>
+              <picker mode="time" :value="sDate" width="115px" @change="bindTimeChange">
+                <div class="uni-input">{{sDate}}</div>
               </picker>
-              <text class="separation">至</text>
-              <picker mode="time" :value="eDate" @change="bindTimeChange($event, true)">
-                <view class="uni-input">{{eDate}}</view>
+              <span class="separation">至</span>
+              <picker mode="time" :value="eDate" width="115px" @change="bindTimeChange2">
+                <div class="uni-input">{{eDate}}</div>
               </picker>
-            </view>
+            </div>
             
-          </view>
+          </div>
           
-        </view>
+        </div>
               
-        <view class="submit-area">
-          <text @tap="handleCancel">取消</text>
-          <text class="active" @click="handleSubmit">执行</text>
-        </view>
-      </view>
-    </view>
+        <div class="submit-area">
+          <span @click="handleCancel">取消</span>
+          <span class="active" @click="handleSubmit">执行</span>
+        </div>
+      </div>
+    </div>
     <t-modal-control v-model="showAddModal">
-      <view class="add-modal-broad">
-        <view class="header">
-          <text>新增{{ uploadForm.boardcastFileType === 2 ? '报警' : '通知' }}广播</text>
-          <text class="close" @tap="handleHideUploadModal">x</text>
-        </view>
-        <view class="form-control">
-          <view class="label">
-            <text>广播名称：</text>
-          </view>
-          <view class="value">
+      <div class="add-modal-broad">
+        <div class="header">
+          <span>新增{{ uploadForm.boardcastFileType === 2 ? '报警' : '通知' }}广播</span>
+          <span class="close" @click="handleHideUploadModal">x</span>
+        </div>
+        <div class="form-control">
+          <div class="label">
+            <span>广播名称：</span>
+          </div>
+          <div class="value">
             <input v-model="uploadForm.boardcastFileName" :disabled="true" type="text" placeholder="请输入广播文件名称" />
-          </view>
-        </view>
-        <view class="form-control" style="padding-bottom: 11.7187rpx;">
-          <view class="label">
-            <text>广播文件：</text>
-          </view>
-          <view class="value">
+          </div>
+        </div>
+        <div class="form-control" style="padding-bottom: 30px;">
+          <div class="label">
+            <span>广播文件：</span>
+          </div>
+          <div class="value">
             <input type="text" v-model="uploadForm.boardcastFilePath" :disabled="true" placeholder="请选择需要上传的广播文件" />
-            <view class="upload" @click="show=true">选择文件</view>
-          </view>
-        </view>
-        <view class="submit-area">
-          <text @tap="handleHideUploadModal">取消</text>
-          <text class="active" @click="handleUpload">保存</text>
-        </view>
-        <nk-select-file v-model="show" @confirm="getPath"></nk-select-file>
-      </view>
+            <!-- <div class="upload" @click="show=true">选择文件</div> -->
+            <el-upload
+              class="upload-demo"
+              ref="upload"
+              :show-file-list="false"
+              :action="action"
+              :headers="headers"
+              :data="uploadData"
+              :limit="1"
+              :file-list="fileList"
+              :before-upload="beforeUpload"
+              :on-success="handleFileSuccess"
+              :on-error="handleFileError">
+              <el-button size="small" type="primary">选择文件</el-button>
+            </el-upload>
+          </div>
+        </div>
+        <div class="submit-area">
+          <span @click="handleHideUploadModal">取消</span>
+          <span class="active" @click="handleUpload">保存</span>
+        </div>
+        <!-- <nk-select-file v-model="show" @confirm="getPath"></nk-select-file> -->
+      </div>
     </t-modal-control>
-  </view>
+  </div>
 </template>
 
 <script>
-  import config from '../../config/index.js'
+  import * as config from '@/utils/constant'
+  import tModalControl from "../t-modal-control/t-modal-control";
+  import picker from '../t-slider/picker'
   export default {
+    services: ["_2d", "tunnel", "tunnel_2d"],
     name:"t-modal-broadcast",
+    components: {
+      tModalControl,
+      picker
+    },
     props: {
       tunnelId: {
         type: [String, Object]
@@ -232,12 +253,22 @@
       }
     },
     data() {
+      let now = new Date()
+      let uploadDate = now.getFullYear() + '' + (now.getMonth() + 1) + '' + now.getDate()
       return {
+        uploadData: {
+          uploadDate,
+          busType: 'BroadCast',
+        },
+        action: `${config.BASE_SERVER}/tunnel/rest/file/commonUploadFileReturnPath`,
+        headers: {
+          jwt: this.$store.state.myUserInfo.jwt
+        },
+        fileList: [],
         show: false,
         pathArr: null,
         showAddModal: false,
         
-        windowWidth: wx.getSystemInfoSync().windowWidth,
         sDate: '08:00',
         eDate: '18:00',
         
@@ -286,9 +317,7 @@
     },
     async created () {
       this.form.tunnelId = this.tunnelId
-      uni.showLoading({
-        title: '加载中'
-      })
+      this.$ctx.showLoading('加载中...');
       if (!this.type) {
         await this.getDeviceList()
       } else {
@@ -296,20 +325,41 @@
       }
       await this.getWarnBroadcastList()
       await this.getNoticeBroadcastList()
-      uni.hideLoading()
+      this.$ctx.hideLoading()
     },
     methods: {
+      beforeUpload () {
+        this.$ctx.showLoading('正在上传...');
+        return true
+      },
+      handleFileSuccess (res, file) {
+        console.log(file, '====')
+        if (res.status !== 1) {
+          this.$refs.upload.clearFiles()
+          this.$message.warning("文件上传失败:" + res.message)
+        } else {
+          this.$notifySuccess('文件上传成功')
+          this.uploadForm.boardcastFilePath = res.data
+          this.uploadForm.boardcastFileName = file.name
+        }
+        this.$ctx.hideLoading()
+      },
+      handleFileError () {
+        this.$message.warning("文件上传失败")
+        this.$refs.upload.clearFiles()
+        this.$ctx.hideLoading()
+      },
       listenMp3 (url) {
-        const innerAudioContext = uni.createInnerAudioContext();
-        innerAudioContext.autoplay = true;
-        innerAudioContext.src = url // 'http://downsc.chinaz.net/Files/DownLoad/sound1/201906/11582.mp3';
-        innerAudioContext.onPlay(() => {
-          console.log('开始播放');
-        });
-        innerAudioContext.onError((res) => {
-          console.log(res.errMsg);
-          console.log(res.errCode);
+        let audio = new Audio()
+        audio.src = url
+        // audio.play()
+        audio.addEventListener('playing', function () {
+          console.log('正在播放')
         })
+        audio.addEventListener('error', function (e) {
+          console.log('播放失败', e)
+        })
+        audio.play()
       },
       handleHideUploadModal () {
         this.showAddModal = false
@@ -317,93 +367,14 @@
         this.uploadForm.boardcastFileName = ''
         this.uploadForm.boardcastFilePath = ''
       },
-      getPath(file){
-        // file:{name: this.fileArr[index].name, url: Path, sizeMB: sizeMb}
-        
-        console.log('======', file)
-        
-      	this.pathArr = file
-        let now = new Date(), self = this
-        let uploadDate = now.getFullYear() + '' + (now.getMonth() + 1) + '' + now.getDate()
-        uni.showLoading({
-          title: '加载中'
-        })
-        uni.uploadFile({
-          url: `${config.baseUrl}/tunnel/rest/file/commonUploadFileReturnPath`,
-          filePath: file[0].url,
-          name: 'file',
-          header: {
-            jwt: this.$store.state.myUserInfo.jwt
-          },
-          formData: {
-            uploadDate,
-            busType: 'BroadCast',
-          },
-          complete: () => {
-            uni.hideLoading()
-          },
-          fail: res => {
-            console.log(res, '文件上传失败')
-            uni.showToast({
-              icon: 'error',
-              title: '文件上传失败'
-            })
-          },
-          success: (res) => {
-            console.log(res, '000000000')
-            if (res.statusCode === 200) {
-              try{
-                let ret = JSON.parse(res.data)
-                if (ret.status === 1) {
-                  console.log('*****',ret.data, '*****', ret)
-                  self.uploadForm.boardcastFilePath = ret.data
-                  self.uploadForm.boardcastFileName = file[0].name
-                } else {
-                  uni.showToast({
-                    icon: 'error',
-                    title: ret.message || '文件上传失败'
-                  })
-                }
-              }catch(e){
-                uni.showToast({
-                  icon: 'error',
-                  title: ret.message || '文件上传失败'
-                })
-              }
-              // 文件上传成功 {data: url}
-              // self.uploadForm.boardcastFilePath = res.data
-            } else {
-              uni.showToast({
-                icon: 'error',
-                title: res.errMsg || '文件上传失败'
-              })
-            }
-          }
-        })
-      },
       handleUpload () {
-        if (!this.uploadForm.boardcastFileName) {
-          return uni.showToast({
-            icon:'none',
-            title: '请输入广播名称'
-          })
+        if (!this.uploadForm.boardcastFileName || !this.uploadForm.boardcastFilePath) {
+          return this.$message.warning("请选择广播文件")
         }
-        this.uploadForm.boardcastFilePath='000000'
-        if (!this.uploadForm.boardcastFilePath) {
-          return uni.showToast({
-            icon:'none',
-            title: '请选择广播文件'
-          })
-        }
-        uni.showLoading({
-          title: '保存中'
-        })
-        this.$request.saveDeviceCriticalBroadcast(this.uploadForm).then(res => {
+        this.$ctx.showLoading('保存中...');
+        this.$service.tunnel_2d.saveDeviceCriticalBroadcast(this.uploadForm).then(res => {
           if (res.status === 1) {
-            uni.showToast({
-              icon:'success',
-              title: '新增广播成功'
-            })
+            this.$notifySuccess('新增广播成功')
             let refreshFun = this.getNoticeBroadcastList
             if (this.uploadForm.boardcastFileType === 2) {
               refreshFun = this.getWarnBroadcastList
@@ -411,11 +382,11 @@
             refreshFun().then(() => {
               this.showAddModal = false
               this.$nextTick(function(){
-                uni.hideLoading()
+                this.$ctx.hideLoading()
               })
             })
           } else {
-            uni.hideLoading()
+            this.$ctx.hideLoading()
           }
         })
       },
@@ -427,36 +398,35 @@
       handleSubmit () {
         // controlType: 1, // 控制 播放：1；停止播放：0；停止定时播放：2
         if (this.controlType === 2) {
-          this.$request.criticalBroadTimedPlaybackShop(this.tunnelId).then(res => {
+          this.$ctx.showLoading('执行中...');
+          this.$service.tunnel_2d.criticalBroadTimedPlaybackShop(this.tunnelId).then(res => {
             if (res.status === 1) {
-              uni.showToast({
-                title: '已关闭定时播放',
-                icon: 'success'
-              })
+              this.$notifySuccess('已关闭定时播放')
               this.$emit('update-devices', [], 'broadcast')
               this.handleCancel()
+              this.$ctx.hideLoading()
             }
+          }).catch(() => {
+            this.$ctx.hideLoading()
           })
         } else if (this.controlType === 0){
           if (!this.checkedList.length) {
-            return uni.showToast({
-              title: '请选择设备',
-              icon: 'none'
-            })
+            return this.$message.warning("请选择设备")
           }
-          this.$request.closeDeviceCriticalBroadcast(this.checkedList.join(',')).then(res => {
+          this.$ctx.showLoading('执行中...')
+          this.$service.tunnel_2d.closeDeviceCriticalBroadcast(this.checkedList.join(',')).then(res => {
             if (res.status === 1) {
-              uni.showToast({
-                title: '已停止播放',
-                icon: 'success'
-              })
+              this.$notifySuccess('已停止播放')
               if (this.checkedList.length === 1) {
                 this.$emit('update-device', {id: this.checkedList[0]})
               } else {
                 this.$emit('update-devices', [], 'broadcast')
               }
               this.handleCancel()
+              this.$ctx.hideLoading()
             }
+          }).catch(() => {
+            this.$ctx.hideLoading()
           })
         } else {
           let obj = {
@@ -467,41 +437,33 @@
             deviceId: this.checkedList.join(',')
           }
           if (!this.checkedList.length) {
-            return uni.showToast({
-              title: '请选择设备',
-              icon: 'none'
-            })
+            return this.$message.warning("请选择设备")
           }
           if (!this.checkedBroadList.length) {
-            return uni.showToast({
-              icon: 'none',
-              title: '请选择广播'
-            })
+            return this.$message.warning("请选择广播")
           }
           // if (this.isSetTime) {
           if (!this.validTime()) {
-            return uni.showToast({
-              icon: 'none',
-              title: '请重新设置时间'
-            })
+            return this.$message.warning("请重新设置时间")
           }
           // } else {
           //   delete obj.sTime
           //   delete obj.eTime
           // }
-          this.$request.criticalBroadTimedPlayback(obj).then(res => {
+          this.$ctx.showLoading('执行中...')
+          this.$service.tunnel_2d.criticalBroadTimedPlayback(obj).then(res => {
             if (res.status === 1) {
-              uni.showToast({
-                title: '定时播放成功',
-                icon: 'success'
-              })
+              this.$notifySuccess('定时播放成功')
               if (this.checkedList.length === 1) {
                 this.$emit('update-device', {id: this.checkedList[0]})
               } else {
                 this.$emit('update-devices', [], 'broadcast')
               }
               this.handleCancel()
+              this.$ctx.hideLoading()
             }
+          }).catch(() => {
+            this.$ctx.hideLoading()
           })
         }
       },
@@ -510,7 +472,7 @@
         this.deviceList.splice(0, this.deviceList.length)
         this.checkedList.splice(0, this.checkedList.length) // 清空已选的设备
         this.checkedAll = null
-        return this.$request.getSelectDeviceList(this.form).then(res => {
+        return this.$service.tunnel_2d.getSelectDeviceList(this.form).then(res => {
           if (res && res.data) {
             this.deviceList.push(...res.data)
           }
@@ -599,7 +561,7 @@
       // 报警
       getWarnBroadcastList () {
         this.warnList.splice(0, this.warnList.length)
-        return this.$request.getDeviceCriticalBroadcastList({
+        return this.$service.tunnel_2d.getDeviceCriticalBroadcastList({
           boardcastFileType: 2
         }).then(res => {
           this.warnList.push(...res.data)
@@ -608,14 +570,17 @@
       // 通知
       getNoticeBroadcastList () {
         this.noticeList.splice(0, this.noticeList.length)
-        return this.$request.getDeviceCriticalBroadcastList({
+        return this.$service.tunnel_2d.getDeviceCriticalBroadcastList({
           boardcastFileType: 3
         }).then(res => {
           this.noticeList.push(...res.data)
         })
       },
-      bindTimeChange(event, f){
-        f ? (this.eDate = event.detail.value) : (this.sDate = event.detail.value)
+      bindTimeChange(v){
+        this.sDate = v
+      },
+      bindTimeChange2(v){
+        this.eDate = v
       },
       // 时间校验
       validTime () {
@@ -642,14 +607,7 @@
         console.log(e.time)//取消事件 =>12:30-17:30
       },
       getRealPx(w) {
-        var real = 0;
-        try {
-          var scale = this.windowWidth / 1920
-          real = Math.floor(scale * w)
-          return real
-        } catch (e) {
-          return real
-        }
+        return w
       },
     }
   }
@@ -657,33 +615,50 @@
 
 <style lang="scss">
 .t-modal-broadcast {
-  width: 343.75rpx;
-  height: 274.6093rpx;
+  width: 880px;
+  height: 703px;
   box-sizing: border-box;
   background: #0B0A30;
-  border: 0.3906rpx solid #1D2388;
+  border: 1px solid #1D2388;
   display: flex;
   flex-direction: column;
+  .upload-demo {
+    .el-button {
+      background: #3B46E2;
+      border-color: #3B46E2;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      padding: 0 10px;
+      height: 34px;
+      line-height: 32px;
+      border-radius: 0;
+      // display: flex;
+      // flex-direction: column;
+      // justify-content: center;
+    }
+  }
   
   .add-modal-broad {
-    width: 171.875rpx;
-    height: 101.5625rpx;//274.6093rpx;
+    width: 440px;
+    height: 260px;//703px;
     box-sizing: border-box;
     background: #0B0A30;
-    border: 0.3906rpx solid #1D2388;
+    border: 1px solid #1D2388;
     .submit-area {
       width: 100%;
-      padding-right: 3.9062rpx;
+      padding-right: 10px;
       box-sizing: border-box;
       display: flex;
       justify-content: center;
-      text {
-        width: 31.25rpx;
-        height: 13.2812rpx;
-        line-height: 13.2812rpx;
+      span {
+        width: 80px;
+        height: 34px;
+        line-height: 34px;
         text-align: center;
         background: #1B195A;
-        font-size: 4.6875rpx;
+        font-size: 12px;
         font-family: Microsoft YaHei;
         font-weight: 400;
         color: #286BC8;
@@ -691,18 +666,18 @@
           background: #3B46E2;
           color: #FFFFFF;
         }
-        & + text {
-          margin-left: 3.9062rpx;
+        & + span {
+          margin-left: 10px;
         }
       }
     }
     .form-control {
       display: flex;
       align-items: center;
-      padding: 11.7187rpx 11.7187rpx 0;
+      padding: 30px 30px 0;
       .label {
         color: #5DA0FE;
-        font-size: 5.4687rpx;
+        font-size: 14px;
         font-family: Microsoft YaHei;
         font-weight: 400;
         color: #5DA0FE;
@@ -710,25 +685,25 @@
       .value {
         display: flex;
         flex: 1;
-        input {
+        > input {
           flex: 1;
-          border: 0.3906rpx solid #4E58ED;
-          height: 13.2812rpx;
+          border: 1px solid #4E58ED;
+          height: 34px;
           display: block;
-          font-size: 4.6875rpx;
+          font-size: 12px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: #5DA0FE;
-          padding: 0 6.25rpx;
+          padding: 0 16px;
           box-sizing: border-box;
         }
         .upload {
           background: #3B46E2;
           color: #FFFFFF;
-          font-size: 4.6875rpx;
+          font-size: 12px;
           font-family: Microsoft YaHei;
           font-weight: 400;
-          padding: 0 3.9062rpx;
+          padding: 0 10px;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -742,11 +717,11 @@
     display: flex;
     flex: 1;
     .left {
-      width: 93.75rpx;
-      border-right: 0.3906rpx solid #1D2388;
-      padding: 6.25rpx 3.9062rpx;
+      width: 240px;
+      border-right: 1px solid #1D2388;
+      padding: 16px 10px;
       .title {
-        font-size: 5.4687rpx;
+        font-size: 14px;
         font-family: Microsoft YaHei;
         font-weight: 400;
         color: #5DA0FE;
@@ -754,16 +729,18 @@
       
       .left-scroll {
         // border: 1px solid red;
-        height: 183.5937rpx;
+        height: 470px;
+        overflow-y: auto;
+        position: relative;
         .device-item {
-          width: 100%;// 85.9375rpx;
-          height: 54.6875rpx;//46.875rpx;
+          width: 100%;// 220px;
+          height: 140px;//120px;
           background: #120F41;
-          border: 0.3906rpx solid #4E58ED;
+          border: 1px solid #4E58ED;
           position: relative;
           display: flex;
           flex-direction: column;
-          margin: 0 auto 3.125rpx;
+          margin: 0 auto 8px;
           box-sizing: border-box;
           &.active {
             border-color: #e7743a;
@@ -772,33 +749,33 @@
             position: absolute;
             top: 0;
             right: 0;
-            width: 17.5781rpx;
-            height: 17.9687rpx;
-            background: url(../../static/modal/laneIndicator/offline.png) center center / 17.5781rpx 17.9687rpx no-repeat;
+            width: 45px;
+            height: 46px;
+            background: url(../../../assets/tunnel/modal/laneIndicator/offline.png) center center / 45px 46px no-repeat;
             &.on {
-              background-image: url(../../static/modal/laneIndicator/online.png);
+              background-image: url(../../../assets/tunnel/modal/laneIndicator/online.png);
             }
           }
           .device-title {
             flex: 1;
-            font-size: 5.4687rpx;
+            font-size: 14px;
             font-family: Microsoft YaHei;
             font-weight: bold;
             color: #5DA0FE;
-            padding: 3.9062rpx 5.0781rpx;
+            padding: 10px 13px;
           }
           .device-info {
-            height: 15.625rpx;
-            line-height: 7.8125rpx;
+            height: 40px;
+            line-height: 20px;
             background: #262477;
-            font-size: 4.6875rpx;
+            font-size: 12px;
             font-family: Microsoft YaHei;
             font-weight: 400;
             color: #5DA0FE;
             text-align: center;
             width: 98%;
-            margin: 0 auto 1.1718rpx;
-            text {
+            margin: 0 auto 3px;
+            span {
               display: block;
             }
           }
@@ -806,18 +783,18 @@
       }
       
       .filter {
-        padding: 1.9531rpx 0;
-        text {
-          font-size: 4.6875rpx;
+        padding: 5px 0;
+        span {
+          font-size: 12px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: #286BC8;
           display: inline-block;
-          height: 8.9843rpx;
-          line-height: 8.9843rpx;
-          padding: 0 1.9531rpx;
-          & + text {
-            margin-left: 6.25rpx;
+          height: 23px;
+          line-height: 23px;
+          padding: 0 5px;
+          & + span {
+            margin-left: 16px;
           }
           &.active {
             // color: #FFFFFF;
@@ -830,32 +807,32 @@
       .input-area {
         input {
           width: 100%;
-          height: 13.2812rpx;
-          background: #120F41 url(../../static/modal/laneIndicator/sousuo.png) 74.2187rpx center / 7.8125rpx auto no-repeat;
-          border: 0.3906rpx solid #4E58ED;
+          height: 34px;
+          background: #120F41 url(../../../assets/tunnel/modal/laneIndicator/sousuo.png) 190px center / 20px auto no-repeat;
+          border: 1px solid #4E58ED;
           display: block;
-          margin: 5.0781rpx auto 0;
-          font-size: 4.6875rpx;
+          margin: 13px auto 0;
+          font-size: 12px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: #5DA0FE;
-          padding: 0 12.8906rpx 0 6.25rpx;
+          padding: 0 33px 0 16px;
           box-sizing: border-box;
         }
       }
       .operation {
-        height: 11.7187rpx;
+        height: 30px;
         display: flex;
         align-items: center;
-        margin-top: 5.4687rpx;
-        text {
+        margin-top: 14px;
+        span {
           display: inline-block;
-          height: 11.7187rpx;
-          line-height: 11.7187rpx;
-          width: 19.5312rpx;
+          height: 30px;
+          line-height: 30px;
+          width: 50px;
           text-align: center;
           background: #1B195A;
-          font-size: 4.6875rpx;
+          font-size: 12px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: #286BC8;
@@ -863,22 +840,22 @@
             background: #3B46E2;
             color: #FFFFFF;
           }
-          & + text {
-            margin-left: 3.5156rpx;
+          & + span {
+            margin-left: 9px;
           }
         }
         .sel-btn {
-          height: 11.7187rpx;
-          line-height: 11.7187rpx;
-          background: url(../../static/modal/laneIndicator/unselected.png) left center / 5.4687rpx auto no-repeat;
-          padding-left: 7.8125rpx;
-          font-size: 4.6875rpx;
+          height: 30px;
+          line-height: 30px;
+          background: url(../../../assets/tunnel/modal/laneIndicator/unselected.png) left center / 14px auto no-repeat;
+          padding-left: 20px;
+          font-size: 12px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: #286BC8;
-          margin-left: 3.9062rpx;
+          margin-left: 10px;
           &.active {
-            background-image: url(../../static/modal/laneIndicator/selected.png);
+            background-image: url(../../../assets/tunnel/modal/laneIndicator/selected.png);
           }
         }
       }
@@ -890,17 +867,17 @@
       justify-content: space-around;
       .submit-area {
         width: 100%;
-        padding-right: 3.9062rpx;
+        padding-right: 10px;
         box-sizing: border-box;
         display: flex;
         justify-content: flex-end;
-        text {
-          width: 31.25rpx;
-          height: 13.2812rpx;
-          line-height: 13.2812rpx;
+        span {
+          width: 80px;
+          height: 34px;
+          line-height: 34px;
           text-align: center;
           background: #1B195A;
-          font-size: 4.6875rpx;
+          font-size: 12px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: #286BC8;
@@ -908,30 +885,31 @@
             background: #3B46E2;
             color: #FFFFFF;
           }
-          & + text {
-            margin-left: 3.9062rpx;
+          & + span {
+            margin-left: 10px;
           }
         }
       }
       .content-area {
-        width: 115.625rpx;
-        height: 107.4218rpx;
+        width: 296px;
+        height: 275px;
         .area-scroll {
-          height: 68.3593rpx;
+          height: 175px;
           background: #050425;
           box-sizing: border-box;
-          padding: 1.9531rpx 3.9062rpx 0;
+          padding: 5px 10px 0;
+          overflow-y: auto;
           .audio-item {
             display: flex;
-            border-bottom: 0.3906rpx dashed #12105E;
-            height: 12.8906rpx;
+            border-bottom: 1px dashed #12105E;
+            height: 33px;
             align-items: center;
             .checkbox {
-              width: 5.8593rpx;
-              height: 5.8593rpx;
+              width: 15px;
+              height: 15px;
               box-sizing: border-box;
               background: #050425;
-              border: 0.3906rpx solid #4E58ED;
+              border: 1px solid #4E58ED;
               position: relative;
               
               .checked {
@@ -940,6 +918,7 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
                 display: none;
+                color: #2B79E3;
               }
               &.active {
                 background: #262477;
@@ -950,9 +929,9 @@
             }
             .text {
               flex: 1;
-              // line-height: 68.3593rpx;
-              padding: 0 4.2968rpx;
-              font-size: 4.6875rpx;
+              // line-height: 175px;
+              padding: 0 11px;
+              font-size: 12px;
               font-family: Microsoft YaHei;
               font-weight: 400;
               color: #5DA0FE;
@@ -961,14 +940,14 @@
               white-space: nowrap;
             }
             .listen-btn {
-              width: 15.625rpx;
-              height: 7.8125rpx;
-              line-height: 7.8125rpx;
+              width: 40px;
+              height: 20px;
+              line-height: 20px;
               text-align: center;
               background: #0B0A30;
-              border: 0.3906rpx solid #3B46E2;
-              border-radius: 1.5625rpx;
-              font-size: 4.6875rpx;
+              border: 1px solid #3B46E2;
+              border-radius: 4px;
+              font-size: 12px;
               font-family: Microsoft YaHei;
               font-weight: 400;
               color: #3B46E2;
@@ -977,37 +956,37 @@
                 color: #E7743A;
               }
               & + .listen-btn {
-                margin-left: 3.125rpx;
+                margin-left: 8px;
               }
             }
           }
         }
         .info {
           background: #050425;
-          height: 19.5312rpx;
-          line-height: 19.5312rpx;
+          height: 50px;
+          line-height: 50px;
           text-align: center;
-          font-size: 4.6875rpx;
+          font-size: 12px;
           font-family: Microsoft YaHei;
           font-weight: 400;
           color: #3B46E2;
         }
         .control-content {
-          height: 87.8906rpx;
+          height: 225px;
           background: #050425;
           box-sizing: border-box;
-          padding: 9.375rpx 7.0312rpx;
+          padding: 24px 18px;
         }
         .control-part1 {
           display: flex;
           justify-content: space-between;
-          text {
-            width: 31.25rpx;
-            height: 11.7187rpx;
-            line-height: 11.7187rpx;
+          span {
+            width: 80px;
+            height: 30px;
+            line-height: 30px;
             text-align: center;
             background: #1B195A;
-            font-size: 4.6875rpx;
+            font-size: 12px;
             font-family: Microsoft YaHei;
             font-weight: 400;
             color: #286BC8;
@@ -1022,20 +1001,20 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-top: 3.9062rpx;
+          margin-top: 10px;
           .separation {
-            font-size: 4.6875rpx;
+            font-size: 12px;
             font-family: Microsoft YaHei;
             font-weight: 400;
             color: #286BC8;
           }
           uni-picker {
             display: inline-block;
-            width: 44.9218rpx;
-            height: 10.9375rpx;
-            line-height: 10.9375rpx;
+            width: 115px;
+            height: 28px;
+            line-height: 28px;
             background: #050425;
-            border: 0.3906rpx solid #4E58ED;
+            border: 1px solid #4E58ED;
             color: #286BC8;
             text-align: center;
           }
@@ -1043,14 +1022,14 @@
         
         .control-part2 {
           display: flex;
-          margin-top: 3.9062rpx;
-          text {
-            width: 31.25rpx;
-            height: 11.7187rpx;
-            line-height: 11.7187rpx;
+          margin-top: 10px;
+          span {
+            width: 80px;
+            height: 30px;
+            line-height: 30px;
             text-align: center;
             background: #1B195A;
-            font-size: 4.6875rpx;
+            font-size: 12px;
             font-family: Microsoft YaHei;
             font-weight: 400;
             color: #286BC8;
@@ -1058,62 +1037,62 @@
               background: #3B46E2;
               color: #FFFFFF;
             }
-            & + text {
-              margin-left: 3.9062rpx;
+            & + span {
+              margin-left: 10px;
             }
           }
         }
         
         .area-top {
-          height: 18.75rpx;
+          height: 48px;
           position: relative;
           .button {
             position: absolute;
-            top: 5.4687rpx;
+            top: 14px;
             right: 0;
-            width: 31.25rpx;
-            height: 9.375rpx;
-            line-height: 8.5937rpx;
+            width: 80px;
+            height: 24px;
+            line-height: 22px;
             text-align: center;
             box-sizing: border-box;
-            border-radius: 4.6875rpx;
+            border-radius: 12px;
             background: #0B0A30;
-            border: 0.3906rpx solid #4E58ED;
-            font-size: 4.6875rpx;
+            border: 1px solid #4E58ED;
+            font-size: 12px;
             font-family: Microsoft YaHei;
             font-weight: 400;
             color: #5DA0FE;
           }
           .title {
-            font-size: 5.4687rpx;
+            font-size: 14px;
             font-family: Microsoft YaHei;
             font-weight: bold;
             color: #5DA0FE;
-            padding-left: 7.0312rpx;
-            height: 18.75rpx;
-            line-height: 18.75rpx;
+            padding-left: 18px;
+            height: 48px;
+            line-height: 48px;
             position: relative;
           }
           .num {
-            font-size: 4.6875rpx;
+            font-size: 12px;
             font-family: Microsoft YaHei;
             font-weight: 400;
             color: #5DA0FE;
             display: inline-block;
             background: #262477;
-            border-radius: 3.9062rpx;
-            padding: 0 3.5156rpx;
-            height: 7.8125rpx;
-            line-height: 7.8125rpx;
-            margin-left: 4.2968rpx;
+            border-radius: 10px;
+            padding: 0 9px;
+            height: 20px;
+            line-height: 20px;
+            margin-left: 11px;
           }
           &::before {
             content: '';
-            width: 1.1718rpx;
-            height: 3.9062rpx;
+            width: 3px;
+            height: 10px;
             position: absolute;
-            top: 8.2031rpx;
-            left: 2.7343rpx;
+            top: 21px;
+            left: 7px;
             background: #4E58ED;
           }
         }
@@ -1122,27 +1101,27 @@
   }
   
   .header {
-    border-bottom: 0.3906rpx solid #1D2388;
-    font-size: 6.25rpx;
+    border-bottom: 1px solid #1D2388;
+    font-size: 16px;
     font-family: Microsoft YaHei;
     font-weight: bold;
     color: #5DA0FE;
-    background: url(../../static/modal/laneIndicator/dot.png) 7.4218rpx center / 7.0312rpx auto no-repeat;
-    padding-left: 19.9218rpx;
-    height: 21.875rpx;
-    line-height: 21.875rpx;
+    background: url(../../../assets/tunnel/modal/laneIndicator/dot.png) 19px center / 18px auto no-repeat;
+    padding-left: 51px;
+    height: 56px;
+    line-height: 56px;
     position: relative;
     .close {
       position: absolute;
-      width: 12.8906rpx;
-      height: 12.8906rpx;
-      line-height: 12.8906rpx;
+      width: 33px;
+      height: 33px;
+      line-height: 33px;
       text-align: center;
       background: #1B195A;
       color: #2B79E3;
-      font-size: 8.5937rpx;
-      right: 5.4687rpx;
-      top: 4.2968rpx;
+      font-size: 22px;
+      right: 14px;
+      top: 11px;
     }
   }
 }

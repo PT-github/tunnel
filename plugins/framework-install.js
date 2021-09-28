@@ -66,7 +66,7 @@ export default ({store}) => {
             return options;
         },
         showLoading: text => {
-            window._loading = Vue.prototype.$loading({text});
+            window._loading = Vue.prototype.$loading({text, customClass: 'my-loading'});
         },
         hideLoading: () => {
             window._loading && window._loading.close();
