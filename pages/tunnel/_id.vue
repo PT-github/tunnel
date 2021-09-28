@@ -25,7 +25,7 @@
         <!-- <span class="operation" @click="handleSwitchTunnel(0)">返回首页</span> -->
         <span
           class="operation"
-          @click="showActiveDevice('all')"
+          @click="goHome('all')"
         >返回首页</span>
         <span
           class="operation"
@@ -56,13 +56,13 @@
       </div>
     </div>
 
-    <div class="center">
+    <div class="center" @click="isFold = false">
       <!-- 暂时隐藏 -->
-      <!-- <t-title class="l-title" :isFold="isFold" @is-fold="handleFold"></t-title> -->
+      <t-title class="l-title" :isFold="isFold" @is-fold="handleFold"></t-title>
 
       <!-- 左侧报警预测 -->
       <!-- 暂时隐藏 -->
-      <!-- <div class="left-panel" :class="{ active: isFold }">
+      <div class="left-panel" :class="{ active: isFold }">
         <div class="left-top">
           <t-left-top-item text="今日事件报警" total="23"></t-left-top-item>
           <t-left-top-item text="今日设备报警" total="23"></t-left-top-item>
@@ -73,17 +73,21 @@
           <t-event-warn></t-event-warn>
           <t-event-warn></t-event-warn>
           <t-event-warn></t-event-warn>
-          <t-event-warn></t-event-warn>
-          <t-event-warn></t-event-warn>
+          <!-- <t-event-warn></t-event-warn>
+          <t-event-warn></t-event-warn> -->
         </div>
         <t-left-title type="1">设备报警</t-left-title>
         <div class="device-panel">
           <t-device-warn></t-device-warn>
           <t-device-warn></t-device-warn>
-          <t-device-warn></t-device-warn>
-          <t-device-warn></t-device-warn>
         </div>
-      </div> -->
+        <t-left-title type="1">预警检测</t-left-title>
+        <div class="device-panel">
+          <t-device-warn type="1"></t-device-warn>
+          <t-device-warn type="1"></t-device-warn>
+        </div>
+
+      </div>
 
       <!-- 中间切换头部 -->
       <div class="top-panel">
@@ -317,18 +321,21 @@
         </template>
       </t-modal-control>
 
+
+      <t-modal-control v-model="showSingleDeviceModal">
+        
+        <t-modal-others v-if="singleDeviceOthers.indexOf(singleModalData.classifyNumber) !== -1" :title="singleModalData.title" :classifyNumber="singleModalData.classifyNumber" :deviceData="singleModalData.data" :classifyId="classifyFormat[singleModalData.classifyNumber]" @update-device="handleUpdateDevice" @close="handleSingleClose"/>
+        
+        <t-modal-broadcast v-else-if="singleModalData.classifyNumber === 'broadcast'" :tunnelId="singleModalData.data.tunnelId" :classifyId="classifyFormat['broadcast']" :deviceData="singleModalData.data" type="single" @update-device="handleUpdateDevice" @update-devices="handleUpdateDevices" @close="handleSingleClose"></t-modal-broadcast>
+        
+        <t-modal-intelligenceboard v-else-if="singleModalData.classifyNumber === 'intelligenceboard'" :tunnelId="singleModalData.data.tunnelId" :classifyId="classifyFormat['intelligenceboard']" :deviceData="singleModalData.data" type="single" @update-device="handleUpdateDevice" @update-devices="handleUpdateDevices" @close="handleSingleClose"></t-modal-intelligenceboard>
+        
+      </t-modal-control>
     </div>
   </div>
 </template>
 
 <script>
-// import TipsTitle from "../../components/index/tips-title";
-// import TunnelComponent from "@/components/2d/tunnel";
-// import VideoRtsp from "../../components/video/video-rtsp";
-// import TunnelEventInfo from "../../components/home/tunnel-event-info";
-// import ModalControl from "../../components/2d/modal-control";
-
-// import TunnelEvent from "@/components/2d/event";
 import * as config from "@/utils/constant";
 import TTunnel from "../../components/t-tunnel/t-tunnel";
 import tModalControl from "../../components/tunnel-new/t-modal-control/t-modal-control";
@@ -346,8 +353,14 @@ import tModalBroadcast from "../../components/tunnel-new/t-modal-broadcast/t-mod
 import tModalTunneldoor from "../../components/tunnel-new/t-modal-tunneldoor/t-modal-tunneldoor";
 import tModalDynamotor from "../../components/tunnel-new/t-modal-dynamotor/t-modal-dynamotor";
 import tModalEnvironment from "../../components/tunnel-new/t-modal-environment/t-modal-environment";
-// import tModalVideo from "../../components/tunnel-new/t-modal-video/t-modal-video";
+import tModalVideo from "../../components/tunnel-new/t-modal-video/t-modal-video";
 import tModalIntelligenceboard from "../../components/tunnel-new/t-modal-intelligenceboard/t-modal-intelligenceboard";
+import tModalOthers from "../../components/tunnel-new/t-modal-others/t-modal-others";
+import tTitle from "../../components/tunnel-new/t-title/t-title";
+import tLeftTitle from "../../components/tunnel-new/t-left-title/t-left-title";
+import tDeviceWarn from "../../components/tunnel-new/t-device-warn/t-device-warn";
+import tEventWarn from "../../components/tunnel-new/t-event-warn/t-event-warn";
+import tLeftTopItem from "../../components/tunnel-new/t-left-top-item/t-left-top-item";
 export default {
   components: {
     TTunnel,
@@ -366,8 +379,14 @@ export default {
     tModalTunneldoor,
     tModalDynamotor,
     tModalEnvironment,
-    // tModalVideo,
+    tModalVideo,
     tModalIntelligenceboard,
+    tModalOthers,
+    tTitle,
+    tLeftTitle,
+    tDeviceWarn,
+    tEventWarn,
+    tLeftTopItem,
   },
   services: ["_2d", "tunnel", "tunnel_2d"],
   events: {
@@ -376,6 +395,7 @@ export default {
   name: "Tunnel2D",
   data() {
     return {
+      isFold: false,
       showSmartModal: false, //智能模式
       showEmergencyModal: false, // 应急模式
       showSeriesModal: false, // 时序模式
@@ -513,85 +533,79 @@ export default {
   },
   onLoad() {},
   async created() {
-    await this.getTunnelList();
-    await this.getTunnelInfo(this.tunnelInfoData.id);
-    await Promise.all([
-      this.getAppointListAll(),
-      this.getTunnelDeviceTypes(),
-      this.getTunnelDevice(),
-      this.initCircleData()
-    ]);
+    this.$ctx.showLoading('加载中...')
+    try {
+      await this.getTunnelList();
+      await this.getTunnelInfo(this.tunnelInfoData.id);
+      await Promise.all([
+        this.getAppointListAll(),
+        this.getTunnelDeviceTypes(),
+        this.getTunnelDevice(),
+        this.initCircleData()
+      ]);
+    } catch (error) {
+      
+    }
+    this.$ctx.hideLoading()
   },
   async mounted() {
-    let self = this;
     this.windowWidth = this.$el.offsetWidth
-    console.log(this.windowWidth, '====')
-    // uni.connectSocket({
-    //   url: `${config.ws}/${this.$store.state.myUserInfo.userId}`,
-    //   header: {
-    //     "content-type": "application/json"
-    //   },
-    //   method: "GET"
-    // });
-    // uni.onSocketOpen(function(res) {
-    //   console.log("WebSocket连接已打开！");
-    // });
-    // uni.onSocketError(function(res) {
-    //   console.log("WebSocket连接打开失败，请检查！");
-    // });
-
-    // uni.onSocketMessage(function(res) {
-    //   // TODO
-    //   console.log("收到服务器内容：" + res);
-    //   try {
-    //     let data = JSON.parse(res);
-    //     self.handleDevice(data);
-    //     // self.handleDevice(data.deviceWarningNotify || data.deviceWarningNotifyList)
-    //   } catch (e) {
-    //     //TODO handle the exception
-    //   }
-    // });
   },
   methods: {
-    handleDevice(res) {
+    goHome () {
+      this.$router.push('/')
+    },
+    deviceStatusChange(_, res) {
       if (res.deviceWarningNotify) {
-        // 单个设备
-        let data = res.deviceWarningNotify;
-        for (let i = 0; i < this.tunnelDevices.length; i++) {
-          if (this.tunnelDevices[i].id === data.deviceId) {
-            this.$set(
-              this.tunnelDevices,
-              i,
-              Object.assign({}, this.tunnelDevices[i], data)
-            );
-            break;
+          // 单个设备
+          let data = res.deviceWarningNotify
+          for (let i = 0; i < this.tunnelDevices.length; i++) {
+            if (this.tunnelDevices[i].id === data.deviceId) {
+              if (data.sensorValTextShow) {
+                try{
+                  let arry = [], sensorValTextShow = JSON.parse(data.sensorValTextShow)
+                  for (let props in sensorValTextShow) {
+                    arry.push({ name: props, value: sensorValTextShow[props] })
+                  }
+                  data.sensorValTextList = arry
+                }catch(e){
+                  //TODO handle the exception
+                  console.log('设备解析sensorValTextShow字段报错')
+                }
+              }
+              
+              this.$set(this.tunnelDevices, i, Object.assign({}, this.tunnelDevices[i], data))
+              break
+            }
+          }
+        } else if (res.deviceWarningNotifyList && res.deviceWarningNotifyList.length) {
+          // 多个设备
+          let obj = {}, list = res.deviceWarningNotifyList, hasIntelligenceboard = false
+          list.forEach(item => {
+            obj[item.deviceId] = item
+            if (item.classifyNumber === 'intelligenceboard') {
+              hasIntelligenceboard = true
+            }
+          })
+          for (let i = 0; i < this.tunnelDevices.length; i++) {
+            if (obj[this.tunnelDevices[i].id]) {
+              if (obj[this.tunnelDevices[i].id].sensorValTextShow) {
+                try{
+                  let arry = [], sensorValTextShow = JSON.parse(obj[this.tunnelDevices[i].id].sensorValTextShow)
+                  for (let props in sensorValTextShow) {
+                    arry.push({ name: props, value: sensorValTextShow[props] })
+                  }
+                  obj[this.tunnelDevices[i].id].sensorValTextList = arry
+                }catch(e){
+                  //TODO handle the exception
+                  console.log('设备解析sensorValTextShow字段报错')
+                }
+              }
+              this.$set(this.tunnelDevices, i, Object.assign({}, this.tunnelDevices[i], obj[this.tunnelDevices[i].id]))
+              break
+            }
           }
         }
-      } else if (
-        res.deviceWarningNotifyList &&
-        res.deviceWarningNotifyList.length
-      ) {
-        // 多个设备
-        let obj = {},
-          list = res.deviceWarningNotifyList;
-        list.forEach(item => {
-          obj[item.deviceId] = item;
-        });
-        for (let i = 0; i < this.tunnelDevices.length; i++) {
-          if (obj[this.tunnelDevices[i].id]) {
-            this.$set(
-              this.tunnelDevices,
-              i,
-              Object.assign(
-                {},
-                this.tunnelDevices[i],
-                obj[this.tunnelDevices[i].id]
-              )
-            );
-            break;
-          }
-        }
-      }
     },
     // 单个设备刷新
     handleUpdateDevice(data) {
@@ -624,11 +638,12 @@ export default {
       // }
     },
     logout() {
-      this.$service.tunnel_2d.loginOut().then(res => {
-        this.$store.commit("logout");
-        // uni.navigateTo({
-        //   url: "/pages/login/login"
-        // });
+      this.$showConfirm('是否确认退出登录？').then(() => {
+        this.$service.tunnel_2d.loginOut().then(res => {
+          this.$store.commit("logout");
+          localStorage.removeItem('myUserInfo');
+          location.reload();
+        })
       });
     },
     // 头部分类 筛选
@@ -798,6 +813,7 @@ export default {
     },
 
     doShowModalDevice(device) {
+      this.isFold = false
       let showClassifyNumber = [
         "intelligenceboard",
         "broadcast",
@@ -851,7 +867,7 @@ export default {
         this.$service.tunnel_2d.getIntelligenceBoardList({
           classifyNumber: "intelligenceboard",
           tunnelId: this.tunnelInfoData.id
-        })
+        }).catch(() => {})
       ]).then(list => {
         let deviceList = list[0].data;
         let intelligenceboardList = list[1] ? list[1].data || [] : [],
@@ -955,12 +971,14 @@ export default {
     },
 
     async handleSwitchTunnel(index) {
+      this.$ctx.showLoading('加载中...')
       this.currentTunnelIndex = index;
       this.showTunnel = false;
       await this.getTunnelInfo(this.tunnelList[this.currentTunnelIndex].id);
       await this.getTunnelDeviceTypes();
       await this.getTunnelDevice();
       await this.initCircleData();
+      this.$ctx.hideLoading()
     },
 
     async switchTunnel(v) {
@@ -975,11 +993,13 @@ export default {
           index = index === this.tunnelList.length - 1 ? 0 : index + 1;
           break;
       }
+      this.$ctx.showLoading('加载中...')
       this.currentTunnelIndex = index;
       await this.getTunnelInfo(this.tunnelList[this.currentTunnelIndex].id);
       await this.getTunnelDeviceTypes();
       await this.getTunnelDevice();
       await this.initCircleData();
+      this.$ctx.hideLoading()
     },
     // 获取隧道详情
     getTunnelInfo(id) {
@@ -1040,6 +1060,7 @@ export default {
       position: absolute;
       top: 53px;
       left: 14px;
+      z-index: 10;
     }
 
     .center-panel {
@@ -1380,9 +1401,11 @@ export default {
       // background: red;
       width: 320px;
       overflow: hidden;
+      z-index: 10;
+      background: rgba(2, 1, 20, .5);
 
       &.active {
-        height: 840px;
+        height: 780px;
       }
 
       .left-top {

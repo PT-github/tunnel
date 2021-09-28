@@ -51,6 +51,7 @@
     },
     methods: {
       handleSubmit () {
+        this.$ctx.showLoading('加载中...')
         let request, params = {
           classifyNumber: this.classifyNumber,
           schemeName: this.schemeName,
@@ -64,9 +65,12 @@
         }
         request.call(this.$service.tunnel_2d, params).then(res => {
           if (res && res.status === 1) {
-            this.$notifySuccess()
+            this.$notifySuccess(`${this.schemeModalType == 0 ? '新增' : '修改'}成功`)
           }
           this.$emit('change')
+          this.$ctx.hideLoading()
+        }).catch(() => {
+          this.$ctx.hideLoading()
         })
         
       },

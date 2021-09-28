@@ -69,11 +69,18 @@
     },
     services: ["_2d", "tunnel", "tunnel_2d"],
     async created () {
-      await Promise.all([
-        this.getLuminanceMeterEquipment(),
-        this.listChildrenByParentValue()
-      ])
-      await this.getLists()
+      this.$ctx.showLoading('加载中...')
+      try {
+        await Promise.all([
+          this.getLuminanceMeterEquipment(),
+          this.listChildrenByParentValue()
+        ])
+        await this.getLists()
+      } catch (error) {
+        
+      }
+
+      this.$ctx.hideLoading()
       // await this.getStragyDeviceListAll()
       
       // this.getDeviceClassifyControlInfo()
@@ -155,20 +162,26 @@
         if (!this.checkedList.length) {
           return this.$message.warning("请选择策略")
         }
+        this.$ctx.showLoading('加载中...')
         this.$service.tunnel_2d.lightingEnable({
           enableStatus: 1
         }, {
           ids: this.checkedList
         }).then(res => {
           if (res && res.status === 1) {
-            this.$notifySuccess()
+            this.$notifySuccess('启用成功')
             this.$emit('update-devices', 'lighting')
             this.handleCancel()
           }
+          this.$ctx.hideLoading()
+        }).catch(() => {
+          this.$ctx.hideLoading()
         })
       },
       async handleUpdate () {
+        this.$ctx.showLoading('加载中...')
         await this.getLists()
+        this.$ctx.hideLoading()
       },
       // 获取天气
       listChildrenByParentValue () {
@@ -208,7 +221,7 @@
               id: self.checkedList.join(',')
             }).then(res => {
               if (res && res.status === 1) {
-                this.$notifySuccess()
+                this.$notifySuccess('删除成功')
                 self.schemeChecked = null
                 self.handleUpdate()
               }

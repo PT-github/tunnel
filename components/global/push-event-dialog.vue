@@ -95,7 +95,7 @@ export default {
 
           if (data && data.tunnelId && data.type === 'deviceStatusChange') { // 设备状态更新，刷新隧道图
             //console.log('deviceStatusChange')
-            this.$em.$fire('onDeviceStatusChange', data.tunnelId);
+            this.$em.$fire('onDeviceStatusChange', data.tunnelId, data);
           }
         } catch (e) {
 

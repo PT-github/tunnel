@@ -165,7 +165,7 @@ import tModalControl from '../t-modal-control/t-modal-control.vue'
             id: self.schemeChecked
           }).then(res => {
             if (res && res.status === 1) {
-              this.$notifySuccess()
+              this.$notifySuccess('删除成功')
               self.schemeChecked = null
               self.getListAll()
             }
@@ -184,6 +184,7 @@ import tModalControl from '../t-modal-control/t-modal-control.vue'
         if (!this.checkedList.length) {
           return this.$message.warning("请选择时间段")
         }
+        this.$ctx.showLoading('加载中...')
         this.$service.tunnel_2d.timeEnable({
           enableStatus: 1,
           ids: this.checkedList.join(',')
@@ -193,10 +194,14 @@ import tModalControl from '../t-modal-control/t-modal-control.vue'
             this.handleCancel()
             this.$emit('update-devices', 'lighting')
           }
+          this.$ctx.hideLoading()
+        }).catch(() => {
+          this.$ctx.hideLoading()
         })
       },
       // 时间段绑定设备
       handleBatchAdd (idList, deviceList) {
+        this.$ctx.showLoading('加载中...')
         this.$service.tunnel_2d.updateTimeByBatch(
           deviceList.map(item => {
             return {
@@ -209,12 +214,15 @@ import tModalControl from '../t-modal-control/t-modal-control.vue'
         ).then(res => {
           if (res && res.status === 1) {
             this.getSeasonListAll().then(() => {
-              this.$notifySuccess()
+              this.$notifySuccess('绑定设备成功')
               this.$nextTick(function(){
                 this.deviceModalShow = false
               })
             })
           }
+          this.$ctx.hideLoading()
+        }).catch(() => {
+          this.$ctx.hideLoading()
         })
       },
       // 时间段选择

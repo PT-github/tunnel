@@ -230,18 +230,24 @@
       }
     },
     async created() {
-      this.form.tunnelId = this.tunnelId
-      await this.getDic()
-      if (!this.type) {
-        await this.getDeviceList()
-      } else {
-        this.checkedList.push(this.deviceData.id)
-        this.currentDevice = this.deviceData
+      this.$ctx.showLoading('加载中...')
+      try {
+        this.form.tunnelId = this.tunnelId
+        await this.getDic()
+        if (!this.type) {
+          await this.getDeviceList()
+        } else {
+          this.checkedList.push(this.deviceData.id)
+          this.currentDevice = this.deviceData
+        }
+        await Promise.all([
+          this.getDeviceQbBoardList(),
+          this.getDeviceQbByDeviceId()
+        ])
+      } catch (error) {
+        
       }
-      await Promise.all([
-        this.getDeviceQbBoardList(),
-        this.getDeviceQbByDeviceId()
-      ])
+      this.$ctx.hideLoading()
       // await this.getWarnBroadcastList()
       // await this.getNoticeBroadcastList()
     },
@@ -289,7 +295,7 @@
             })
           }
         }
-
+        this.$ctx.showLoading('加载中...')
         this.$service.tunnel_2d.oprateDeviceQbBoard(obj).then(res => {
           if (res.status === 1) {
             this.$notifySuccess()
@@ -300,6 +306,9 @@
             }
             this.handleCancel()
           }
+          this.$ctx.showLoading('加载中...')
+        }).catch(() => {
+          this.$ctx.showLoading('加载中...')
         })
       },
       // 添加节目单
@@ -318,6 +327,7 @@
         let self = this
         this.$showConfirm("请确认是否删选择的节目信息，删除后不能恢复！").then(
           () => {
+            this.$ctx.showLoading('加载中...')
             self.$service.tunnel_2d.deleteDeviceQbBoardTmepinfo({
               tempId: item.id
             }).then(res => {
@@ -330,6 +340,9 @@
                   }
                 }
               }
+              this.$ctx.hideLoading()
+            }).catch(() => {
+              this.$ctx.hideLoading()
             })
           }
         );
@@ -403,10 +416,12 @@
       async init () {
         // 清空已勾选的播放表
         // this.checkedDeviceQbBoardList.splice(0, this.checkedDeviceQbBoardList.length)
+        this.$ctx.showLoading('加载中...')
         await Promise.all([
           this.getDeviceQbBoardList(),
           this.getDeviceQbByDeviceId()
-        ])
+        ]).catch(() => {})
+        this.$ctx.hideLoading()
       },
 
       // 获取设备节目单

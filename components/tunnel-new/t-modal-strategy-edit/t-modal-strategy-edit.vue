@@ -289,7 +289,7 @@ import picker from '../t-slider/picker.vue'
         if (!this.stragegyObj.deviceList.length) {
           return this.$message.warning("请选择开启设备")
         }
-        
+        this.$ctx.showLoading('加载中...')
         try{
           let modeData = await this.insertStrategy(obj) // '0acef50a-dc81-4ffc-bc82-6b03afeb3de6'; //
           await this.bindStrategyDevice(modeData.data)
@@ -301,6 +301,7 @@ import picker from '../t-slider/picker.vue'
           //TODO handle the exception
           console.log(e)
         }
+        this.$ctx.hideLoading()
       },
       // 时间校验
       validTime (sDate, eDate) {

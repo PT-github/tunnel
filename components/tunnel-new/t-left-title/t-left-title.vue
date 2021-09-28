@@ -1,11 +1,12 @@
 <template>
-  <view class="t-left-title" :class="'t-left-title_'+type" >
-    <text><slot></slot></text>
-  </view>
+  <div class="t-left-title" :class="'t-left-title_'+type" >
+    <span><slot></slot></span>
+  </div>
 </template>
 
 <script>
   export default {
+    services: ["_2d", "tunnel", "tunnel_2d"],
     name:"t-left-title",
     props: {
       type: {
@@ -23,18 +24,18 @@
 
 <style lang="scss" scoped>
 .t-left-title {
-  height: 24.2187rpx;
+  height: 62px;
   box-sizing: border-box;
-  padding: 9.375rpx 0 7.8125rpx 12.8906rpx;
-  font-size: 6.25rpx;
+  padding: 24px 0 20px 33px;
+  font-size: 16px;
   font-weight: bold;
   color: #5DA0FE;
   background-repeat: no-repeat;
-  background-image: url(../../static/shijian@2x.png);
-  background-size: 7.0312rpx auto;
-  background-position: 2.3437rpx 9.375rpx;
+  background-image: url(../../../assets/tunnel/shijian@2x.png);
+  background-size: 18px auto;
+  background-position: 6px 24px;
   &.t-left-title_1 {
-    background-image: url(../../static/tishi@2x.png);
+    background-image: url(../../../assets/tunnel/tishi@2x.png);
   }
 }
 </style>

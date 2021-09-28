@@ -1,16 +1,17 @@
 <template>
-  <view class="t-left-top-item">
-    <view class="title">
-      <text>{{ text }}</text>
-    </view>
-    <view class="num">
-      <text class="total">{{total}}</text><text class="unit">起</text>
-    </view>
-  </view>
+  <div class="t-left-top-item">
+    <div class="title">
+      <span>{{ text }}</span>
+    </div>
+    <div class="num">
+      <span class="total">{{total}}</span><span class="unit">起</span>
+    </div>
+  </div>
 </template>
 
 <script>
   export default {
+    services: ["_2d", "tunnel", "tunnel_2d"],
     name:"t-left-top-item",
     props: [ 'text', 'total' ],
     data() {
@@ -23,26 +24,26 @@
 
 <style lang="scss" scoped>
 .t-left-top-item {
-  width: 54.6875rpx;
-  height: 32.0312rpx;
-  background: url(../../static/left-top-bg.png) center / 54.6875rpx auto no-repeat;
+  width: 140px;
+  height: 82px;
+  background: url(../../../assets/tunnel/left-top-bg.png) center / 140px auto no-repeat;
   .title {
-    font-size: 5.4687rpx;
+    font-size: 14px;
     font-weight: 400;
     color: #FFFFFF;
-    padding: 10.5468rpx 0 0 7.8125rpx;
+    padding: 27px 0 0 20px;
   }
   .num {
-    padding-left: 8.5937rpx;
+    padding-left: 22px;
   }
   .total {
-    font-size: 7.8125rpx;
+    font-size: 20px;
     font-weight: bold;
     color: #4995FE;
-    padding-right:1.1718rpx;
+    padding-right:3px;
   }
   .unit {
-    font-size: 5.4687rpx;
+    font-size: 14px;
     font-weight: bold;
     color: #FFFFFF;
     opacity: 0.5;

@@ -1,12 +1,13 @@
 <template>
-  <view class="t-title">
-    <text><slot>报警预测</slot></text>
-    <view class="fold" :class="{ active: current }" @click="handleClick"></view>
-  </view>
+  <div class="t-title">
+    <span><slot>报警预测</slot></span>
+    <div class="fold" :class="{ active: current }" @click.stop="handleClick"></div>
+  </div>
 </template>
 
 <script>
   export default {
+    services: ["_2d", "tunnel", "tunnel_2d"],
     name:"t-title",
     props: {
       // 是否展开
@@ -23,6 +24,11 @@
     created () {
       this.current = this.isFold
     },
+    watch: {
+      isFold (v) {
+        this.current = v
+      }
+    },
     methods: {
       handleClick () {
         this.current = !this.current
@@ -34,25 +40,25 @@
 
 <style lang="scss" scoped>
 .t-title {
-  width: 125rpx;
-  height: 15.625rpx;
-  background: url(../../static/t-title.png) center / 125rpx auto no-repeat;
-  padding: 4.2968rpx 0 0 16.7968rpx;
+  width: 320px;
+  height: 40px;
+  background: url(../../../assets/tunnel/t-title.png) center / 320px auto no-repeat;
+  padding: 11px 0 0 43px;
   box-sizing: border-box;
   position: relative;
-  text {
-    font-size: 6.25rpx;
+  span {
+    font-size: 16px;
     font-family: Microsoft YaHei;
     font-weight: bold;
     color: #5DA0FE;
   }
   .fold {
     position: absolute;
-    top: 6.25rpx;
-    right: 10.9375rpx;
-    width: 6.25rpx;
-    height: 6.25rpx;
-    background: url(../../static/fold.png) center / 6.25rpx 6.25rpx no-repeat;
+    top: 16px;
+    right: 28px;
+    width: 16px;
+    height: 16px;
+    background: url(../../../assets/tunnel/fold.png) center / 16px 16px no-repeat;
     transition: transform .2s linear;
     &.active {
       transform: rotate(180deg);

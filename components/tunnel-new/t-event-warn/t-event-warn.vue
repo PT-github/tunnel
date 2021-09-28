@@ -1,19 +1,20 @@
 <template>
-  <view class="t-event-warn">
-    <view class="name">
-      <text>隧道行人</text>
-    </view>
-    <view class="no">
-      <text>K1512+12</text>
-    </view>
-    <view class="status">
-      <text>报警中</text>
-    </view>
-  </view>
+  <div class="t-event-warn">
+    <div class="name">
+      <span>隧道行人</span>
+    </div>
+    <div class="no">
+      <span>K1512+12</span>
+    </div>
+    <div class="status">
+      <span>报警中</span>
+    </div>
+  </div>
 </template>
 
 <script>
   export default {
+    services: ["_2d", "tunnel", "tunnel_2d"],
     name:"t-event-warn",
     data() {
       return {
@@ -25,31 +26,31 @@
 
 <style lang="scss" scoped>
 .t-event-warn {
-  width: 55.8593rpx;
-  height: 41.4062rpx;
-  background: url(../../static/warn-bg.png) center / 55.8593rpx auto no-repeat;
+  width: 143px;
+  height: 106px;
+  background: url(../../../assets/tunnel/warn-bg.png) center / 143px auto no-repeat;
   text-align: center;
   .name {
-    font-size: 5.4687rpx;
+    font-size: 14px;
     font-weight: 400;
     color: #5DA0FE;
-    padding-top: 6.25rpx;
+    padding-top: 16px;
   }
   .no {
-    padding: 3.125rpx 0;
-    font-size: 7.0312rpx;
+    padding: 4px 0;
+    font-size: 18px;
     font-weight: bold;
     color: #5DA0FE;
   }
   .status {
-    font-size: 5.4687rpx;
+    font-size: 14px;
     font-weight: 400;
     color: #DFEEF3;
-    > text {
+    > span {
       display: inline-block;
-      height: 8.2031rpx;
-      line-height: 8.2031rpx;
-      padding: 0 3.125rpx;
+      height: 21px;
+      line-height: 21px;
+      padding: 0 8px;
       background-color: #E7743A;
     }
   }

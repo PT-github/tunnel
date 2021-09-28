@@ -181,6 +181,7 @@
         if (!this.checkedList.length) {
           return this.$message.warning("请选择设备")
         }
+        this.$ctx.showLoading('加载中...')
         this.$service.tunnel_2d.tCombinationschemeitemImplement({
           classifyNumber: this.classifyNumber,
           deviceId: this.checkedList.join(','),
@@ -196,6 +197,9 @@
               }
             }))
           }
+          this.$ctx.hideLoading()
+        }).catch(() => {
+          this.$ctx.hideLoading()
         })
         
       },
@@ -231,6 +235,7 @@
         if (v === item.brightNess) {
           return
         }
+        this.$ctx.showLoading('加载中...')
         this.$service.tunnel_2d.tCombinationschemeitemImplement({
           classifyNumber: this.classifyNumber,
           deviceId: item.id,
@@ -247,9 +252,11 @@
             }
             this.$emit('update-devices')
           }
+          this.$ctx.hideLoading()
           
         }).catch(() => {
           instance.resetVal()
+          this.$ctx.hideLoading()
         })
       },
       handleScheme (f) {
@@ -279,7 +286,7 @@
               id: self.schemeChecked
             }).then(res => {
               if (res && res.status === 1) {
-                this.$notifySuccess()
+                this.$notifySuccess('删除成功')
                 self.schemeChecked = null
                 self.listAll()
               }
@@ -289,6 +296,7 @@
       },
       // 方案绑定设备
       handleBatchAdd (list) {
+        this.$ctx.showLoading('加载中...')
         this.$service.tunnel_2d.insertByBatch(
           // schemeId: this.schemeChecked,
           list.map(id => {
@@ -307,12 +315,15 @@
         ).then(res => {
           if (res && res.status === 1) {
             this.getIsDeviceListAll().then(() => {
-              this.$notifySuccess()
+              this.$notifySuccess('添加设备成功')
               this.$nextTick(function(){
                 this.deviceModalShow = false
               })
             })
           }
+          this.$ctx.hideLoading()
+        }).catch(() => {
+          this.$ctx.hideLoading()
         })
       },
       // 方案选择

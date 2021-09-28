@@ -174,6 +174,7 @@ import tModalLighteNess from '../t-modal-lighteNess/t-modal-lighteNess.vue'
         if (!this.selectDeviceIdList.length) {
           return this.$message.warning("请选择设备")
         }
+        this.$ctx.showLoading('加载中...')
         this.$service.tunnel_2d.lightingEnable({
           enableStatus: 1
         }, {
@@ -184,6 +185,9 @@ import tModalLighteNess from '../t-modal-lighteNess/t-modal-lighteNess.vue'
             this.handleCancel()
             this.$emit('update-devices')
           }
+          this.$ctx.hideLoading()
+        }).catch(() => {
+          this.$ctx.hideLoading()
         })
         
       },
@@ -227,6 +231,7 @@ import tModalLighteNess from '../t-modal-lighteNess/t-modal-lighteNess.vue'
         if (v === item.brightNess) {
           return
         }
+        this.$ctx.showLoading('加载中...')
         this.$service.tunnel_2d.tCombinationschemeitemImplement({
           classifyNumber: this.classifyNumber,
           deviceId: item.id,
@@ -242,9 +247,11 @@ import tModalLighteNess from '../t-modal-lighteNess/t-modal-lighteNess.vue'
               }
             }
           }
+          this.$ctx.hideLoading()
           
         }).catch(() => {
           instance.resetVal()
+          this.$ctx.hideLoading()
         })
       },
       handleScheme (f) {

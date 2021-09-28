@@ -410,13 +410,17 @@
             "templateType": 0,
             "templetId": ""
           }
+          this.$ctx.showLoading('加载中...')
           this.$service.tunnel_2d.saveDeviceQbBoardNew(Object.assign({}, obj, this.detail)).then(res => {
             if (res.status === 1) {
-              this.$notifySuccess()
+              this.$notifySuccess('新增成功')
               if (this.currentDevice.resolutionPower === this.detail.resolutionPower) {
                 this.$emit('update-list')
               }
             }
+            this.$ctx.hideLoading()
+          }).catch(() => {
+            this.$ctx.hideLoading()
           })
         }
       },

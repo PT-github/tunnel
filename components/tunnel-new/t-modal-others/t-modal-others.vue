@@ -1,95 +1,97 @@
 <template>
-  <view class="t-modal-others">
-    <view class="header">
-      <text>{{ title }}</text>
-      <text class="close" @tap="handleCancel">x</text>
-    </view>
-    <view class="device-area">
-      <view class="device-name">
+  <div class="t-modal-others">
+    <div class="header">
+      <span>{{ title }}</span>
+      <span class="close" @click="handleCancel">x</span>
+    </div>
+    <div class="device-area">
+      <div class="device-name">
         {{ currentWorkModeName || deviceData.workModeName }}
-      </view>
-      <view class="status" :class="{on: deviceData.deviceCommunicationsState === 0}"></view>
-      <view ref="pic" class="pic" :class="{rotate: deviceData.orientationLocation === 0}" :style="[getStyle(deviceData), changeBg]"></view>
-    </view>
+      </div>
+      <div class="status" :class="{on: deviceData.deviceCommunicationsState === 0}"></div>
+      <div ref="pic" class="pic" :class="{rotate: deviceData.orientationLocation === 0}" :style="[getStyle(deviceData), changeBg]"></div>
+    </div>
 
     <template v-if="classifyNumber === 'lighting'">
-      <view class="light-options">
-        <view class="slider-container">
+      <div class="light-options">
+        <div class="slider-container">
           <t-slider ref="tSlider" :value="deviceData.brightNess" @change="handleSliderChange"></t-slider>
-        </view>
-        <view class="light-workMode">
+        </div>
+        <div class="light-workMode">
           <!-- 照明的控制模式获取不对 -->
-          <view class="sel-btn" :class="{ active: lightForm.workMode === 1 }" @click="handleLightWorkModeChecked(1)">
+          <div class="sel-btn" :class="{ active: lightForm.workMode === 1 }" @click="handleLightWorkModeChecked(1)">
             开启
-          </view>
-          <view class="sel-btn" :class="{ active: lightForm.workMode === 0 }" @click="handleLightWorkModeChecked(0)">
+          </div>
+          <div class="sel-btn" :class="{ active: lightForm.workMode === 0 }" @click="handleLightWorkModeChecked(0)">
             关闭
-          </view>
-        </view>
-      </view>
+          </div>
+        </div>
+      </div>
     </template>
 
     <!-- 其他设备的控制模式 -->
     <template v-else-if="needRequestWorkMode.indexOf(classifyNumber) !== -1">
-      <view class="light-options">
-        <view class="light-workMode">
-          <view class="sel-btn" :class="{ active: workModeChecked == item.value }" v-for="(item,index) in workMode"
+      <div class="light-options">
+        <div class="light-workMode">
+          <div class="sel-btn" :class="{ active: workModeChecked == item.value }" v-for="(item,index) in workMode"
             :key="'workMode-' + item.value" @click="handleWorkModeChecked(item.value)">
             {{ item.name }}
-          </view>
-        </view>
-      </view>
+          </div>
+        </div>
+      </div>
     </template>
 
     <!-- 紧急电话信息 -->
     <template v-if="classifyNumber === 'urgentphone'">
-      <view class="urgentphone-msg">
-        <text>号码：{{ deviceConfig.PhoneNumber }}</text>
-        <text>IP：{{ deviceData.deviceIP }}</text>
-      </view>
+      <div class="urgentphone-msg">
+        <span>号码：{{ deviceConfig.PhoneNumber }}</span>
+        <span>IP：{{ deviceData.deviceIP }}</span>
+      </div>
     </template>
 
     <!-- 水泵信息 沟通后 不要展示 -->
     <!-- <template v-if="classifyNumber === 'waterlevel'">
-      <view class="urgentphone-msg">
-        <text>高位水池：不知道字段cm
-        </text>
-        <text>低位水池：不知道字段cm
-        </text>
-      </view>
+      <div class="urgentphone-msg">
+        <span>高位水池：不知道字段cm
+        </span>
+        <span>低位水池：不知道字段cm
+        </span>
+      </div>
     </template> -->
 
 
     <!-- 火灾报警信息 -->
     <!-- <template v-if="classifyNumber === 'conflagration'">
-      <view class="urgentphone-msg">
-        <text>CO：不知道字段bpms
-        </text>
-        <text>Vi：不知道字段bpms
-        </text>
-      </view>
+      <div class="urgentphone-msg">
+        <span>CO：不知道字段bpms
+        </span>
+        <span>Vi：不知道字段bpms
+        </span>
+      </div>
     </template> -->
 
     <!-- 环境 -->
     <template v-if="classifyNumber === 'environment' && sensorValTextShow">
-      <view class="urgentphone-msg">
-        <text v-for="(item, index) in infoData" :key="'environment_' + index">{{ item.name }}：{{ item.value }}</text>
-      </view>
+      <div class="urgentphone-msg">
+        <span v-for="(item, index) in infoData" :key="'environment_' + index">{{ item.name }}：{{ item.value }}</span>
+      </div>
     </template>
 
-    <view class="submit-area">
-      <text @tap="handleCancel">取消</text>
+    <div class="submit-area">
+      <span @click="handleCancel">取消</span>
       <template v-if="hideSubmit.indexOf(classifyNumber) === -1">
-        <text class="active" @click="handleSubmit">执行</text>
+        <span class="active" @click="handleSubmit">执行</span>
       </template>
 
-    </view>
-  </view>
+    </div>
+  </div>
 </template>
 
 <script>
-  import config from '../../config/index.js'
+  import * as config from '@/utils/constant'
+  import tSlider from '../t-slider/t-slider.vue'
   export default {
+    services: ["_2d", "tunnel", "tunnel_2d"],
     name: "t-modal-others",
     props: {
       title: String,
@@ -154,9 +156,7 @@
       }
     },
     async created() {
-      uni.showLoading({
-        title: '加载中'
-      })
+      this.$ctx.showLoading('加载中...');
 
       this.deviceTypeCode = this.classifyNumber
 
@@ -175,7 +175,7 @@
           //TODO handle the exception
         }
       }
-      uni.hideLoading()
+      this.$ctx.hideLoading()
     },
     methods: {
       handleLightWorkModeChecked (v) {
@@ -198,31 +198,20 @@
           backgroundImage: `url(${config.imagePrefix}/icon/${item.leftRightFlag}/${item.deviceTypeCode || this.deviceTypeCode}_${item.deviceCommunicationsState}${'_' + v}.png)`
         })
         
-        // let view = uni.createSelectorQuery().in(this).select(".pic")
-        // view.fields({
-        //   computedStyle: ['background-image', 'style']
-        // }, data => {
-        //   console.log("得到节点信息" + JSON.stringify(data));
-        //   console.log("节点的宽为" + data.width);
-        // }).exec()
-        // this.$refs.pic.$el.style.backgroundImage = `url(${config.imagePrefix}/icon/${item.leftRightFlag}/${item.deviceTypeCode || this.deviceTypeCode}_${item.deviceCommunicationsState}${'_' + v}.png)`
       },
       // 照明亮度值
       handleSliderChange(v) {
         this.lightForm.currentBrightNess = v
       },
       lightingSubmit() {
-        return this.$request.tCombinationschemeitemImplement({
+        return this.$service.tunnel_2d.tCombinationschemeitemImplement({
           classifyNumber: this.classifyNumber,
           deviceId: this.deviceData.id,
           workMode: this.lightForm.workMode,
           lighteNess: this.lightForm.currentBrightNess
         }).then(res => {
           if (res && res.status === 1) {
-            uni.showToast({
-              icon: 'success',
-              title: '执行成功'
-            })
+            this.$notifySuccess('执行成功')
             this.handleCancel()
             this.$emit('update-device', {
               classifyNumber: this.classifyNumber,
@@ -236,27 +225,26 @@
 
       // 风机-交通信号灯 执行
       draughtfanSubmit() {
-        return this.$request.trafficLightsImplement({
+        return this.$service.tunnel_2d.trafficLightsImplement({
           classifyNumber: this.classifyNumber,
           deviceId: this.deviceData.id,
           workMode: parseInt(this.workModeChecked)
         }).then(res => {
           if (res && res.status === 1) {
-            uni.showToast({
-              title: '执行成功',
-              icon: 'success'
-            })
+            this.$notifySuccess('执行成功')
             this.$emit('update-device', {
               classifyNumber: this.classifyNumber,
               id: this.deviceData.id,
               workMode: parseInt(this.workModeChecked)
             })
           }
+        }).catch(() => {
+
         })
       },
       // 车道指示器执行
       laneIndicatorSubmit() {
-        return this.$request.laneIndicatorImplementList([], {
+        return this.$service.tunnel_2d.laneIndicatorImplementList([], {
           tunnelId: this.deviceData.tunnelId,
           classifyId: this.classifyId,
           deviceId: this.deviceData.id,
@@ -264,10 +252,7 @@
           typeCode: this.classifyNumber,
         }).then(res => {
           if (res.status === 1) {
-            uni.showToast({
-              title: '执行成功',
-              icon: 'success'
-            })
+            this.$notifySuccess('执行成功')
             this.$emit('update-device', {
               id: this.deviceData.id,
               workMode: parseInt(this.workModeChecked)
@@ -278,16 +263,13 @@
       
       // 信号灯执行
       signallampSubmit() {
-        return this.$request.operateCommonDevice({
+        return this.$service.tunnel_2d.operateCommonDevice({
           classifyNumber: 'signallamp',
           deviceIds: this.deviceData.id,
           workMode: parseInt(this.workModeChecked)
         }).then(res => {
           if (res.status === 1) {
-            uni.showToast({
-              title: '执行成功',
-              icon: 'success'
-            })
+            this.$notifySuccess('执行成功')
             this.$emit('update-device', {
               id: this.deviceData.id,
               workMode: parseInt(this.workModeChecked)
@@ -298,16 +280,13 @@
       
       // 信号灯执行
       conflagrationSubmit() {
-        return this.$request.operateCommonDevice({
+        return this.$service.tunnel_2d.operateCommonDevice({
           classifyNumber: 'conflagration',
           deviceIds: this.deviceData.id,
           workMode: parseInt(this.workModeChecked)
         }).then(res => {
           if (res.status === 1) {
-            uni.showToast({
-              title: '执行成功',
-              icon: 'success'
-            })
+            this.$notifySuccess('执行成功')
             this.$emit('update-device', {
               id: this.deviceData.id,
               workMode: parseInt(this.workModeChecked)
@@ -318,16 +297,13 @@
       
       // 水泵执行
       waterlevelSubmit() {
-        return this.$request.operateCommonDevice({
+        return this.$service.tunnel_2d.operateCommonDevice({
           classifyNumber: 'waterlevel',
           deviceIds: this.deviceData.id,
           workMode: parseInt(this.workModeChecked)
         }).then(res => {
           if (res.status === 1) {
-            uni.showToast({
-              title: '执行成功',
-              icon: 'success'
-            })
+            this.$notifySuccess('执行成功')
             this.$emit('update-device', {
               id: this.deviceData.id,
               workMode: parseInt(this.workModeChecked)
@@ -338,16 +314,13 @@
       
       // 风机执行
       draughtfanSubmit() {
-        return this.$request.operateCommonDevice({
+        return this.$service.tunnel_2d.operateCommonDevice({
           classifyNumber: 'draughtfan',
           deviceIds: this.deviceData.id,
           workMode: parseInt(this.workModeChecked)
         }).then(res => {
           if (res.status === 1) {
-            uni.showToast({
-              title: '执行成功',
-              icon: 'success'
-            })
+            this.$notifySuccess('执行成功')
             this.$emit('update-device', {
               id: this.deviceData.id,
               workMode: parseInt(this.workModeChecked)
@@ -358,16 +331,13 @@
       
       // 风机执行
       tunneldoorSubmit() {
-        return this.$request.operateCommonDevice({
+        return this.$service.tunnel_2d.operateCommonDevice({
           classifyNumber: 'tunneldoor',
           deviceIds: this.deviceData.id,
           workMode: parseInt(this.workModeChecked)
         }).then(res => {
           if (res.status === 1) {
-            uni.showToast({
-              title: '执行成功',
-              icon: 'success'
-            })
+            this.$notifySuccess('执行成功')
             this.$emit('update-device', {
               id: this.deviceData.id,
               workMode: parseInt(this.workModeChecked)
@@ -377,16 +347,13 @@
       },
       // 发电机执行
       dynamotorSubmit() {
-        return this.$request.operateCommonDevice({
+        return this.$service.tunnel_2d.operateCommonDevice({
           classifyNumber: 'dynamotor',
           deviceIds: this.deviceData.id,
           workMode: parseInt(this.workModeChecked)
         }).then(res => {
           if (res.status === 1) {
-            uni.showToast({
-              title: '执行成功',
-              icon: 'success'
-            })
+            this.$notifySuccess('执行成功')
             this.$emit('update-device', {
               id: this.deviceData.id,
               workMode: parseInt(this.workModeChecked)
@@ -398,7 +365,7 @@
       // 控制模式
       getDeviceClassifyControlInfo() {
         this.workMode.splice(0, this.workMode.length)
-        return this.$request.getDeviceClassifyControlInfo({
+        return this.$service.tunnel_2d.getDeviceClassifyControlInfo({
           Id: this.classifyId
         }).then(res => {
           if (res && res.data) {
@@ -422,187 +389,193 @@
         this.$emit('close')
       },
       async handleSubmit() {
-        uni.showLoading({
-          title: '加载中'
-        })
+        this.$ctx.showLoading('加载中...');
         // 
         let methodName = `${this.classifyNumber}Submit`
         if (!this[methodName]) {
           methodName = 'draughtfanSubmit'
         }
-        await this[methodName]()
-        uni.hideLoading()
+        try {
+          await this[methodName]()
+        } catch (error) {
+          this.$ctx.hideLoading()
+        } finally {
+          this.$ctx.hideLoading()
+        }
         this.handleCancel()
       }
+    },
+    components: {
+      tSlider
     }
   }
 </script>
 
 <style lang="scss">
   .t-modal-others {
-    width: 171.875rpx;
-    // height: 101.5625rpx;
-    box-sizing: border-box;
-    background: #0B0A30;
-    border: 0.3906rpx solid #1D2388;
-    display: flex;
-    flex-direction: column;
-    // padding-bottom: 11.7187rpx;
+  width: 440px;
+  // height: 260px;
+  box-sizing: border-box;
+  background: #0B0A30;
+  border: 1px solid #1D2388;
+  display: flex;
+  flex-direction: column;
+  // padding-bottom: 30px;
 
-    .light-options {
-      .slider-container {
-        height: 21.875rpx;
-        position: relative;
-        width: 80%;
-        margin: 0 auto;
-      }
-
-      .light-workMode {
-        display: flex;
-        margin: 3.9062rpx 0;
-        justify-content: center;
-
-        .sel-btn {
-          height: 13.2812rpx;
-          line-height: 13.2812rpx;
-          background: url(../../static/modal/laneIndicator/unselected.png) left center / 5.4687rpx auto no-repeat;
-          padding-left: 8.2031rpx;
-          font-size: 4.6875rpx;
-          font-family: Microsoft YaHei;
-          font-weight: 400;
-          color: #286BC8;
-
-          &+.sel-btn {
-            margin-left: 6.25rpx; //3.5156rpx;
-          }
-
-          &.active {
-            background-image: url(../../static/modal/laneIndicator/selected.png);
-          }
-        }
-      }
-    }
-
-    .urgentphone-msg {
-      padding: 0 0 6.25rpx;
-      text-align: center;
-
-      text {
-        font-size: 5.4687rpx;
-        font-family: Microsoft YaHei;
-        font-weight: bold;
-        color: #5DA0FE;
-        padding: 0 6.25rpx;
-      }
-    }
-
-    .pic {
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      flex: 1;
-      background-repeat: no-repeat;
-
-      // background-position: center center !important;
-      &.rotate {
-        transform: rotate(180deg);
-      }
-    }
-
-    .device-area {
-      width: 97.6562rpx; // 85.9375rpx;
-      height: 78.125rpx; //46.875rpx;
-      background: #120F41;
-      border: 0.3906rpx solid #4E58ED;
+  .light-options {
+    .slider-container {
+      height: 56px;
       position: relative;
+      width: 80%;
+      margin: 0 auto;
+    }
+
+    .light-workMode {
       display: flex;
-      flex-direction: column;
-      margin: 11.7187rpx auto;
-      box-sizing: border-box;
-    }
-
-    .status {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 17.5781rpx;
-      height: 17.9687rpx;
-      background: url(../../static/modal/laneIndicator/offline.png) center center / 17.5781rpx 17.9687rpx no-repeat;
-
-      &.on {
-        background-image: url(../../static/modal/laneIndicator/online.png);
-      }
-    }
-
-    .device-name {
-      font-size: 5.4687rpx;
-      font-family: Microsoft YaHei;
-      font-weight: bold;
-      color: #5DA0FE;
-      padding: 3.9062rpx 5.0781rpx;
-      flex: 1;
-    }
-
-    .submit-area {
-      padding: 7.8125rpx 0;
-      width: 100%;
-      border-top: 0.3906rpx solid #1D2388;
-      padding-right: 3.9062rpx;
-      box-sizing: border-box;
-      display: flex;
+      margin: 10px 0;
       justify-content: center;
 
-      text {
-        width: 31.25rpx;
-        height: 13.2812rpx;
-        line-height: 13.2812rpx;
-        text-align: center;
-        background: #1B195A;
-        font-size: 4.6875rpx;
+      .sel-btn {
+        height: 34px;
+        line-height: 34px;
+        background: url(../../../assets/tunnel/modal/laneIndicator/unselected.png) left center / 14px auto no-repeat;
+        padding-left: 21px;
+        font-size: 12px;
         font-family: Microsoft YaHei;
         font-weight: 400;
         color: #286BC8;
 
+        &+.sel-btn {
+          margin-left: 16px; //9px;
+        }
+
         &.active {
-          background: #3B46E2;
-          color: #FFFFFF;
+          background-image: url(../../../assets/tunnel/modal/laneIndicator/selected.png);
         }
-
-        &+text {
-          margin-left: 3.9062rpx;
-        }
-      }
-    }
-
-    .header {
-      border-bottom: 0.3906rpx solid #1D2388;
-      font-size: 6.25rpx;
-      font-family: Microsoft YaHei;
-      font-weight: bold;
-      color: #5DA0FE;
-      background: url(../../static/modal/laneIndicator/dot.png) 7.4218rpx center / 7.0312rpx auto no-repeat;
-      padding: 0 19.9218rpx;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      height: 21.875rpx;
-      line-height: 21.875rpx;
-      position: relative;
-
-      .close {
-        position: absolute;
-        width: 12.8906rpx;
-        height: 12.8906rpx;
-        line-height: 12.8906rpx;
-        text-align: center;
-        background: #1B195A;
-        color: #2B79E3;
-        font-size: 8.5937rpx;
-        right: 5.4687rpx;
-        top: 4.2968rpx;
       }
     }
   }
+
+  .urgentphone-msg {
+    padding: 0 0 16px;
+    text-align: center;
+
+    span {
+      font-size: 14px;
+      font-family: Microsoft YaHei;
+      font-weight: bold;
+      color: #5DA0FE;
+      padding: 0 16px;
+    }
+  }
+
+  .pic {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    flex: 1;
+    background-repeat: no-repeat;
+
+    // background-position: center center !important;
+    &.rotate {
+      transform: rotate(180deg);
+    }
+  }
+
+  .device-area {
+    width: 250px; // 220px;
+    height: 200px; //120px;
+    background: #120F41;
+    border: 1px solid #4E58ED;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin: 30px auto;
+    box-sizing: border-box;
+  }
+
+  .status {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 45px;
+    height: 46px;
+    background: url(../../../assets/tunnel/modal/laneIndicator/offline.png) center center / 45px 46px no-repeat;
+
+    &.on {
+      background-image: url(../../../assets/tunnel/modal/laneIndicator/online.png);
+    }
+  }
+
+  .device-name {
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #5DA0FE;
+    padding: 10px 13px;
+    flex: 1;
+  }
+
+  .submit-area {
+    padding: 20px 0;
+    width: 100%;
+    border-top: 1px solid #1D2388;
+    padding-right: 10px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+
+    span {
+      width: 80px;
+      height: 34px;
+      line-height: 34px;
+      text-align: center;
+      background: #1B195A;
+      font-size: 12px;
+      font-family: Microsoft YaHei;
+      font-weight: 400;
+      color: #286BC8;
+
+      &.active {
+        background: #3B46E2;
+        color: #FFFFFF;
+      }
+
+      &+span {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .header {
+    border-bottom: 1px solid #1D2388;
+    font-size: 16px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #5DA0FE;
+    background: url(../../../assets/tunnel/modal/laneIndicator/dot.png) 19px center / 18px auto no-repeat;
+    padding: 0 51px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 56px;
+    line-height: 56px;
+    position: relative;
+
+    .close {
+      position: absolute;
+      width: 33px;
+      height: 33px;
+      line-height: 33px;
+      text-align: center;
+      background: #1B195A;
+      color: #2B79E3;
+      font-size: 22px;
+      right: 14px;
+      top: 11px;
+    }
+  }
+}
 </style>

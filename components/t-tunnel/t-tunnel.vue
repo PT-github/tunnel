@@ -29,8 +29,6 @@
       class="map"
       :class="{'map-scroll': tunnelInfoData.showMode === 1}"
       ref="orderBox"
-      :scroll-left="scrollLeft"
-      :scroll-x="scrollX"
       @scroll="handleScroll"
     >
       <!-- <div class="map" ref="orderBox" id="map" :style="mapStyle"> -->
@@ -556,18 +554,14 @@ export default {
     showDetail(item) {
       this.$emit("detail", item);
     },
-    handleScroll(e) {
-      // this.old.scrollLeft = e.detail.scrollLeft;
-      // let abs = Math.round(e.detail.scrollLeft / this.outerWidth);
-      // this.buttonClass = abs;
+    handleScroll() {
+      let abs = Math.round(this.$refs.orderBox.scrollLeft / this.outerWidth)
+      this.buttonClass = abs
     },
     //点击移动
     movebutton(i) {
-      this.scrollLeft = this.old.scrollLeft;
-      this.$nextTick(() => {
-        this.scrollLeft = i * this.outerWidth;
-        this.buttonClass = i;
-      });
+      document.querySelector('.map-scroll').scrollLeft = i * this.outerWidth
+      this.buttonClass = i
     },
     getRealPx(w) {
       // var real = 0;
@@ -737,7 +731,7 @@ export default {
       // let outerWidths = (document.body.clientWidth / 100) * 60
       let outerWidths = (this.windowWidth / 100) * 90;
 
-      console.log(this.windowWidth, this.$el, "===111=");
+      // console.log(this.windowWidth, this.$el, "===111=");
       this.outerWidthout = outerWidths;
       this.outerWidth = outerWidths;
       if (this.tunnelInfoData.showMode === 1) {
@@ -785,12 +779,12 @@ export default {
             position: "absolute",
             top:
               singleDoubleType === 3 && leftRightFlag === 1
-                ? tunnelLine + center + this.getRealPx(30) + "px"
+                ? tunnelLine + center + 49 + "px"
                 : "0",
-            height: tunnelLine + this.getRealPx(50) + "px",
+            height: tunnelLine + 60 + "px",
             width: (length / mapLength) * 100 + "%",
             left: `${defaultLeft}`,
-            background: "#142470",
+            background: "#020114",
             zIndex: 9
           };
 

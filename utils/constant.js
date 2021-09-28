@@ -14,7 +14,7 @@ export const BASE_SERVER = 'http://w7.qcxt.com:8080'
 // export const SOCKET_SERVER = '8.134.64.1/api'
 // export const SOCKET_SERVER = '172.16.23.138/api'
 // export const SOCKET_SERVER = `${top.window.location.host}/api`
-export const SOCKET_SERVER = `ws://w7.qcxt.com:8080/tunnel`
+export const SOCKET_SERVER = `w7.qcxt.com:8080`
 
 
 

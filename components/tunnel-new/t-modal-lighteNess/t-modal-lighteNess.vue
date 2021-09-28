@@ -42,6 +42,7 @@ import tSlider from '../t-slider/t-slider.vue'
         this.value = v
       },
       handleSubmit () {
+        this.$ctx.showLoading('加载中...')
         this.$service.tunnel_2d.tCombinationschemeitemImplement({
           classifyNumber: this.classifyNumber,
           deviceId: this.deviceId.join(','),
@@ -51,6 +52,9 @@ import tSlider from '../t-slider/t-slider.vue'
             this.$notifySuccess()
             this.$emit('change')
           }
+          this.$ctx.hideLoading()
+        }).catch(() => {
+          this.$ctx.hideLoading()
         })
       }
     }

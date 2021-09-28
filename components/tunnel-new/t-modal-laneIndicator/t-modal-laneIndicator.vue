@@ -237,9 +237,15 @@
       },
     },
     async created () {
-      await this.getLaneIndicatorData()
-      await this.getDeviceList()
-      await this.getDeviceClassifyControlInfo()
+      this.$ctx.showLoading('加载中...')
+      try {
+        await this.getLaneIndicatorData()
+        await this.getDeviceList()
+        await this.getDeviceClassifyControlInfo()
+      } catch (error) {
+        
+      }
+      this.$ctx.hideLoading()
     },
     methods: {
       // 控制模式

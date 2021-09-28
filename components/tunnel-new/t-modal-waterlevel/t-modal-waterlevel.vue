@@ -104,10 +104,10 @@
       // 执行
       handleSubmit () {
         if (this.checkedList.length === 0) {
-          return this.$message('请选择设备')
+          return this.$message.warning('请选择设备')
         }
         if (!this.workModeChecked) {
-          return this.$message('请选择控制模式')
+          return this.$message.warning('请选择控制模式')
         }
         this.$service.tunnel_2d.operateCommonDevice({
           classifyNumber: 'waterlevel',
