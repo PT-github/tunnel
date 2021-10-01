@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content tunnel-container">
     <!-- 头部 -->
     <div class="header">
       <span class="header-left">{{ title }}</span>
@@ -602,7 +602,6 @@ export default {
                 }
               }
               this.$set(this.tunnelDevices, i, Object.assign({}, this.tunnelDevices[i], obj[this.tunnelDevices[i].id]))
-              break
             }
           }
         }
@@ -1041,6 +1040,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.tunnel-container {
+  min-height: 1000px;
+}
 .content {
   font-size: 16px;
   font-family: Microsoft YaHei;

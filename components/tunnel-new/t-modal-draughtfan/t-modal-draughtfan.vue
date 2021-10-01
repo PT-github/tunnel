@@ -119,6 +119,7 @@
         if (!this.workModeChecked) {
           return this.$message('请选择控制模式')
         }
+        this.$ctx.showLoading('加载中...')
         this.$service.tunnel_2d.operateCommonDevice({
           classifyNumber: 'draughtfan',
           deviceIds: this.checkedList.join(','),
@@ -134,6 +135,9 @@
             }))
             this.handleCancel()
           }
+          this.$ctx.hideLoading()
+        }).catch(() => {
+          this.$ctx.hideLoading()
         })
       },
       // 全选/反选

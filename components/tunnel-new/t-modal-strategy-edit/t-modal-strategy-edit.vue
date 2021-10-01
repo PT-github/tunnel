@@ -67,7 +67,7 @@
             <span>设置开始时间为</span>
           </div>
           <div class="control-time">
-            <picker :disabled="type !== 0" mode="time" :value="stragegyObj.startTime" @change="bindStartTimeChange">
+            <picker :disabled="type !== 0" mode="time" :value="stragegyObj.startTime" @change="bindStartTimeChange" style="width: 100px">
               <div class="uni-input">{{stragegyObj.startTime}}</div>
             </picker>
           </div>
@@ -75,7 +75,7 @@
             <span>结束时间为</span>
           </div>
           <div class="control-time">
-            <picker :disabled="type !== 0" mode="time" :value="stragegyObj.endTime" @change="bindEndTimeChange">
+            <picker :disabled="type !== 0" mode="time" :value="stragegyObj.endTime" @change="bindEndTimeChange" style="width: 100px">
               <div class="uni-input">{{ stragegyObj.endTime }}</div>
             </picker>
           </div>

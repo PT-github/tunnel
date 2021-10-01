@@ -3,159 +3,161 @@
     <div class="header">
       <span>手动模式-车道指示器</span>
     </div>
-    <!-- 左线超车道 1;右线超车道 2;左线行车道 3;右线行车道 4;左线慢车道 5;右线慢车道 6 -->
-    <div class="group">
-      <div class="group-item" :class="{'group-item-hide': singleDoubleType === 1}">
-        <div class="check-group-item" v-if="laneIndicatorDataFormat['1']">
-          <div class="check-label">
-            <span>{{ laneIndicatorDataFormat['1']['name'] }}</span>
+    <div class="laneIndicator-content">
+      <!-- 左线超车道 1;右线超车道 2;左线行车道 3;右线行车道 4;左线慢车道 5;右线慢车道 6 -->
+      <div class="group">
+        <div class="group-item" :class="{'group-item-hide': singleDoubleType === 1}">
+          <div class="check-group-item" v-if="laneIndicatorDataFormat['1']">
+            <div class="check-label">
+              <span>{{ laneIndicatorDataFormat['1']['name'] }}</span>
+            </div>
+            <div class="check-list">
+              <div class="check-item" v-for="item in laneIndicatorDataFormat['1'].deviceCurrentStatusList" :key="'1_' + item.deviceStatus" @click="handleChecked(1, item)">
+                <div class="checkbox" :class="{ active: checkedObj['1'] === item.deviceStatus }"></div>
+                <div class="check-value">
+                  <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
+                  <span>{{ item.deviceName }}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="check-list">
-            <div class="check-item" v-for="item in laneIndicatorDataFormat['1'].deviceCurrentStatusList" :key="'1_' + item.deviceStatus" @click="handleChecked(1, item)">
-              <div class="checkbox" :class="{ active: checkedObj['1'] === item.deviceStatus }"></div>
-              <div class="check-value">
-                <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
-                <span>{{ item.deviceName }}</span>
+          
+          
+          <div class="check-group-item" v-if="laneIndicatorDataFormat['3']">
+            <div class="check-label">
+              <span>{{ laneIndicatorDataFormat['3'].name }}</span>
+            </div>
+            <div class="check-list">
+              <div class="check-item" v-for="item in laneIndicatorDataFormat['3'].deviceCurrentStatusList" :key="'3_' + item.deviceStatus" @click="handleChecked(3, item)">
+                <div class="checkbox" :class="{ active: checkedObj['3'] === item.deviceStatus }"></div>
+                <div class="check-value">
+                  <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
+                  <span>{{ item.deviceName }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="check-group-item"  v-if="laneIndicatorDataFormat['5']">
+            <div class="check-label">
+              <span>{{ laneIndicatorDataFormat['3'].name }}</span>
+            </div>
+            <div class="check-list">
+              <div class="check-item" v-for="item in laneIndicatorDataFormat['5'].deviceCurrentStatusList" :key="'5_' + item.deviceStatus" @click="handleChecked(5, item)">
+                <div class="checkbox" :class="{ active: checkedObj['5'] === item.deviceStatus }"></div>
+                <div class="check-value">
+                  <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
+                  <span>{{ item.deviceName }}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
         
-        
-        <div class="check-group-item" v-if="laneIndicatorDataFormat['3']">
-          <div class="check-label">
-            <span>{{ laneIndicatorDataFormat['3'].name }}</span>
-          </div>
-          <div class="check-list">
-            <div class="check-item" v-for="item in laneIndicatorDataFormat['3'].deviceCurrentStatusList" :key="'3_' + item.deviceStatus" @click="handleChecked(3, item)">
-              <div class="checkbox" :class="{ active: checkedObj['3'] === item.deviceStatus }"></div>
-              <div class="check-value">
-                <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
-                <span>{{ item.deviceName }}</span>
+        <div class="group-item" :class="{'group-item-hide': singleDoubleType === 2}">
+          <div class="check-group-item" v-if="laneIndicatorDataFormat['2']">
+            <div class="check-label">
+              <span>{{ laneIndicatorDataFormat['2'].name }}</span>
+            </div>
+            <div class="check-list">
+              <div class="check-item" v-for="item in laneIndicatorDataFormat['2'].deviceCurrentStatusList" :key="'2_' + item.deviceStatus" @click="handleChecked(2, item)">
+                <div class="checkbox" :class="{ active: checkedObj['2'] === item.deviceStatus }"></div>
+                <div class="check-value">
+                  <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
+                  <span>{{ item.deviceName }}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        
-        <div class="check-group-item"  v-if="laneIndicatorDataFormat['5']">
-          <div class="check-label">
-            <span>{{ laneIndicatorDataFormat['3'].name }}</span>
+          <div class="check-group-item" v-if="laneIndicatorDataFormat['4']">
+            <div class="check-label">
+              <span>{{laneIndicatorDataFormat['4'].name}}</span>
+            </div>
+            <div class="check-list">
+              <div class="check-item" v-for="item in laneIndicatorDataFormat['4'].deviceCurrentStatusList" :key="'4_' + item.deviceStatus" @click="handleChecked(4, item)">
+                <div class="checkbox" :class="{ active: checkedObj['4'] === item.deviceStatus }"></div>
+                <div class="check-value">
+                  <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
+                  <span>{{ item.deviceName }}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="check-list">
-            <div class="check-item" v-for="item in laneIndicatorDataFormat['5'].deviceCurrentStatusList" :key="'5_' + item.deviceStatus" @click="handleChecked(5, item)">
-              <div class="checkbox" :class="{ active: checkedObj['5'] === item.deviceStatus }"></div>
-              <div class="check-value">
-                <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
-                <span>{{ item.deviceName }}</span>
+          <div class="check-group-item" v-if="laneIndicatorDataFormat['6']">
+            <div class="check-label">
+              <span>{{laneIndicatorDataFormat['6'].name}}</span>
+            </div>
+            <div class="check-list">
+              <div class="check-item" v-for="item in laneIndicatorDataFormat['6'].deviceCurrentStatusList" :key="'6_' + item.deviceStatus" @click="handleChecked(6, item)">
+                <div class="checkbox" :class="{ active: checkedObj['6'] === item.deviceStatus }"></div>
+                <div class="check-value">
+                  <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
+                  <span>{{ item.deviceName }}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      
-      <div class="group-item" :class="{'group-item-hide': singleDoubleType === 2}">
-        <div class="check-group-item" v-if="laneIndicatorDataFormat['2']">
-          <div class="check-label">
-            <span>{{ laneIndicatorDataFormat['2'].name }}</span>
+      <div class="custom-area">
+        <div class="title">
+          <span>自定义组合区域</span>
+        </div>
+        
+        <div class="search-container">
+          <span :class="{active: leftRightFlag === 2}" @click="switchLeftRight(2)" v-if="singleDoubleType === 3 || singleDoubleType === 2">左洞</span>
+          <span :class="{active: leftRightFlag === 1}" @click="switchLeftRight(1)" v-if="singleDoubleType === 3 || singleDoubleType === 1">右洞</span>
+          <input class="input-dom" type="text" v-model="form.deviceName" @blur="getDeviceList" placeholder="设备名称或桩号" />
+        </div>
+        
+        <div class="search-container">
+          <span :class="{ active: form.vehicleLane === 1 }" @click="switchVehicleLane(1)">超车道</span>
+          <span :class="{ active: form.vehicleLane === 2 }" @click="switchVehicleLane(2)">行车道</span>
+          <span :class="{ active: form.vehicleLane === 3 }" @click="switchVehicleLane(3)">慢车道</span>
+          
+          <div class="sel-btn" :class="{ active: checkedAll === 1 }" style="margin-left: 9.7656rpx;" @click="handleAllSelect(1)">
+            全选
           </div>
-          <div class="check-list">
-            <div class="check-item" v-for="item in laneIndicatorDataFormat['2'].deviceCurrentStatusList" :key="'2_' + item.deviceStatus" @click="handleChecked(2, item)">
-              <div class="checkbox" :class="{ active: checkedObj['2'] === item.deviceStatus }"></div>
-              <div class="check-value">
-                <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
-                <span>{{ item.deviceName }}</span>
+          <div class="sel-btn" :class="{ active: checkedAll === 0 }" @click="handleAllSelect(0)">
+            反选
+          </div>
+        </div>
+        
+        <div :show-scrollbar="true" class="scroll-container" scroll-y="true" >
+          <div class="scroll-content">
+            <div class="device-item" v-for="(item, index) in deviceList" :key="item.id + '_' + index" :class="{active: checkedList.indexOf(item.id) !== -1}" @click="handleSelect(item)">
+              <div class="device-title" :style="getStyle(item)">
+                <span>{{ item.workModeName }}</span>
+                <div class="sensorValTextShow" v-if="item.sensorValTextShow">
+                  <span>{{ item.sensorValTextList }}</span>
+                </div>
               </div>
+              <div class="device-info">
+                <span>{{ item.deviceName}}</span>
+                <span>{{item.pileNumberStr}}</span>
+              </div>
+              <div class="status" :class="{on: item.deviceCommunicationsState === 0}"></div>
+            </div>
+            <div class="no-data" v-if="!deviceList.length">
+              <img src="../../../assets/tunnel/no-data.png" mode="widthFix">
+              <span>暂无数据</span>
             </div>
           </div>
         </div>
-        <div class="check-group-item" v-if="laneIndicatorDataFormat['4']">
-          <div class="check-label">
-            <span>{{laneIndicatorDataFormat['4'].name}}</span>
-          </div>
-          <div class="check-list">
-            <div class="check-item" v-for="item in laneIndicatorDataFormat['4'].deviceCurrentStatusList" :key="'4_' + item.deviceStatus" @click="handleChecked(4, item)">
-              <div class="checkbox" :class="{ active: checkedObj['4'] === item.deviceStatus }"></div>
-              <div class="check-value">
-                <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
-                <span>{{ item.deviceName }}</span>
-              </div>
+        
+        <div class="control-container">
+          <div class="check-item" v-for="(item, index) in workMode" :key="item.value + '_workMode_' + item" @click="workModeChecked = item.value">
+            <div class="checkbox" :class="{ active: workModeChecked === item.value }"></div>
+            <div class="check-value">
+              <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.value}.png`)" mode="widthFix">
+              <span>{{ item.name }}</span>
             </div>
           </div>
         </div>
-        <div class="check-group-item" v-if="laneIndicatorDataFormat['6']">
-          <div class="check-label">
-            <span>{{laneIndicatorDataFormat['6'].name}}</span>
-          </div>
-          <div class="check-list">
-            <div class="check-item" v-for="item in laneIndicatorDataFormat['6'].deviceCurrentStatusList" :key="'6_' + item.deviceStatus" @click="handleChecked(6, item)">
-              <div class="checkbox" :class="{ active: checkedObj['6'] === item.deviceStatus }"></div>
-              <div class="check-value">
-                <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.deviceStatus}.png`)" mode="widthFix">
-                <span>{{ item.deviceName }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
-    <div class="custom-area">
-      <div class="title">
-        <span>自定义组合区域</span>
-      </div>
-      
-      <div class="search-container">
-        <span :class="{active: leftRightFlag === 2}" @click="switchLeftRight(2)" v-if="singleDoubleType === 3 || singleDoubleType === 2">左洞</span>
-        <span :class="{active: leftRightFlag === 1}" @click="switchLeftRight(1)" v-if="singleDoubleType === 3 || singleDoubleType === 1">右洞</span>
-        <input class="input-dom" type="text" v-model="form.deviceName" @blur="getDeviceList" placeholder="设备名称或桩号" />
-      </div>
-      
-      <div class="search-container">
-        <span :class="{ active: form.vehicleLane === 1 }" @click="switchVehicleLane(1)">超车道</span>
-        <span :class="{ active: form.vehicleLane === 2 }" @click="switchVehicleLane(2)">行车道</span>
-        <span :class="{ active: form.vehicleLane === 3 }" @click="switchVehicleLane(3)">慢车道</span>
-        
-        <div class="sel-btn" :class="{ active: checkedAll === 1 }" style="margin-left: 9.7656rpx;" @click="handleAllSelect(1)">
-          全选
-        </div>
-        <div class="sel-btn" :class="{ active: checkedAll === 0 }" @click="handleAllSelect(0)">
-          反选
-        </div>
-      </div>
-      
-      <div :show-scrollbar="true" class="scroll-container" scroll-y="true" >
-        <div class="scroll-content">
-          <div class="device-item" v-for="(item, index) in deviceList" :key="item.id + '_' + index" :class="{active: checkedList.indexOf(item.id) !== -1}" @click="handleSelect(item)">
-            <div class="device-title" :style="getStyle(item)">
-              <span>{{ item.workModeName }}</span>
-              <div class="sensorValTextShow" v-if="item.sensorValTextShow">
-                <span>{{ item.sensorValTextList }}</span>
-              </div>
-            </div>
-            <div class="device-info">
-              <span>{{ item.deviceName}}</span>
-              <span>{{item.pileNumberStr}}</span>
-            </div>
-            <div class="status" :class="{on: item.deviceCommunicationsState === 0}"></div>
-          </div>
-          <div class="no-data" v-if="!deviceList.length">
-            <img src="../../../assets/tunnel/no-data.png" mode="widthFix">
-            <span>暂无数据</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="control-container">
-        <div class="check-item" v-for="(item, index) in workMode" :key="item.value + '_workMode_' + item" @click="workModeChecked = item.value">
-          <div class="checkbox" :class="{ active: workModeChecked === item.value }"></div>
-          <div class="check-value">
-            <img :src="require(`../../../assets/tunnel/modal/laneIndicator/icon${item.value}.png`)" mode="widthFix">
-            <span>{{ item.name }}</span>
-          </div>
-        </div>
-      </div>
-      
-    </div>
-    
+
     <div class="operation">
       <span class="cancel" @click="handleCancel">取消</span>
       <span class="start" @click="laneIndicatorImplementList">执行</span>
@@ -362,7 +364,7 @@
         } else if (!this.checkedList.length && !laneIndicatorDTOList.length) {
           return this.$message.warning("请选设备或组合")
         }
-        
+        this.$ctx.showLoading('加载中...')
         this.$service.tunnel_2d.laneIndicatorImplementList(laneIndicatorDTOList, {
           tunnelId: this.tunnelId,
           classifyId: this.classifyId,
@@ -395,7 +397,10 @@
             //   }
             // }
             this.$emit('update-devices')
+            this.$ctx.hideLoading()
           }
+        }).catch(() => {
+          this.$ctx.hideLoading()
         })
         console.log(laneIndicatorDTOList)
       },
@@ -449,6 +454,7 @@
 <style lang="scss">
 .t-modal-laneIndicator {
   height: 980px;
+  max-height: 100vh;
   width: 872px;
   background: url(../../../assets/tunnel/modal/laneIndicator/bg.png) center center / 100% 100% no-repeat;
   display: flex;
@@ -466,6 +472,13 @@
     font-weight: bold;
     color: #FFFFFF;
     margin: 0 auto;
+  }
+
+  .laneIndicator-content {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
   }
   
   .group {

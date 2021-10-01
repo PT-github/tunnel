@@ -46,7 +46,8 @@ import tSlider from '../t-slider/t-slider.vue'
         this.$service.tunnel_2d.tCombinationschemeitemImplement({
           classifyNumber: this.classifyNumber,
           deviceId: this.deviceId.join(','),
-          lighteNess: this.value
+          lighteNess: this.value,
+          workMode: 1
         }).then(res => {
           if (res && res.status === 1) {
             this.$notifySuccess()

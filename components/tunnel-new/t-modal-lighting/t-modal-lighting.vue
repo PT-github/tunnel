@@ -19,7 +19,13 @@
     <div class="lighting-center">
       <div class="lighting-center-part">
         <span class="title">左洞：开启{{ leftDeviceList.length }}个回路；右洞开启{{ rightDeviceList.length }}个回路</span>
-        <span class="button" @click="handleSetLight">统一调光</span>
+        <div class="sel-btn" :class="{ active: checkedAll === 1 }" style="margin-left: 25px;" @click="handleAllSelect(1)">
+          <span>全选</span>
+        </div>
+        <div class="sel-btn" :class="{ active: checkedAll === 0 }" @click="handleAllSelect(0)">
+          <span>反选</span>
+        </div>
+        <span class="button" @click="handleSetLight" style="margin-left: 25px;">统一调光</span>
         <span class="button" @click="deviceModalShow = true">选择照明设备</span>
       </div>
       
@@ -239,7 +245,8 @@
         this.$service.tunnel_2d.tCombinationschemeitemImplement({
           classifyNumber: this.classifyNumber,
           deviceId: item.id,
-          lighteNess: v
+          lighteNess: v,
+          workMode: 1
         }).then(res => {
           if (res && res.status === 1) {
             for (let i = 0; i < this.deviceList.length; i++) {
