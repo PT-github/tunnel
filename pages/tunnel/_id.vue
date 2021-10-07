@@ -57,34 +57,36 @@
     </div>
 
     <div class="center" @click="isFold = false">
-      <!-- 暂时隐藏 -->
       <t-title class="l-title" :isFold="isFold" @is-fold="handleFold"></t-title>
 
       <!-- 左侧报警预测 -->
-      <!-- 暂时隐藏 -->
-      <div class="left-panel" :class="{ active: isFold }">
+      <div class="left-panel" :class="{ active: isFold }" @click.stop="">
         <div class="left-top">
-          <t-left-top-item text="今日事件报警" total="23"></t-left-top-item>
-          <t-left-top-item text="今日设备报警" total="23"></t-left-top-item>
+          <t-left-top-item text="今日事件报警" :total="deviceEventCount"></t-left-top-item>
+          <t-left-top-item text="今日设备报警" :total="deviceWarnCount"></t-left-top-item>
         </div>
         <t-left-title>事件报警</t-left-title>
-        <div class="event-panel">
-          <t-event-warn></t-event-warn>
-          <t-event-warn></t-event-warn>
-          <t-event-warn></t-event-warn>
-          <t-event-warn></t-event-warn>
-          <!-- <t-event-warn></t-event-warn>
-          <t-event-warn></t-event-warn> -->
+        <div class="event-panen-box">
+          <div class="event-panel">
+            <t-event-warn v-for="(item, index) in eventList" :key="'eventList_' + index" :data="item"></t-event-warn>
+          </div>
+          <div class="event-panel">
+            <t-event-warn v-for="(item, index) in eventList" :key="'eventList2_' + index" :data="item"></t-event-warn>
+          </div>
         </div>
         <t-left-title type="1">设备报警</t-left-title>
-        <div class="device-panel">
-          <t-device-warn></t-device-warn>
-          <t-device-warn></t-device-warn>
+        <div class="device-panel-box">
+          <div class="device-panel">
+            <t-device-warn v-for="(item, index) in warnList" :key="'warnList_' + index" :data="item"></t-device-warn>
+          </div>
+          <div class="device-panel">
+            <t-device-warn v-for="(item, index) in warnList" :key="'warnList2_' + index" :data="item"></t-device-warn>
+          </div>
         </div>
         <t-left-title type="1">预警检测</t-left-title>
         <div class="device-panel">
-          <t-device-warn type="1"></t-device-warn>
-          <t-device-warn type="1"></t-device-warn>
+          <t-device-warn type="1" :data="{warningTime: '2020-09-09', warningContent: '暂无接口......暂无接口......暂无接口......暂无接口......暂无接口......暂无接口......'}"></t-device-warn>
+          <!-- <t-device-warn type="1"></t-device-warn> -->
         </div>
 
       </div>
@@ -505,7 +507,15 @@ export default {
       waterlevelData: [],
 
       // 隧道环境数据
-      humidityTemperatureData: []
+      humidityTemperatureData: [],
+
+      deviceEventCount: 0, // 事件报警数目
+      deviceWarnCount: 0, // 预警数目
+
+      eventList: [], // 事件列表
+      eventTimer: null,
+      warnList: [], // 预警列表
+      warnTimer: null
     };
   },
   computed: {
@@ -546,12 +556,55 @@ export default {
     } catch (error) {
       
     }
+    this.getHomeStatEventCount()
+    this.getEventPageAll()
+    this.getWarnPageAll()
     this.$ctx.hideLoading()
   },
   async mounted() {
     this.windowWidth = this.$el.offsetWidth
   },
   methods: {
+    getHomeStatEventCount () {
+      return this.$service.tunnel_2d
+        .getHomeStatEventCount({
+          tunnelId: this.tunnelInfoData.id
+        })
+        .then(res => {
+          this.deviceEventCount = res.data.deviceEventCount
+          this.deviceWarnCount = res.data.deviceWarnCount
+        });
+    },
+    getEventPageAll () {
+      this.eventList.splice(0, this.eventList.length)
+      return this.$service.tunnel_2d
+        .getEventPageAll({
+          tunnelId: this.tunnelInfoData.id
+        })
+        .then(res => {
+          this.eventList.push(...res.data.records)
+        });
+    },
+    // startEventTimer () {
+    //   this.eventTimer = setInterval(() => {
+    //     console.log('111')
+    //     this.eventList.push(...this.eventList.splice(0, 2))
+    //   }, 2000)
+    // },
+    // clearEventTimer () {
+    //   clearInterval(this.eventTimer)
+    //   this.eventTimer = null
+    // },
+    getWarnPageAll () {
+      this.warnList.splice(0, this.warnList.length)
+      return this.$service.tunnel_2d
+        .getWarnPageAll({
+          tunnelId: this.tunnelInfoData.id
+        })
+        .then(res => {
+          this.warnList.push(...res.data.records)
+        });
+    },
     goHome () {
       this.$router.push('/')
     },
@@ -1040,6 +1093,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@keyframes moveTop {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-100%);
+  }
+}
 .tunnel-container {
   min-height: 1000px;
 }
@@ -1417,10 +1479,17 @@ export default {
           margin-left: 11px;
         }
       }
-
+      .event-panen-box {
+        height: 230px;
+        overflow: hidden;
+      }
       .event-panel {
         display: flex;
         flex-wrap: wrap;
+        animation: 100s moveTop infinite linear;
+        &:hover {
+          animation-play-state: paused;
+        }
 
         .t-event-warn {
           margin-bottom: 17px;
@@ -1430,8 +1499,15 @@ export default {
           }
         }
       }
-
+      .device-panel-box {
+        height: 134px;
+        overflow: hidden;
+      }
       .device-panel {
+        animation: 100s moveTop infinite linear;
+        &:hover {
+          animation-play-state: paused;
+        }
         .t-device-warn {
           margin-bottom: 15px;
         }

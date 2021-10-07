@@ -1,7 +1,7 @@
 <template>
   <div class="t-device-warn" :class="'t-device-warn_' + type">
-    <span class="time">12时20分</span>
-    <span class="des">可变情报板K1223通讯异常讯异常通讯异常讯异常</span>
+    <span class="time">{{ data.warningTime }}</span>
+    <span class="des">{{ data.warningContent }}</span>
   </div>
 </template>
 
@@ -13,6 +13,12 @@
       type: {
         type: String,
         default: ''
+      },
+      data: {
+        type: Object,
+        default: () => {
+          return {}
+        }
       }
     },
     data() {
@@ -59,6 +65,9 @@
     color: #DFEEF3;
     background-color: #2B79E3;
     margin-right: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   &.t-device-warn_1 {
     .des {

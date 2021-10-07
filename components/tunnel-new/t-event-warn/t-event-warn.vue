@@ -1,13 +1,13 @@
 <template>
   <div class="t-event-warn">
     <div class="name">
-      <span>隧道行人</span>
+      <span>{{ data.eventTypeName }}</span>
     </div>
     <div class="no">
-      <span>K1512+12</span>
+      <span>K1512+12(无字段)</span>
     </div>
     <div class="status">
-      <span>报警中</span>
+      <span>{{ data.eventStateName }}</span>
     </div>
   </div>
 </template>
@@ -16,6 +16,14 @@
   export default {
     services: ["_2d", "tunnel", "tunnel_2d"],
     name:"t-event-warn",
+    props: {
+      data: {
+        type: Object,
+        default: () => {
+          return {}
+        }
+      }
+    },
     data() {
       return {
         
