@@ -38,13 +38,18 @@
     <div class="operation">
       <span class="cancel" @click="handleCancel">取消</span>
     </div>
+    <popup-media v-model="showMediaPopup" :medias="showMedias" />
   </div>
 </template>
 
 <script>
+  import PopupMedia from "../../2d/popup-media"
   export default {
     services: ["_2d", "tunnel", "tunnel_2d"],
     name: "t-modal-video",
+    components: {
+      PopupMedia
+    },
     props: {
       tunnelId: {
         type: [String, Object]
@@ -59,6 +64,8 @@
     },
     data() {
       return {
+        showMediaPopup: false,
+        showMedias: [{ type: "video", deviceConfig: '' }],
         checkedAll: null, // 全选1/反选0
         form: {
           workMode: null, // 空闲0/呼叫中1
@@ -136,6 +143,8 @@
       },
       // 设备选择
       handleSelect (item) {
+        this.showMedias[0].deviceConfig = item.deviceConfig
+        this.showMediaPopup = true
         let idx = this.checkedList.indexOf(item.id)
         if (idx === -1) {
           this.checkedList.push(item.id)

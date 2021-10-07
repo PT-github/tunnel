@@ -3,6 +3,7 @@
              append-to-body    
              :width="width"  
              :close-on-click-modal="closeOnClickModal"
+             custom-class="custom-dialog"
              :before-close="handleClose">
     <div slot="title">
       <IndexTipTitle :title="title"></IndexTipTitle>
@@ -70,6 +71,7 @@ export default {
   border: 1px solid #142E69;
   background: #142E69;
   margin-top: 5vh!important;
+  
 }
 
 /deep/ .el-dialog__header {
@@ -78,5 +80,10 @@ export default {
 
 /deep/ .el-dialog__body {
   padding: 0px 20px 30px 20px !important;
+}
+</style>
+<style lang="scss">
+.el-dialog__wrapper {
+  z-index: 2000000 !important;
 }
 </style>
